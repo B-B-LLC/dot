@@ -33,3 +33,5 @@ Klinik adı, telefon, adres ve metinler ilgili bileşenlerin en üstündeki dizi
 _Claude Code yazma erişimi testi — 2026-08-04. Bu satır serbestçe silinebilir._
 
 _Ikinci test — commit kimligi kontrolu._
+
+_Ucuncu test — connector uzerinden dogrudan GitHub'a yazildi, yerel dosya kullanilmadi._
