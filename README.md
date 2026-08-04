@@ -28,3 +28,6 @@ Repo'yu Vercel'deki projeye bağlarsan bundan sonra her `git push` otomatik depl
 
 Klinik adı, telefon, adres ve metinler ilgili bileşenlerin en üstündeki dizilerde.
 İletişim formu şu an sadece arayüzde çalışıyor; gerçek gönderim için bir API route veya Formspree/Resend bağlanması gerekir.
+
+---
+_Claude Code yazma erişimi testi — 2026-08-04. Bu satır serbestçe silinebilir._
