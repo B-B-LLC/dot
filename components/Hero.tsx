@@ -12,12 +12,12 @@ export default function Hero() {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-xs font-semibold text-brand-700">
             <span className="h-2 w-2 rounded-full bg-brand-500" />
-            DEPLOY-TEST-20260804 — mor tema denemesi
+            KIRMIZI-TEST-20260804 — kırmızı tema denemesi
           </span>
 
           <h1 className="mt-6 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
             Gülüşünüz için
-            <span className="block text-brand-600">mor renkli eller</span>
+            <span className="block text-brand-600">kırmızı renkli eller</span>
           </h1>
 
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink/70">
