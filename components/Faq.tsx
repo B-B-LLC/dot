@@ -1,52 +1,80 @@
 const faqs = [
   {
-    q: "İlk muayene ücretli mi?",
-    a: "Hayır. İlk muayene, panoramik röntgen ve tedavi planlaması ücretsizdir. Tedaviye başlamak zorunda değilsiniz.",
+    q: "Tedavi ücretini önceden öğrenebilir miyim?",
+    a: "Evet. Muayene ve gerekli görüntüleme sonrası size işlem kalemlerini, süreyi ve toplam maliyeti içeren yazılı bir tedavi planı sunuyoruz. Planı görmeden bir şeye karar vermeniz gerekmiyor.",
   },
   {
-    q: "Tedavi ücretini taksitle ödeyebilir miyim?",
-    a: "Evet. Kredi kartına 9 taksite kadar vade farksız ödeme ve uzun süreli tedavilerde seans bazlı ödeme seçeneği sunuyoruz.",
+    q: "Tedavi ne kadar sürer?",
+    a: "İşleme göre değişir. Dolgu veya diş taşı temizliği tek seansta biter; implant ve ortodonti aylara yayılan süreçlerdir. Planlama aşamasında size seans sayısı ve takvim verilir.",
   },
   {
-    q: "İmplant tedavisi ne kadar sürüyor?",
-    a: "Kemik yapınıza bağlı olarak implantın kaynaması 2-4 ay sürer. Uygun vakalarda aynı gün geçici diş uygulanabilir.",
+    q: "İşlem sırasında ağrı hisseder miyim?",
+    a: "İşlemler lokal anestezi altında yapılır, bu sayede tedavi sırasında ağrı beklenmez. Anestezi sonrası dönemde hafif hassasiyet olabilir; bunun için ne yapmanız gerektiği seans sonunda anlatılır.",
   },
   {
-    q: "Anlaşmalı olduğunuz sigortalar var mı?",
-    a: "Başlıca özel sağlık sigortaları ve tamamlayıcı sigortalarla anlaşmamız bulunuyor. Poliçenizi randevu öncesi iletirseniz kapsamı kontrol ediyoruz.",
+    q: "Randevu nasıl alıyorum?",
+    a: "Sayfadaki formu doldurup gönderdiğinizde aynı gün içinde sizi arayıp uygun saati birlikte belirliyoruz. Dilerseniz doğrudan telefonla veya WhatsApp üzerinden de ulaşabilirsiniz.",
   },
   {
-    q: "Randevumu iptal edersem ne olur?",
-    a: "24 saat öncesine kadar yapılan iptallerde herhangi bir ücret alınmaz, randevunuzu ücretsiz erteleyebilirsiniz.",
+    q: "Randevumu değiştirmem gerekirse?",
+    a: "Telefonla haber vermeniz yeterli. Mümkün olduğunca erken bildirirseniz o saati bekleyen başka bir hastaya açabiliyoruz.",
+  },
+  {
+    q: "Ödemeyi nasıl yapabilirim?",
+    a: "Ödeme seçeneklerini tedavi planıyla birlikte paylaşıyoruz. Güncel koşulları muayene sırasında sormanız en doğrusu.",
   },
 ];
 
 export default function Faq() {
   return (
-    <section id="sss" className="mx-auto max-w-3xl px-5 py-20 lg:py-28">
-      <div className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-brand-600">
-          Sık sorulan sorular
-        </p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Merak edilenler
-        </h2>
-      </div>
+    <section id="sss" className="border-y border-brand-100 bg-brand-50/50">
+      <div className="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+        <div className="mx-auto max-w-2xl text-center">
+          <p
+            data-rv
+            className="text-sm font-semibold uppercase tracking-widest text-brand-600"
+          >
+            Sık sorulanlar
+          </p>
+          <h2
+            data-rv
+            className="mt-3 text-3xl font-semibold tracking-tight delay-75 sm:text-4xl"
+          >
+            Hastalarımızın en çok sorduğu
+          </h2>
+        </div>
 
-      <div className="mt-12 divide-y divide-brand-100 border-y border-brand-100">
-        {faqs.map((f) => (
-          <details key={f.q} className="group py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left font-medium">
-              {f.q}
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600 transition group-open:rotate-45">
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </span>
-            </summary>
-            <p className="mt-3 pr-12 text-sm leading-relaxed text-ink/65">{f.a}</p>
-          </details>
-        ))}
+        <div className="mx-auto mt-12 max-w-3xl">
+          {faqs.map((f, i) => (
+            <details
+              key={f.q}
+              data-rv
+              style={{ transitionDelay: `${i * 60}ms` }}
+              className="group border-b border-brand-200"
+            >
+              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-base font-semibold leading-snug transition hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <span className="grid h-7 w-7 flex-none place-items-center rounded-full border border-brand-200 text-brand-600 transition group-open:rotate-180 group-open:border-brand-600 group-open:bg-brand-600 group-open:text-white">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </span>
+              </summary>
+              <p className="pb-6 pr-10 text-sm leading-relaxed text-ink/65">
+                {f.a}
+              </p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

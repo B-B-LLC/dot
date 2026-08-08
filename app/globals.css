@@ -1,17 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #fff1f1;
-  --color-brand-100: #ffdfdf;
-  --color-brand-200: #ffc5c5;
-  --color-brand-300: #ff9b9b;
-  --color-brand-400: #f96a6a;
-  --color-brand-500: #e93b3b;
-  --color-brand-600: #d01f1f;
-  --color-brand-700: #ae1818;
-  --color-brand-800: #8f1818;
-  --color-brand-900: #771a1a;
-  --color-ink: #2a1010;
+  /* Turkuaz marka paleti. Önceki kırmızı skala bir tema denemesinden
+     kalmıştı (a7c9838 / b93c9fe) ve geri alınmamıştı. */
+  --color-brand-50: #f0fafa;
+  --color-brand-100: #dcf1f2;
+  --color-brand-200: #bde3e5;
+  --color-brand-300: #8fcdd1;
+  --color-brand-400: #4fadb4;
+  --color-brand-500: #2b9098;
+  --color-brand-600: #0e7c86;
+  --color-brand-700: #0a5c64;
+  --color-brand-800: #0b4a50;
+  --color-brand-900: #0d3d43;
+  --color-ink: #0d2226;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -25,4 +27,45 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* 'hidden' DEĞİL: hidden, body'nin overflow-y'sini auto yapıp onu bir
+     scroll container'a çevirir; ScrollTrigger scroll değerini 0 okur ve
+     hero animasyonu hiç ilerlemez. 'clip' scroll container yaratmaz. */
+  overflow-x: clip;
+}
+
+/* IntersectionObserver ile açılan bölüm girişleri.
+   Gizleme yalnızca .js altında geçerli — JS çalışmazsa içerik açık gelir. */
+.js [data-rv] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.js [data-rv].gor {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hareketi azalt: tek kapatma noktası */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-rv] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
