@@ -1,0 +1,19 @@
+:root{
+--space-0:0px;--space-1:2px;--space-2:4px;--space-3:6px;--space-4:8px;--space-5:12px;
+--space-6:16px;--space-7:20px;--space-8:24px;--space-9:32px;--space-10:40px;
+--space-11:56px;--space-12:72px;--space-13:96px;--space-14:128px;
+
+/* Semantic rhythm */
+--gap-inline:8px;
+--gap-stack:16px;
+--gap-card:24px;
+--gap-grid:20px;
+--pad-card:28px;
+--pad-card-lg:36px;
+--pad-section-y:96px;
+--pad-page-x:40px;
+
+--container-max:1240px; /* @kind spacing */
+--container-narrow:720px; /* @kind spacing */
+--measure:64ch; /* @kind other */
+}

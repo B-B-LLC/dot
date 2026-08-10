@@ -1,0 +1,6 @@
+/* Verdant Dental webfonts.
+   SUBSTITUTION NOTICE: no font binaries were supplied with the brief. The reference
+   artwork uses an Apple-system-style geometric humanist sans. Nearest free match:
+   Plus Jakarta Sans (UI + display) and IBM Plex Mono (numerals, code, tokens).
+   Replace this file with self-hosted @font-face rules when real font files arrive. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

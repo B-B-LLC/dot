@@ -1,0 +1,18 @@
+:root{
+/* Warm-tinted, wide, low-opacity. Never neutral grey/black shadow. */
+--shadow-0:none;
+--shadow-1:0 1px 2px rgba(58,45,32,.05),0 2px 6px rgba(58,45,32,.04);
+--shadow-2:0 2px 4px rgba(58,45,32,.05),0 8px 20px rgba(58,45,32,.06);
+--shadow-3:0 4px 8px rgba(58,45,32,.05),0 18px 40px rgba(58,45,32,.09);
+--shadow-4:0 8px 16px rgba(58,45,32,.06),0 34px 70px rgba(58,45,32,.12);
+--shadow-lift:0 10px 22px rgba(58,45,32,.08),0 40px 80px rgba(58,45,32,.14);
+--shadow-brand:0 8px 22px rgba(10,97,66,.26),0 2px 6px rgba(10,97,66,.18);
+--shadow-accent:0 8px 22px rgba(226,121,14,.28),0 2px 6px rgba(226,121,14,.20);
+
+/* Liquid-glass inner light: top highlight + bottom bounce */
+--inner-glass:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.35),inset 0 0 0 .5px rgba(255,255,255,.5); /* @kind shadow */
+--inner-glass-dark:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(0,0,0,.14),inset 0 0 0 .5px rgba(255,255,255,.18); /* @kind shadow */
+--inner-press:inset 0 2px 5px rgba(58,45,32,.14); /* @kind shadow */
+--ring-focus:0 0 0 3px rgba(22,148,106,.28); /* @kind shadow */
+--ring-focus-accent:0 0 0 3px rgba(245,144,52,.30); /* @kind shadow */
+}

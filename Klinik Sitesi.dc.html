@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/colors.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/typography.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/radius.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/glass.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/motion.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/tokens/base.css">
+<link rel="stylesheet" href="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/styles.css">
+<script src="_ds/verdant-dental-design-system-954de0fa-109a-4f50-b8b1-f95e698d5e74/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.js"></script>
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--grad-page);background-attachment:fixed;font-family:var(--font-body);color:var(--text-body);-webkit-font-smoothing:antialiased}
+a{color:var(--text-link);text-decoration:none}
+a:hover{color:var(--text-link-hover)}
+:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(13,122,83,.28);border-radius:8px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Dentist","name":"Özel Meşe Ağız ve Diş Sağlığı Polikliniği","address":{"@type":"PostalAddress","streetAddress":"Kıbrıs Şehitleri Caddesi No: 148, Kat 1","addressLocality":"Konak","addressRegion":"İzmir","postalCode":"35220","addressCountry":"TR"},"telephone":"+902320000000","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}],"availableService":[{"@type":"MedicalProcedure","name":"İmplantoloji"},{"@type":"MedicalProcedure","name":"Ortodonti"},{"@type":"MedicalProcedure","name":"Endodonti"},{"@type":"MedicalProcedure","name":"Pedodonti"},{"@type":"MedicalProcedure","name":"Periodontoloji"},{"@type":"MedicalProcedure","name":"Restoratif diş tedavisi"}]}
+</script>
+</helmet>
+<div style="min-height:100vh;padding-bottom:140px;overflow-x:hidden">
+
+<a href="#icerik" style="position:absolute;left:-9999px;top:0;z-index:80;background:var(--emerald-700);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600" style-focus="left:20px;top:20px">İçeriğe geç</a>
+
+<div ref="{{ navRef }}" style="position:sticky;top:0;z-index:40;padding:18px clamp(16px,4vw,40px) 0;transition:padding .24s var(--ease-glass)">
+<div style="max-width:1180px;margin:0 auto">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.NavBar" brand="Meşe." links="{{ navLinks }}" active="{{ aktifBolum }}" on-navigate="{{ gezin }}" actions="{{ navActions }}" hint-size="100%,68px"></x-import>
+</div>
+</div>
+
+<main id="icerik">
+
+<section id="hero" style="max-width:1180px;margin:0 auto;padding:clamp(40px,7vw,86px) clamp(20px,5vw,40px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(28px,4vw,52px);align-items:center">
+<div>
+<div style="display:inline-flex;align-items:center;gap:9px;height:28px;padding:0 14px 0 11px;border-radius:999px;background:var(--emerald-100);color:var(--emerald-700);border:1px solid var(--emerald-200);font-size:12px;font-weight:700;letter-spacing:.12em;margin-bottom:24px">
+<span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>ÖZEL POLİKLİNİK</div>
+<h1 style="font-family:var(--font-display);font-size:clamp(34px,5.6vw,66px);line-height:1.04;letter-spacing:-.035em;font-weight:800;color:var(--text-strong);margin:0;text-wrap:balance">Alsancak’ta, zemin katta bir ağız ve diş sağlığı polikliniği.</h1>
+<p style="font-size:clamp(16px,1.4vw,18px);line-height:1.62;color:var(--text-muted);margin:22px 0 0;max-width:46ch;text-wrap:pretty">Girişte eşik ve merdiven yok. Çocuk hastalar için ayrı bir bekleme ve tedavi bölümü bulunuyor. Altı dalda hasta kabul ediliyor.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Button" size="lg" on-click="{{ randevuyaGit }}" hint-size="190px,56px">Randevu talebi</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Button" size="lg" variant="cream" as="a" href="https://www.google.com/maps" target="_blank" rel="noopener" hint-size="150px,56px">Yol tarifi</x-import>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;font-size:14px;color:var(--text-muted)">
+<span>Kıbrıs Şehitleri Cad. No: 148, Konak / İzmir</span>
+<a href="tel:+902320000000" style="font-family:var(--font-mono);font-weight:500;letter-spacing:-.01em">0232 000 00 00</a>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;right:-18px;top:-26px;width:96px;height:96px;border-radius:var(--radius-blob);background:linear-gradient(150deg,#fff 0%,var(--sand-150) 100%);box-shadow:var(--shadow-3),inset -6px -8px 20px rgba(58,45,32,.07),inset 6px 8px 20px #fff;z-index:2"></div>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="emerald" padding="none" hint-size="100%,380px">
+<div style="position:relative;height:380px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+<div style="width:56%;aspect-ratio:1/1.05;border-radius:var(--radius-blob);background:linear-gradient(155deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.05) 100%);border:1px solid rgba(255,255,255,.18)"></div>
+</div>
+<div style="position:relative;padding:28px 28px 78px">
+<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--emerald-300)">FOTOĞRAF ALANI</div>
+<p style="color:var(--text-on-dark-muted);font-size:14px;line-height:1.55;margin:8px 0 0;max-width:34ch">Kliniğin kendi çekilmiş bekleme alanı fotoğrafı bu kartın tamamını kaplayacak.</p>
+</div>
+</div>
+</x-import>
+
+<sc-if value="{{ saatiGoster }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;margin:-46px 20px 0;z-index:3">
+<div style="border-radius:28px;padding:20px 22px 18px;background:rgba(255,255,255,.72);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow-3),var(--inner-glass)">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+<div>
+<div style="font-family:var(--font-mono);font-size:38px;font-weight:500;letter-spacing:-.03em;color:var(--text-strong);line-height:1">{{ saat }}</div>
+<div style="display:flex;align-items:center;gap:7px;margin-top:9px">
+<sc-if value="{{ acikMi }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:7px;border-radius:50%;background:var(--emerald-500);box-shadow:0 0 0 4px rgba(22,148,106,.16)"></span></sc-if>
+<sc-if value="{{ kapaliMi }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:var(--sand-300)"></span></sc-if>
+<span style="font-size:13.5px;font-weight:600;color:var(--text-strong)">{{ durumBaslik }}</span>
+</div>
+<div style="font-size:12.5px;color:var(--text-muted);margin-top:3px">{{ durumAlt }}</div>
+</div>
+<div style="display:flex;gap:5px">
+<sc-for list="{{ hafta }}" as="g" hint-placeholder-count="7">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:26px">
+<span style="font-size:10.5px;font-weight:600;color:var(--text-faint);letter-spacing:.02em">{{ g.kisa }}</span>
+<span style="width:8px;height:26px;border-radius:999px;background:{{ g.renk }}"></span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</section>
+
+<section id="tedaviler" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">01</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">TEDAVİ ALANLARI</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0;max-width:20ch">Hasta kabul edilen dallar</h2>
+<p style="font-size:16px;line-height:1.62;color:var(--text-muted);margin:14px 0 0;max-width:56ch">Aşağıdaki başlıklar, poliklinikte hasta kabul edilen alanları ve her birinde izlenen genel süreci anlatır.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px;margin-top:36px">
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.6 6.2c0-2.1 1.7-3.4 3.4-2.7 1.3.5 2.7.5 4 0 1.7-.7 3.4.6 3.4 2.7 0 1.9-.5 3.4-1.3 4.6"></path><path d="M12.6 12.4v8"></path><path d="M10.3 14.6h4.6"></path><path d="M10.7 17.2h3.8"></path><path d="M3.4 12.6h5.2"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">İmplantoloji</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Tedaviye panoramik röntgen ve gerektiğinde hacimsel tomografi ile kemik yapısının değerlendirilmesiyle başlanır. Cerrahi aşamayı iyileşme süresi ve ardından üst yapı izler.</p>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 13.6c6-2.6 12.4-2.6 18.4 0"></path><rect x="9.6" y="9.4" width="5" height="5" rx="1.4"></rect><path d="M5.4 10.6v2.2"></path><path d="M18.6 10.6v2.2"></path><path d="M8 18.4c2.6 1.4 5.4 1.4 8 0"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">Ortodonti</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Diş ve çene ilişkisindeki düzensizlikler değerlendirilir. Kayıt alındıktan sonra sabit ya da hareketli apareylerle plan yapılır; kontroller belirli aralıklarla sürer.</p>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z"></path><path d="M10.4 9.4v4.4"></path><path d="M13.6 9.4v4.4"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">Endodonti</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Diş içindeki pulpa dokusunun iltihaplandığı durumlarda kanal tedavisi uygulanır. Kanallar temizlenip doldurulur, diş uygun bir üst yapıyla kapatılır.</p>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--amber-100);color:var(--amber-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.4 8.4c0-1.8 1.4-2.9 2.9-2.3 1.1.4 2.4.4 3.5 0 1.4-.6 2.9.5 2.9 2.3 0 2.1-.5 4-1.3 5.9-.4.9-.7 1.8-.9 2.8l-.3 1.8c-.2 1-1.5 1-1.7 0l-.5-2.7c-.1-.6-1-.6-1.1 0l-.5 2.7c-.2 1-1.5 1-1.7 0l-.3-1.8c-.2-1-.5-1.9-.9-2.8-.8-1.9-1.3-3.8-1.3-5.9Z"></path><path d="M16.6 5.4h4.2"></path><path d="M18.7 3.3v4.2"></path><path d="M15.6 12.4c1.6 1.2 3.2 1.2 4.8 0"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">Pedodonti</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Süt ve karma dişlenme dönemindeki çocuklar için koruyucu uygulamalar ve tedaviler yapılır. Randevular ayrı bölümde ve çocuğun uyum süresi gözetilerek planlanır.</p>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.6c0-1.9 1.6-3.1 3.1-2.5 1.2.5 2.6.5 3.8 0 1.5-.6 3.1.6 3.1 2.5 0 2-.5 3.9-1.4 5.7"></path><path d="M8.4 10.3c-.4-.8-.8-1.7-1-2.6"></path><path d="M2.6 15.4c1.6-1.6 3.2-1.6 4.8 0s3.2 1.6 4.8 0 3.2-1.6 4.8 0 3.2 1.6 4.4.2"></path><path d="M12 12.6v3"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">Periodontoloji</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Diş eti ve dişi çevreleyen dokuların hastalıkları izlenir. Diş taşı temizliği, kök yüzeyi düzleştirmesi ve düzenli kontrollerle sürecin takibi yapılır.</p>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,220px">
+<div style="width:46px;height:46px;border-radius:13px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z"></path><path d="M8.4 8.2h4.4v3.6H9.2"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:18px 0 0">Restoratif diş tedavisi</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Çürük ve madde kaybı bulunan dişlerde dolgu uygulamaları yapılır. İşlem öncesinde dişin durumu muayene ve gerekirse röntgenle değerlendirilir.</p>
+</x-import>
+
+</div>
+</section>
+
+<section id="klinik" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">02</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">KLİNİK</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0;max-width:20ch">Mekân, sterilizasyon ve dijital kayıt</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="none" hint-size="100%,240px">
+<div style="position:relative;height:240px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--grad-cream)">
+<div style="width:52%;aspect-ratio:1.2/1;border-radius:var(--radius-blob);background:linear-gradient(150deg,#fff 0%,var(--sand-150) 100%);box-shadow:inset -8px -10px 24px rgba(58,45,32,.07),inset 8px 10px 24px #fff"></div>
+</div>
+<div style="position:relative;padding:20px"><span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">BEKLEME ALANI</span></div>
+</div>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="none" hint-size="100%,240px">
+<div style="position:relative;height:240px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--grad-cream)">
+<div style="width:46%;aspect-ratio:1/1.3;border-radius:999px;background:linear-gradient(150deg,#fff 0%,var(--sand-150) 100%);box-shadow:inset -8px -10px 24px rgba(58,45,32,.07),inset 8px 10px 24px #fff"></div>
+</div>
+<div style="position:relative;padding:20px"><span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">MUAYENE ODASI</span></div>
+</div>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="none" hint-size="100%,240px">
+<div style="position:relative;height:240px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--grad-cream)">
+<div style="width:58%;aspect-ratio:1.4/1;border-radius:var(--radius-blob);background:linear-gradient(150deg,#fff 0%,var(--sand-150) 100%);box-shadow:inset -8px -10px 24px rgba(58,45,32,.07),inset 8px 10px 24px #fff"></div>
+</div>
+<div style="position:relative;padding:20px"><span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">ÇOCUK BÖLÜMÜ</span></div>
+</div>
+</x-import>
+</div>
+
+<p style="font-size:13px;line-height:1.6;color:var(--text-faint);margin:16px 0 0;max-width:78ch">Her cerrahi veya girişimsel işlemde sonuçlar kişiden kişiye değişiklik gösterebilir. İşlem öncesinde hekiminizden detaylı görüş almanız önerilir.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:32px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="emerald" padding="lg" hint-size="100%,300px">
+<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--emerald-300)">STERİLİZASYON</div>
+<h3 style="font-family:var(--font-display);color:#fff;font-size:26px;line-height:1.14;letter-spacing:-.022em;margin:12px 0 0">Aletlerin izlediği dört adım</h3>
+<div style="display:flex;flex-direction:column;gap:14px;margin-top:20px">
+<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-300);padding-top:2px">01</span><p style="margin:0;color:var(--text-on-dark-muted);font-size:14.5px;line-height:1.55">Kullanılan aletler ön dezenfeksiyon solüsyonunda bekletilir ve ultrasonik temizleyicide yıkanır.</p></div>
+<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-300);padding-top:2px">02</span><p style="margin:0;color:var(--text-on-dark-muted);font-size:14.5px;line-height:1.55">Kurutulan aletler tek tek poşetlenir, poşet üzerine tarih ve içerik yazılır.</p></div>
+<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-300);padding-top:2px">03</span><p style="margin:0;color:var(--text-on-dark-muted);font-size:14.5px;line-height:1.55">Buharlı otoklavda 134 °C’de sterilizasyon uygulanır.</p></div>
+<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-300);padding-top:2px">04</span><p style="margin:0;color:var(--text-on-dark-muted);font-size:14.5px;line-height:1.55">Her çevrimde kimyasal ve haftalık biyolojik indikatör kullanılır; sonuçlar kayıt defterine işlenir.</p></div>
+</div>
+</x-import>
+
+<div style="display:flex;flex-direction:column;gap:20px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,140px">
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:0">Görüntüleme ve kayıt</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Poliklinikte panoramik röntgen, hacimsel tomografi ve ağız içi tarayıcı bulunur. Görüntüler hasta dosyasına dijital olarak işlenir; istenildiğinde hastaya kopyası verilir.</p>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,140px">
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:0">Erişim</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:8px 0 0">Giriş zemin kattadır, eşik ve basamak yoktur. Tekerlekli sandalye ile bekleme alanına ve iki muayene odasına doğrudan geçilir. Refakatçi için oturma alanı bulunur.</p>
+</x-import>
+</div>
+</div>
+</section>
+
+<section id="hekimler" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">03</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">HEKİM KADROSU</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0;max-width:20ch">Poliklinikte çalışan hekimler</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:32px">
+<sc-for list="{{ hekimler }}" as="h" hint-placeholder-count="4">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="none" hint-size="100%,320px">
+<div style="height:170px;background:var(--grad-cream);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line-hairline)">
+<div style="width:96px;height:110px;border-radius:var(--radius-blob);background:linear-gradient(150deg,#fff 0%,var(--sand-150) 100%);box-shadow:inset -6px -8px 20px rgba(58,45,32,.07),inset 6px 8px 20px #fff"></div>
+</div>
+<div style="padding:20px 22px 24px">
+<h3 style="font-family:var(--font-display);font-size:18px;letter-spacing:-.012em;color:var(--text-strong);margin:0">{{ h.ad }}</h3>
+<div style="font-size:13.5px;font-weight:600;color:var(--emerald-700);margin-top:5px">{{ h.unvan }}</div>
+<div style="height:1px;background:var(--line-hairline);margin:14px 0"></div>
+<div style="font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--text-muted)">{{ h.mezuniyet }}</div>
+<div style="font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--text-muted)">{{ h.akademik }}</div>
+</div>
+</x-import>
+</sc-for>
+</div>
+<p style="font-size:13px;line-height:1.6;color:var(--text-faint);margin:16px 0 0;max-width:78ch">Unvanlar 1219 sayılı Kanun kapsamındaki diş hekimliği ana ve yan dal uzmanlıklarına göre yazılmıştır.</p>
+</section>
+
+<section id="bilgi" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">04</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">AĞIZ VE DİŞ SAĞLIĞI BİLGİLERİ</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0;max-width:22ch">Koruyucu bilgiler</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="md" hint-size="100%,240px">
+<span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-600)">A</span>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:10px 0 0">Fırçalama ve diş arası temizliği</h3>
+<p style="font-size:14.5px;line-height:1.62;color:var(--text-muted);margin:10px 0 0">Dişler günde iki kez, en az iki dakika fırçalanır. Fırça, diş eti ile diş yüzeyinin birleştiği çizgiye yaklaşık 45 derece açıyla yerleştirilir ve küçük hareketlerle temizlik yapılır. Fırçanın ulaşamadığı diş aralarında diş ipi veya arayüz fırçası kullanılır. Fırça kılları dağıldığında, ortalama üç ayda bir değiştirilir.</p>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="md" hint-size="100%,240px">
+<span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-600)">B</span>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:10px 0 0">Çocuklarda ilk hekim ziyareti</h3>
+<p style="font-size:14.5px;line-height:1.62;color:var(--text-muted);margin:10px 0 0">İlk süt dişi çıktıktan sonraki altı ay içinde, en geç birinci yaş gününde bir diş hekimine görünülmesi önerilir. Bu ziyarette ağız içi incelenir, beslenme ve temizlik alışkanlıkları konuşulur. Süt dişleri çene gelişimi ve konuşma açısından önemlidir; düşeceği düşünülerek tedavisiz bırakılmaz.</p>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="md" hint-size="100%,240px">
+<span style="font-family:var(--font-mono);font-size:12.5px;color:var(--emerald-600)">C</span>
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:10px 0 0">Diş eti sağlığı</h3>
+<p style="font-size:14.5px;line-height:1.62;color:var(--text-muted);margin:10px 0 0">Fırçalama sırasında görülen kanama, çoğunlukla diş eti iltihabının erken belirtisidir ve fırçalamayı azaltmak için değil, hekime başvurmak için bir nedendir. Diş taşı, fırçayla temizlenemeyen sertleşmiş bakteri tabakasıdır. Sigara kullanımı ve düzensiz kan şekeri diş eti hastalıklarının seyrini etkiler.</p>
+</x-import>
+</div>
+</section>
+
+<section id="sss" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">05</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">SIK SORULAN SORULAR</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0 0 32px;max-width:22ch">Süreç, hazırlık ve iyileşme</h2>
+
+<div style="display:flex;flex-direction:column;gap:10px;max-width:860px">
+<sc-for list="{{ sorular }}" as="s" hint-placeholder-count="6">
+<div style="border-radius:22px;background:rgba(255,255,255,.66);border:1px solid var(--line-hairline);overflow:hidden">
+<button type="button" onClick="{{ s.ac }}" aria-expanded="{{ s.acikStr }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px;background:transparent;border:0;cursor:pointer;text-align:left;font-family:var(--font-body);font-size:16px;font-weight:600;letter-spacing:-.008em;color:var(--text-strong);transition:background .16s var(--ease-glass)" style-hover="background:rgba(255,255,255,.5)">
+<span>{{ s.soru }}</span>
+<span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:15px;line-height:1">{{ s.isaret }}</span>
+</button>
+<sc-if value="{{ s.acik }}" hint-placeholder-val="{{ false }}">
+<p style="margin:0;padding:0 22px 22px;font-size:15px;line-height:1.62;color:var(--text-muted);max-width:64ch">{{ s.cevap }}</p>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="ulasim" style="max-width:1180px;margin:0 auto;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:14px">
+<span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--emerald-600)">06</span>
+<span style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--text-faint)">ULAŞIM VE RANDEVU</span>
+<span style="flex:1;height:1px;background:var(--line-hairline)"></span>
+</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);line-height:1.12;letter-spacing:-.028em;font-weight:700;color:var(--text-strong);margin:0 0 32px;max-width:22ch">Nasıl gelinir, nasıl randevu alınır</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+
+<div style="display:flex;flex-direction:column;gap:20px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="plain" padding="none" style="min-height:230px" hint-size="100%,230px">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f6f0e6 0%,#efe6d9 100%)">
+<div style="position:absolute;left:0;right:0;top:38%;height:14px;background:#fff;opacity:.85"></div>
+<div style="position:absolute;top:0;bottom:0;left:62%;width:10px;background:#fff;opacity:.7"></div>
+<div style="position:absolute;left:8%;top:62%;width:34%;height:8px;background:#fff;opacity:.6;transform:rotate(-6deg)"></div>
+<div style="position:absolute;left:calc(62% - 62px);top:calc(38% - 44px);width:44px;height:44px;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);background:var(--grad-emerald);box-shadow:var(--shadow-brand)"></div>
+<span style="position:absolute;left:12px;top:calc(38% + 20px);font-family:var(--font-mono);font-size:11px;color:var(--text-faint)">Kıbrıs Şehitleri Cad.</span>
+<span style="position:absolute;left:calc(62% + 16px);top:14px;font-family:var(--font-mono);font-size:11px;color:var(--text-faint)">Alsancak Garı</span>
+</div>
+<div style="position:relative;padding:16px 18px;display:flex;justify-content:flex-end;align-items:flex-end;height:230px;box-sizing:border-box">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Button" size="sm" variant="glass" as="a" href="https://www.google.com/maps" target="_blank" rel="noopener" hint-size="120px,36px">Yol tarifi</x-import>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="cream" padding="md" hint-size="100%,300px">
+<h3 style="font-family:var(--font-display);font-size:19px;letter-spacing:-.012em;color:var(--text-strong);margin:0">Adres ve ulaşım</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:10px 0 0">Kıbrıs Şehitleri Caddesi No: 148, Kat 1 — 35220 Konak / İzmir</p>
+<div style="height:1px;background:var(--line-hairline);margin:16px 0"></div>
+<div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:var(--text-muted)">
+<div>İZBAN ve metro Alsancak durağına 400 m yürüme mesafesinde.</div>
+<div>Caddedeki otobüs durağı bina önündedir.</div>
+<div>Binanın kapalı otoparkı yoktur; caddede ücretli park alanı bulunur.</div>
+</div>
+<div style="height:1px;background:var(--line-hairline);margin:16px 0"></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ calismaSaatleri }}" as="c" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;gap:16px;font-size:14px">
+<span style="color:var(--text-body)">{{ c.ad }}</span>
+<span style="font-family:var(--font-mono);font-weight:500;color:var(--text-strong)">{{ c.saat }}</span>
+</div>
+</sc-for>
+</div>
+</x-import>
+</div>
+
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Card" tone="glass" padding="lg" id="randevu" hint-size="100%,560px">
+<sc-if value="{{ formAcik }}" hint-placeholder-val="{{ true }}">
+<div>
+<h3 style="font-family:var(--font-display);font-size:26px;line-height:1.14;letter-spacing:-.022em;color:var(--text-strong);margin:0">Randevu talebi</h3>
+<p style="font-size:14.5px;line-height:1.6;color:var(--text-muted);margin:10px 0 0;max-width:44ch">Formu ilettiğinizde danışma sizi arar ve uygun saati birlikte belirlersiniz. Tedavi bilgisi bu formda sorulmaz.</p>
+<div style="display:flex;flex-direction:column;gap:16px;margin-top:24px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Field" label="Ad Soyad" required="{{ true }}" html-for="f-ad" error="{{ hataAd }}" hint-size="100%,74px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Input" id="f-ad" value="{{ ad }}" on-change="{{ adDegis }}" placeholder="Elif Yılmaz" invalid="{{ adGecersiz }}" hint-size="100%,46px"></x-import>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Field" label="Telefon" required="{{ true }}" html-for="f-tel" hint="Danışma yalnızca randevunuzu belirlemek için arar." error="{{ hataTel }}" hint-size="100%,86px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Input" id="f-tel" type="tel" value="{{ tel }}" on-change="{{ telDegis }}" placeholder="0532 000 00 00" invalid="{{ telGecersiz }}" hint-size="100%,46px"></x-import>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Field" label="Tercih edilen tarih" html-for="f-tarih" hint-size="100%,74px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Input" id="f-tarih" type="date" value="{{ tarih }}" on-change="{{ tarihDegis }}" hint-size="100%,46px"></x-import>
+</x-import>
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Field" label="Not" html-for="f-not" hint="İsterseniz kısa bir not bırakabilirsiniz." hint-size="100%,120px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Input" id="f-not" multiline="{{ true }}" rows="3" value="{{ not }}" on-change="{{ notDegis }}" placeholder="Sabah saatleri benim için daha uygun." hint-size="100%,92px"></x-import>
+</x-import>
+</div>
+
+<p style="font-size:13px;line-height:1.6;color:var(--text-muted);margin:20px 0 0">Kişisel verileriniz <a href="#kvkk">Aydınlatma Metni</a> kapsamında işlenecektir.</p>
+
+<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-hairline)">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Checkbox" checked="{{ bulten }}" on-change="{{ bultenDegis }}" label="Ağız ve diş sağlığı bilgilendirmeleri almak istiyorum." description="İsteğe bağlıdır. İşaretlemeseniz de randevu talebiniz iletilir." hint-size="100%,56px"></x-import>
+</div>
+
+<div style="margin-top:22px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Button" size="lg" full-width="{{ true }}" on-click="{{ gonder }}" hint-size="100%,56px">Randevu talebi gönder</x-import>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ gonderildi }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:420px">
+<div style="width:52px;height:52px;border-radius:16px;background:var(--emerald-100);color:var(--emerald-700);display:flex;align-items:center;justify-content:center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5 9.5 17.5 19.5 7"></path></svg>
+</div>
+<h3 style="font-family:var(--font-display);font-size:26px;letter-spacing:-.022em;color:var(--text-strong);margin:20px 0 0">Randevu talebiniz alındı.</h3>
+<p style="font-size:15px;line-height:1.62;color:var(--text-muted);margin:10px 0 0;max-width:40ch">Danışma çalışma saatleri içinde sizi arayacak. Bu arada bir şey sormak isterseniz <a href="tel:+902320000000">0232 000 00 00</a> numarasından ulaşabilirsiniz.</p>
+<div style="margin-top:24px">
+<x-import component-from-global-scope="VerdantDentalDesignSystem_954de0.Button" variant="cream" on-click="{{ yeniTalep }}" hint-size="180px,44px">Yeni talep oluştur</x-import>
+</div>
+</div>
+</sc-if>
+</x-import>
+
+</div>
+</section>
+</main>
+
+<footer style="margin-top:clamp(64px,9vw,110px);background:var(--emerald-900);color:var(--text-on-dark)">
+<div style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,72px) clamp(20px,5vw,40px)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px">
+<div>
+<div style="font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.035em;color:#fff">Meşe<span style="color:var(--amber-500)">.</span></div>
+<p style="font-size:14px;line-height:1.6;color:var(--text-on-dark-muted);margin:14px 0 0;max-width:32ch">Özel Meşe Ağız ve Diş Sağlığı Polikliniği</p>
+<p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.5);margin:10px 0 0;max-width:32ch">İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000</p>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--emerald-300);margin-bottom:14px">İLETİŞİM</div>
+<div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:var(--text-on-dark-muted)">
+<a href="tel:+902320000000" style="font-family:var(--font-mono);color:#fff">0232 000 00 00</a>
+<a href="mailto:danisma@mesepoliklinik.example" style="color:var(--text-on-dark-muted)">danisma@mesepoliklinik.example</a>
+<span>Kıbrıs Şehitleri Cad. No: 148, Kat 1<br>35220 Konak / İzmir</span>
+</div>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--emerald-300);margin-bottom:14px">ÇALIŞMA SAATLERİ</div>
+<div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:var(--text-on-dark-muted)">
+<sc-for list="{{ calismaSaatleri }}" as="c" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;gap:14px"><span>{{ c.ad }}</span><span style="font-family:var(--font-mono);color:#fff">{{ c.saat }}</span></div>
+</sc-for>
+</div>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--emerald-300);margin-bottom:14px">YASAL</div>
+<div style="display:flex;flex-direction:column;gap:9px;font-size:14px">
+<a href="#kvkk" style="color:var(--text-on-dark-muted)">KVKK Aydınlatma Metni</a>
+<a href="#gizlilik" style="color:var(--text-on-dark-muted)">Gizlilik Politikası</a>
+<a href="#cerez" style="color:var(--text-on-dark-muted)">Çerez Politikası</a>
+</div>
+</div>
+</div>
+<div style="height:1px;background:var(--line-on-dark);margin:36px 0 20px"></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px 28px;font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,.55)">
+<span>Son güncelleme: 10.08.2026</span>
+<span>Site editörü: Ayşe Demir · editor@mesepoliklinik.example</span>
+</div>
+<p style="font-size:12px;line-height:1.6;color:rgba(255,255,255,.45);margin:16px 0 0;max-width:84ch">Bu site bilgilendirme amaçlıdır ve tıbbi tavsiye yerine geçmez. Sayfadaki içerikler Sağlık Hizmetlerinde Tanıtım ve Bilgilendirme Faaliyetleri Hakkında Yönetmelik kapsamında hazırlanmıştır.</p>
+</div>
+</footer>
+
+<sc-if value="{{ dar }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:7px;border-radius:999px;background:rgba(255,255,255,.72);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow-3),var(--inner-glass)">
+<a href="tel:+902320000000" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:52px;border-radius:999px;font-size:12px;font-weight:600;color:var(--emerald-700);background:var(--emerald-100)">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 3.6h3l1.5 3.7-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 3.7 1.5v3a1.8 1.8 0 0 1-2 1.8A16.4 16.4 0 0 1 4.4 5.6a1.8 1.8 0 0 1 1.8-2Z"></path></svg>Ara</a>
+<a href="https://www.google.com/maps" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:52px;border-radius:999px;font-size:12px;font-weight:600;color:var(--text-body)">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c4.2-4.4 6.3-7.7 6.3-10.4A6.3 6.3 0 0 0 5.7 10.6C5.7 13.3 7.8 16.6 12 21Z"></path><circle cx="12" cy="10.4" r="2.3"></circle></svg>Yol tarifi</a>
+<a href="https://wa.me/902320000000" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:52px;border-radius:999px;font-size:12px;font-weight:600;color:var(--text-body)">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.4 11.6a8.4 8.4 0 0 1-12.3 7.5L3.6 20.4l1.3-4.5A8.4 8.4 0 1 1 20.4 11.6Z"></path><path d="M9.3 9.1c.4 2.6 2.3 4.5 4.9 5.2l1-1.4 1.8.8v1.4c-2.9.5-6.4-2.4-7.5-5.3l1.4-.7Z"></path></svg>WhatsApp</a>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showClock&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;İmza öğesi&quot;},&quot;showMobileBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mobil&quot;},&quot;openFaq&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:-1,&quot;min&quot;:-1,&quot;max&quot;:5,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;SSS&quot;}}">
+class Component extends DCLogic {
+  cfg = {
+    telefon: '0232 000 00 00',
+    saatler: [
+      { ad: 'Pazartesi – Cuma', gunler: [1,2,3,4,5], ac: '09:00', kap: '19:00' },
+      { ad: 'Cumartesi', gunler: [6], ac: '09:00', kap: '14:00' },
+      { ad: 'Pazar', gunler: [0], kapali: true }
+    ],
+    hekimler: [
+      { ad: 'Dt. Selin Aydın', unvan: 'Diş hekimi', mezuniyet: 'Ege Üniv. Diş Hek. Fak., 2011', akademik: '—' },
+      { ad: 'Uzm. Dt. Mert Koçak', unvan: 'Ortodonti uzmanı', mezuniyet: 'İstanbul Üniv. Diş Hek. Fak., 2007', akademik: 'Ortodonti doktorası, 2013' },
+      { ad: 'Uzm. Dt. Ayşe Doğan', unvan: 'Periodontoloji uzmanı', mezuniyet: 'Hacettepe Üniv. Diş Hek. Fak., 2009', akademik: 'Periodontoloji uzmanlığı, 2015' },
+      { ad: 'Dt. Kaan Şahin', unvan: 'Diş hekimi', mezuniyet: 'Ankara Üniv. Diş Hek. Fak., 2014', akademik: '—' }
+    ],
+    sorular: [
+      { soru: 'İlk randevuda ne yapılır?', cevap: 'Muayene ile başlanır. Gerekirse panoramik röntgen alınır ve ağız içi fotoğraflanır. Bulgular anlatılır, tedavi seçenekleri ve süreleri konuşulur. İlk randevuda çoğunlukla işlem yapılmaz; plan üzerinde anlaşıldıktan sonra sonraki randevu belirlenir.' },
+      { soru: 'İmplant tedavisi kaç aşamadan oluşur?', cevap: 'Değerlendirme, cerrahi aşama, iyileşme dönemi ve üst yapı olmak üzere dört aşama vardır. İyileşme dönemi kemik yapısına ve bölgeye göre değişir. Bu süre boyunca gerekirse geçici bir çözüm uygulanır.' },
+      { soru: 'Ortodontik tedaviye kaç yaşında başlanır?', cevap: 'Çene gelişimini ilgilendiren bazı durumlarda karma dişlenme döneminde, yaklaşık 7-9 yaş arasında bir ilk değerlendirme önerilir. Diş dizilimine yönelik tedaviler genellikle sürekli dişlerin tamamlanmasından sonra planlanır. Yetişkinlerde de tedavi yapılabilir.' },
+      { soru: 'Kanal tedavisinden sonra nelere dikkat edilir?', cevap: 'Uyuşma geçene kadar yeme içmeden kaçınılır. İlk günlerde hafif hassasiyet olabilir. Dişin üzerine gelen sert gıdalar, kalıcı dolgu ya da kaplama tamamlanana kadar sınırlandırılır. Ağrının artması durumunda hekiminizle iletişime geçin.' },
+      { soru: 'Çocuğumu ilk kez ne zaman getirmeliyim?', cevap: 'İlk süt dişinin çıkmasından sonraki altı ay içinde, en geç birinci yaş gününde. İlk ziyaret çoğunlukla tanışma ve incelemeden oluşur; çocuk bölümünde randevu süresi bu uyum için daha uzun planlanır.' },
+      { soru: 'Randevumu değiştirmem gerekirse ne yapmalıyım?', cevap: 'Çalışma saatleri içinde danışmayı arayarak randevunuzu erteleyebilir veya iptal edebilirsiniz. Mümkünse bir gün önceden haber verilmesi, saatin başka bir hastaya açılabilmesini sağlar.' }
+    ]
+  };
+
+  state = {
+    now: new Date(), acikSoru: (this.props.openFaq ?? -1) >= 0 ? this.props.openFaq : null, aktif: 'Tedaviler', dar: false,
+    ad: '', tel: '', tarih: '', not: '', bulten: false, gonderildi: false, hatalar: {}
+  };
+
+  componentDidMount() {
+    this._tick = setInterval(() => this.setState({ now: new Date() }), 15000);
+    this._resize = () => this.setState({ dar: window.innerWidth < 860 });
+    this._resize();
+    window.addEventListener('resize', this._resize);
+    this._scroll = () => {
+      const el = this._nav;
+      if (el) {
+        const k = window.scrollY > 40;
+        el.style.paddingTop = k ? '8px' : '18px';
+        el.style.transform = k ? 'scale(.97)' : 'scale(1)';
+        el.style.transformOrigin = 'top center';
+      }
+      const ids = [['tedaviler','Tedaviler'],['klinik','Klinik'],['hekimler','Hekimler'],['bilgi','Bilgi'],['ulasim','Ulaşım']];
+      let a = 'Tedaviler';
+      ids.forEach(([id, lab]) => {
+        const n = document.getElementById(id);
+        if (n && n.getBoundingClientRect().top < 220) a = lab;
+      });
+      if (a !== this.state.aktif) this.setState({ aktif: a });
+    };
+    window.addEventListener('scroll', this._scroll, { passive: true });
+  }
+  componentWillUnmount() {
+    clearInterval(this._tick);
+    window.removeEventListener('resize', this._resize);
+    window.removeEventListener('scroll', this._scroll);
+  }
+
+  git(id) {
+    const n = document.getElementById(id);
+    if (!n) return;
+    window.scrollTo({ top: n.getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' });
+  }
+
+  iki(n) { return n < 10 ? '0' + n : '' + n; }
+
+  durum() {
+    const now = this.state.now;
+    const g = now.getDay();
+    const dk = now.getHours() * 60 + now.getMinutes();
+    const dv = s => parseInt(s.slice(0, 2), 10) * 60 + parseInt(s.slice(3), 10);
+    const adlar = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+    const kural = d => this.cfg.saatler.find(s => s.gunler.indexOf(d) > -1);
+    const bugun = kural(g);
+    if (bugun && !bugun.kapali && dk >= dv(bugun.ac) && dk < dv(bugun.kap)) {
+      return { acik: true, baslik: 'Danışma şu anda açık', alt: bugun.kap + '’a kadar hasta kabul ediliyor' };
+    }
+    if (bugun && !bugun.kapali && dk < dv(bugun.ac)) {
+      return { acik: false, baslik: 'Danışma şu anda kapalı', alt: 'Bugün ' + bugun.ac + '’da açılıyor' };
+    }
+    for (let i = 1; i <= 7; i++) {
+      const d = (g + i) % 7;
+      const k = kural(d);
+      if (k && !k.kapali) return { acik: false, baslik: 'Danışma şu anda kapalı', alt: adlar[d] + ' ' + k.ac + '’da açılıyor' };
+    }
+    return { acik: false, baslik: 'Danışma şu anda kapalı', alt: '' };
+  }
+
+  hafta() {
+    const kisa = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+    const idx = [1, 2, 3, 4, 5, 6, 0];
+    const bugun = this.state.now.getDay();
+    return idx.map((d, i) => {
+      const k = this.cfg.saatler.find(s => s.gunler.indexOf(d) > -1);
+      const kapali = !k || k.kapali;
+      return {
+        kisa: kisa[i],
+        renk: d === bugun ? (kapali ? 'var(--sand-300)' : 'var(--emerald-600)') : (kapali ? 'var(--sand-200)' : 'var(--emerald-200)')
+      };
+    });
+  }
+
+  gonder() {
+    const h = {};
+    if (!this.state.ad.trim()) h.ad = 'Ad ve soyadınızı yazın.';
+    const t = this.state.tel.replace(/[^0-9]/g, '');
+    if (t.length < 10) h.tel = 'Telefon numarası eksik görünüyor.';
+    this.setState({ hatalar: h });
+    if (Object.keys(h).length === 0) this.setState({ gonderildi: true });
+  }
+
+  renderVals() {
+    const NS = window.VerdantDentalDesignSystem_954de0 || {};
+    const { Button, Icon } = NS;
+    const d = this.durum();
+    const now = this.state.now;
+    return {
+      navLinks: ['Tedaviler', 'Klinik', 'Hekimler', 'Bilgi', 'Ulaşım'],
+      aktifBolum: this.state.aktif,
+      gezin: v => this.git({ 'Tedaviler': 'tedaviler', 'Klinik': 'klinik', 'Hekimler': 'hekimler', 'Bilgi': 'bilgi', 'Ulaşım': 'ulasim' }[v]),
+      navActions: Button ? React.createElement(React.Fragment, null,
+        this.state.dar ? null : React.createElement('a', {
+          href: 'tel:+902320000000',
+          style: { fontFamily: 'var(--font-mono)', fontSize: '14px', fontWeight: 500, color: 'var(--text-strong)', letterSpacing: '-.01em', marginRight: '4px', textDecoration: 'none' }
+        }, this.cfg.telefon),
+        React.createElement(Button, { size: 'sm', onClick: () => this.git('randevu') }, 'Randevu talebi')
+      ) : null,
+      navRef: el => { this._nav = el; },
+
+      saat: this.iki(now.getHours()) + ':' + this.iki(now.getMinutes()),
+      acikMi: d.acik,
+      kapaliMi: !d.acik,
+      durumBaslik: d.baslik,
+      durumAlt: d.alt,
+      hafta: this.hafta(),
+
+      randevuyaGit: () => this.git('randevu'),
+      hekimler: this.cfg.hekimler,
+      calismaSaatleri: this.cfg.saatler.map(s => ({ ad: s.ad, saat: s.kapali ? 'Kapalı' : s.ac + ' – ' + s.kap })),
+
+      sorular: this.cfg.sorular.map((s, i) => ({
+        soru: s.soru, cevap: s.cevap,
+        acik: this.state.acikSoru === i,
+        acikStr: this.state.acikSoru === i ? 'true' : 'false',
+        isaret: this.state.acikSoru === i ? '−' : '+',
+        ac: () => this.setState({ acikSoru: this.state.acikSoru === i ? null : i })
+      })),
+
+      formAcik: !this.state.gonderildi,
+      gonderildi: this.state.gonderildi,
+      ad: this.state.ad, tel: this.state.tel, tarih: this.state.tarih, not: this.state.not,
+      bulten: this.state.bulten,
+      adDegis: e => this.setState({ ad: e.target.value }),
+      telDegis: e => this.setState({ tel: e.target.value }),
+      tarihDegis: e => this.setState({ tarih: e.target.value }),
+      notDegis: e => this.setState({ not: e.target.value }),
+      bultenDegis: e => this.setState({ bulten: e.target.checked }),
+      hataAd: this.state.hatalar.ad || '',
+      hataTel: this.state.hatalar.tel || '',
+      adGecersiz: !!this.state.hatalar.ad,
+      telGecersiz: !!this.state.hatalar.tel,
+      gonder: () => this.gonder(),
+      yeniTalep: () => this.setState({ gonderildi: false, ad: '', tel: '', tarih: '', not: '', bulten: false, hatalar: {} }),
+      dar: this.state.dar && (this.props.showMobileBar ?? true),
+      saatiGoster: this.props.showClock ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>

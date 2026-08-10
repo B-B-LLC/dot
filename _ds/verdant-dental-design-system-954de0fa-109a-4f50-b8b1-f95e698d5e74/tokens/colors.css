@@ -1,0 +1,65 @@
+:root{
+/* --- Base: Emerald (primary brand) --- */
+--emerald-950:#052014;--emerald-900:#06301f;--emerald-800:#084b31;--emerald-700:#0a6142;
+--emerald-600:#0d7a53;--emerald-500:#16946a;--emerald-400:#46b58d;--emerald-300:#8ed3b7;
+--emerald-200:#c6e9d9;--emerald-100:#e6f5ee;--emerald-50:#f2faf6;
+
+/* --- Base: Amber (warm accent) --- */
+--amber-900:#7a3903;--amber-800:#9c4a06;--amber-700:#c4620a;--amber-600:#e2790e;
+--amber-500:#f59034;--amber-400:#fba85c;--amber-300:#fdc38f;--amber-200:#fedcbc;
+--amber-100:#fef0e2;--amber-50:#fff8f1;
+
+/* --- Base: Warm neutral (sand) --- */
+--sand-950:#1a1714;--sand-900:#2a2521;--sand-800:#3a342e;--sand-700:#4b443d;
+--sand-600:#635a52;--sand-500:#7a716a;--sand-400:#9c948c;--sand-300:#c4bbb1;
+--sand-200:#e2d9ce;--sand-150:#ebe3d9;--sand-100:#f1eae0;--sand-50:#faf6f0;--sand-0:#ffffff;
+
+/* --- Base: Status --- */
+--red-600:#c5372c;--red-100:#fbe9e7;
+--blue-600:#2e6f9e;--blue-100:#e6f1f8;
+
+/* --- Semantic: text --- */
+--text-strong:var(--sand-950);
+--text-body:var(--sand-700);
+--text-muted:var(--sand-500);
+--text-faint:var(--sand-400);
+--text-on-dark:#ffffff;
+--text-on-dark-muted:rgba(255,255,255,.72);
+--text-brand:var(--emerald-700);
+--text-accent:var(--amber-700);
+--text-link:var(--emerald-700);
+--text-link-hover:var(--emerald-500);
+
+/* --- Semantic: surfaces --- */
+--surface-page:var(--sand-50);
+--surface-page-warm:#f3ebe1;
+--surface-card:#ffffff;
+--surface-sunken:var(--sand-100);
+--surface-inverse:var(--emerald-900);
+--surface-brand:var(--emerald-600);
+--surface-brand-soft:var(--emerald-100);
+--surface-accent:var(--amber-500);
+--surface-accent-soft:var(--amber-100);
+
+/* --- Semantic: lines --- */
+--line-hairline:rgba(26,23,20,.08);
+--line-soft:var(--sand-200);
+--line-strong:var(--sand-300);
+--line-brand:var(--emerald-300);
+--line-on-dark:rgba(255,255,255,.22);
+
+/* --- Semantic: status --- */
+--status-success-fg:var(--emerald-700);--status-success-bg:var(--emerald-100);
+--status-warning-fg:var(--amber-700);--status-warning-bg:var(--amber-100);
+--status-danger-fg:var(--red-600);--status-danger-bg:var(--red-100);
+--status-info-fg:var(--blue-600);--status-info-bg:var(--blue-100);
+
+/* --- Gradients (organic, always warm-to-cool or single-hue) --- */
+--grad-amber:linear-gradient(150deg,#fdc38f 0%,#f59034 52%,#e2790e 100%); /* @kind color */
+--grad-amber-soft:linear-gradient(160deg,#fff3e6 0%,#fbd6ae 100%); /* @kind color */
+--grad-emerald:linear-gradient(150deg,#0d7a53 0%,#084b31 60%,#06301f 100%); /* @kind color */
+--grad-emerald-sheen:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(126,240,196,.35) 52%,rgba(255,255,255,0) 72%); /* @kind color */
+--grad-cream:linear-gradient(180deg,#fffdfa 0%,#f3ebe1 100%); /* @kind color */
+--grad-page:radial-gradient(120% 90% at 12% 0%,#fff7ec 0%,rgba(255,247,236,0) 55%),radial-gradient(100% 80% at 96% 18%,#ffeed9 0%,rgba(255,238,217,0) 60%),linear-gradient(180deg,#faf6f0 0%,#f1eae0 100%); /* @kind color */
+--grad-glass-top:linear-gradient(180deg,rgba(255,255,255,.75) 0%,rgba(255,255,255,.28) 100%); /* @kind color */
+}
