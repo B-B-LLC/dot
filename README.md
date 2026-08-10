@@ -12,6 +12,15 @@ node tools/serve.js 4173
 Ardından `http://localhost:4173`. Dosyalar doğrudan `file://` üzerinden de açılabilir,
 ancak yerel sunucu ile çalışmak önerilir.
 
+## Yayına alma (Vercel)
+
+Site statiktir; derleme adımı yoktur. `vercel.json` bunu Vercel'e açıkça
+bildirir (`framework: null`, derleme ve kurulum komutu yok, çıktı dizini kök).
+
+Bu dosya gerekli: proje daha önce Next.js olarak yapılandırıldığı için Vercel
+aksi hâlde `next build` çalıştırmayı deniyor ve *"No Next.js version detected"*
+hatası veriyor. `vercel.json` içindeki ayarlar panel ayarlarını ezer.
+
 ## Dosya düzeni
 
 | Yol | İçerik |
