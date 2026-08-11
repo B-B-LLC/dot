@@ -8,6 +8,11 @@ next-env.d.ts
 # TypeScript artımlı derleme önbelleği
 *.tsbuildinfo
 
+# Gizli anahtarlar — .env.ornek paylaşılır, gerçek değerler paylaşılmaz
+.env
+.env.local
+.env*.local
+
 # İşletim sistemi
 Thumbs.db
 desktop.ini

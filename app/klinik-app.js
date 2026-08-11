@@ -504,12 +504,16 @@ var useCallback = React.useCallback;
   }
 
   function RandevuFormu() {
-    var f = useState({ ad: '', tel: '', tarih: '', not: '', bulten: false });
+    var f = useState({ ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '' });
     var form = f[0], setForm = f[1];
     var e = useState({});
     var hatalar = e[0], setHatalar = e[1];
     var g = useState(false);
     var gonderildi = g[0], setGonderildi = g[1];
+    var i = useState(false);
+    var gonderiliyor = i[0], setGonderiliyor = i[1];
+    var s = useState('');
+    var sunucuHatasi = s[0], setSunucuHatasi = s[1];
 
     var alan = useCallback(function (anahtar) {
       return function (ev) {
@@ -527,16 +531,43 @@ var useCallback = React.useCallback;
       if (!form.ad.trim()) yeni.ad = 'Ad ve soyadınızı yazın.';
       if (form.tel.replace(/[^0-9]/g, '').length < 10) yeni.tel = 'Telefon numarası eksik görünüyor.';
       setHatalar(yeni);
+      setSunucuHatasi('');
       if (Object.keys(yeni).length > 0) return;
 
-      /* Sunucu ucu bağlanana kadar talep yalnızca arayüzde onaylanır.
-         Gerçek gönderim buraya eklenecek (bkz. README). */
-      setGonderildi(true);
+      setGonderiliyor(true);
+
+      fetch('/api/randevu', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+        .then(function (yanit) {
+          return yanit.json().then(function (veri) {
+            return { tamam: yanit.ok, veri: veri };
+          });
+        })
+        .then(function (sonuc) {
+          if (sonuc.tamam) {
+            setGonderildi(true);
+            return;
+          }
+          /* Sunucu alan bazlı hata döndüyse ilgili alanların altında gösterilir. */
+          if (sonuc.veri && sonuc.veri.alanHatalari) {
+            setHatalar(sonuc.veri.alanHatalari);
+            return;
+          }
+          setSunucuHatasi((sonuc.veri && sonuc.veri.hata) || 'Talebiniz gönderilemedi.');
+        })
+        .catch(function () {
+          setSunucuHatasi('Bağlantı kurulamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.');
+        })
+        .then(function () { setGonderiliyor(false); });
     }
 
     function yeniTalep() {
-      setForm({ ad: '', tel: '', tarih: '', not: '', bulten: false });
+      setForm({ ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '' });
       setHatalar({});
+      setSunucuHatasi('');
       setGonderildi(false);
     }
 
@@ -629,8 +660,33 @@ var useCallback = React.useCallback;
           })
         ),
 
+        /* Bot tuzağı: ekran okuyucudan ve gözden gizli, otomatik doldurma kapalı.
+           Dolu geldiğinde sunucu gönderim yapmaz. */
+        h('div', { 'aria-hidden': 'true', style: { position: 'absolute', left: -9999, width: 1, height: 1, overflow: 'hidden' } },
+          h('label', null, 'Bu alanı boş bırakın',
+            h('input', {
+              type: 'text', name: 'kapan', tabIndex: -1, autoComplete: 'off',
+              value: form.kapan, onChange: alan('kapan')
+            })
+          )
+        ),
+
+        sunucuHatasi
+          ? h('p', {
+              role: 'alert',
+              style: {
+                fontSize: 14, lineHeight: 1.55, color: 'var(--status-danger-fg)',
+                background: 'var(--status-danger-bg)', borderRadius: 12,
+                padding: '12px 14px', margin: '18px 0 0'
+              }
+            }, sunucuHatasi)
+          : null,
+
         h('div', { style: { marginTop: 22 } },
-          h(Button, { size: 'lg', fullWidth: true, type: 'submit' }, 'Randevu talebi gönder')
+          h(Button, {
+            size: 'lg', fullWidth: true, type: 'submit',
+            loading: gonderiliyor, disabled: gonderiliyor
+          }, gonderiliyor ? 'Gönderiliyor…' : 'Randevu talebi gönder')
         )
       )
     );
