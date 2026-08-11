@@ -1,6 +1,10 @@
 # Bağımlılıklar
 node_modules/
 
+# Next.js derleme çıktısı
+.next/
+next-env.d.ts
+
 # İşletim sistemi
 Thumbs.db
 desktop.ini

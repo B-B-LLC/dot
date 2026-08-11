@@ -1,0 +1,20 @@
+:root{
+/* Liquid Glass: blur + saturation + a top-lit inner bevel. Always over
+   something with content or gradient behind it — never over flat white. */
+--blur-sm:8px; /* @kind other */--blur-md:18px;--blur-lg:30px;--blur-xl:48px;
+--glass-sat:180%; /* @kind other */
+
+--glass-tint-light:rgba(255,255,255,.58); /* @kind color */
+--glass-tint-lighter:rgba(255,255,255,.74); /* @kind color */
+--glass-tint-warm:rgba(255,251,245,.62); /* @kind color */
+--glass-tint-dark:rgba(8,44,30,.42); /* @kind color */
+--glass-border-light:rgba(255,255,255,.62); /* @kind color */
+--glass-border-dark:rgba(255,255,255,.20); /* @kind color */
+
+--glass-backdrop:blur(var(--blur-lg)) saturate(var(--glass-sat)); /* @kind other */
+--glass-backdrop-sm:blur(var(--blur-md)) saturate(var(--glass-sat)); /* @kind other */
+}
+
+/* Reusable surface recipes */
+.vd-glass{background:var(--glass-tint-light);-webkit-backdrop-filter:var(--glass-backdrop);backdrop-filter:var(--glass-backdrop);border:1px solid var(--glass-border-light);box-shadow:var(--shadow-3),var(--inner-glass)}
+.vd-glass-dark{background:var(--glass-tint-dark);-webkit-backdrop-filter:var(--glass-backdrop);backdrop-filter:var(--glass-backdrop);border:1px solid var(--glass-border-dark);box-shadow:var(--shadow-3),var(--inner-glass-dark);color:var(--text-on-dark)}

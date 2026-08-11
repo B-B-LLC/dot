@@ -2,7 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "site",
+      "name": "next",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "eski-site",
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/serve.js", "4173"],
       "port": 4173

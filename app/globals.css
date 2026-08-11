@@ -1,0 +1,106 @@
+/* Sayfa düzeyi stiller. Görünümün tamamı Verdant Dental token'larından gelir;
+   bu dosya yalnızca satır içi stille ifade edilemeyenleri tutar —
+   sözde sınıflar, medya sorguları, yazdırma. */
+
+/* Fontlar next/font ile yerelden yükleniyor; token'lardaki aile adları
+   üretilen değişkenlere bağlanır (bkz. app/layout.tsx). */
+:root {
+  --font-display: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--grad-page);
+  background-attachment: fixed;
+  font-family: var(--font-body);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--text-link-hover); }
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 122, 83, .28);
+  border-radius: 8px;
+}
+
+/* --- Atlama bağlantısı: klavyeyle odaklanana kadar ekran dışında --- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 80;
+  background: var(--emerald-700);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+}
+.skip-link:focus-visible { left: 20px; top: 20px; color: #fff; }
+
+/* --- SSS akordiyonu --- */
+.sss-baslik {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -.008em;
+  color: var(--text-strong);
+  transition: background var(--dur-fast) var(--ease-glass);
+}
+.sss-baslik:hover { background: rgba(255, 255, 255, .5); }
+
+/* --- Sabit mobil eylem çubuğu --- */
+.mobil-bar-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  color: var(--text-body);
+  transition: background var(--dur-fast) var(--ease-glass);
+}
+.mobil-bar-link:hover { background: rgba(255, 255, 255, .6); color: var(--text-body); }
+.mobil-bar-link--ara { color: var(--emerald-700); background: var(--emerald-100); }
+.mobil-bar-link--ara:hover { color: var(--emerald-700); background: var(--emerald-200); }
+
+/* --- Altbilgi bağlantıları koyu zümrüt panelin üstünde durur --- */
+.footer-link { color: var(--text-on-dark-muted); }
+.footer-link:hover { color: #fff; }
+
+.noscript-note {
+  max-width: 640px;
+  margin: 64px auto;
+  padding: 0 24px;
+  font-family: var(--font-body);
+  line-height: 1.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+@media print {
+  .skip-link, .mobil-bar, nav { display: none !important; }
+  body { background: #fff; }
+}
