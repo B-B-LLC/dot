@@ -5,6 +5,9 @@ node_modules/
 .next/
 next-env.d.ts
 
+# TypeScript artımlı derleme önbelleği
+*.tsbuildinfo
+
 # İşletim sistemi
 Thumbs.db
 desktop.ini

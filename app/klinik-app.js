@@ -1,13 +1,22 @@
 'use client';
 
-/* Özel Meşe Ağız ve Diş Sağlığı Polikliniği — site uygulaması.
-   Verdant Dental tasarım sistemi (954de0fa) üzerine kurulur.
+/* Klinik sitesi uygulaması. Verdant Dental tasarım sistemi (954de0fa)
+   üzerine kurulur. Metinler ve klinik bilgileri site.config.ts'ten gelir.
 
-   Not: içerik ve görünüm kodu tek parça hâlde duruyor. Sayfalara bölme ve
-   içeriğin site.config'e taşınması sonraki adımlarda yapılacak. */
+   Not: görünüm kodu hâlâ tek parça; sayfalara bölme sonraki adımda. */
 
 import * as React from 'react';
 import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
+import {
+  klinik as KLINIK,
+  saatler as SAATLER,
+  hekimler as HEKIMLER,
+  tedaviler as TEDAVILER,
+  sorular as SORULAR,
+  sterilizasyon as STERILIZASYON,
+  koruyucuBilgiler as KORUYUCU_BILGILER,
+  ulasimNotlari as ULASIM_NOTLARI
+} from '@/site.config';
 
   var h = React.createElement;
   var Fragment = React.Fragment;
@@ -18,29 +27,8 @@ import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
 
 
   /* ------------------------------------------------------------------ */
-  /* İçerik                                                              */
+  /* Görünüme ait sabitler (içerik site.config.ts'te)                    */
   /* ------------------------------------------------------------------ */
-
-  var KLINIK = {
-    ad: 'Özel Meşe Ağız ve Diş Sağlığı Polikliniği',
-    marka: 'Meşe.',
-    telefon: '0232 000 00 00',
-    telHref: 'tel:+902320000000',
-    eposta: 'danisma@mesepoliklinik.example',
-    whatsapp: 'https://wa.me/902320000000',
-    harita: 'https://www.google.com/maps',
-    adresKisa: 'Kıbrıs Şehitleri Cad. No: 148, Konak / İzmir',
-    adresTam: 'Kıbrıs Şehitleri Caddesi No: 148, Kat 1 — 35220 Konak / İzmir',
-    ruhsat: 'İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000',
-    editor: 'Site editörü: Ayşe Demir · editor@mesepoliklinik.example',
-    sonGuncelleme: 'Son güncelleme: 10.08.2026'
-  };
-
-  var SAATLER = [
-    { ad: 'Pazartesi – Cuma', gunler: [1, 2, 3, 4, 5], ac: '09:00', kap: '19:00' },
-    { ad: 'Cumartesi', gunler: [6], ac: '09:00', kap: '14:00' },
-    { ad: 'Pazar', gunler: [0], kapali: true }
-  ];
 
   var BOLUMLER = [
     { id: 'tedaviler', etiket: 'Tedaviler' },
@@ -48,65 +36,6 @@ import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
     { id: 'hekimler', etiket: 'Hekimler' },
     { id: 'bilgi', etiket: 'Bilgi' },
     { id: 'ulasim', etiket: 'Ulaşım' }
-  ];
-
-  var HEKIMLER = [
-    { ad: 'Dt. Selin Aydın', unvan: 'Diş hekimi', mezuniyet: 'Ege Üniv. Diş Hek. Fak., 2011', akademik: '—' },
-    { ad: 'Uzm. Dt. Mert Koçak', unvan: 'Ortodonti uzmanı', mezuniyet: 'İstanbul Üniv. Diş Hek. Fak., 2007', akademik: 'Ortodonti doktorası, 2013' },
-    { ad: 'Uzm. Dt. Ayşe Doğan', unvan: 'Periodontoloji uzmanı', mezuniyet: 'Hacettepe Üniv. Diş Hek. Fak., 2009', akademik: 'Periodontoloji uzmanlığı, 2015' },
-    { ad: 'Dt. Kaan Şahin', unvan: 'Diş hekimi', mezuniyet: 'Ankara Üniv. Diş Hek. Fak., 2014', akademik: '—' }
-  ];
-
-  var SORULAR = [
-    {
-      soru: 'İlk randevuda ne yapılır?',
-      cevap: 'Muayene ile başlanır. Gerekirse panoramik röntgen alınır ve ağız içi fotoğraflanır. Bulgular anlatılır, tedavi seçenekleri ve süreleri konuşulur. İlk randevuda çoğunlukla işlem yapılmaz; plan üzerinde anlaşıldıktan sonra sonraki randevu belirlenir.'
-    },
-    {
-      soru: 'İmplant tedavisi kaç aşamadan oluşur?',
-      cevap: 'Değerlendirme, cerrahi aşama, iyileşme dönemi ve üst yapı olmak üzere dört aşama vardır. İyileşme dönemi kemik yapısına ve bölgeye göre değişir. Bu süre boyunca gerekirse geçici bir çözüm uygulanır.'
-    },
-    {
-      soru: 'Ortodontik tedaviye kaç yaşında başlanır?',
-      cevap: 'Çene gelişimini ilgilendiren bazı durumlarda karma dişlenme döneminde, yaklaşık 7-9 yaş arasında bir ilk değerlendirme önerilir. Diş dizilimine yönelik tedaviler genellikle sürekli dişlerin tamamlanmasından sonra planlanır. Yetişkinlerde de tedavi yapılabilir.'
-    },
-    {
-      soru: 'Kanal tedavisinden sonra nelere dikkat edilir?',
-      cevap: 'Uyuşma geçene kadar yeme içmeden kaçınılır. İlk günlerde hafif hassasiyet olabilir. Dişin üzerine gelen sert gıdalar, kalıcı dolgu ya da kaplama tamamlanana kadar sınırlandırılır. Ağrının artması durumunda hekiminizle iletişime geçin.'
-    },
-    {
-      soru: 'Çocuğumu ilk kez ne zaman getirmeliyim?',
-      cevap: 'İlk süt dişinin çıkmasından sonraki altı ay içinde, en geç birinci yaş gününde. İlk ziyaret çoğunlukla tanışma ve incelemeden oluşur; çocuk bölümünde randevu süresi bu uyum için daha uzun planlanır.'
-    },
-    {
-      soru: 'Randevumu değiştirmem gerekirse ne yapmalıyım?',
-      cevap: 'Çalışma saatleri içinde danışmayı arayarak randevunuzu erteleyebilir veya iptal edebilirsiniz. Mümkünse bir gün önceden haber verilmesi, saatin başka bir hastaya açılabilmesini sağlar.'
-    }
-  ];
-
-  var STERILIZASYON = [
-    'Kullanılan aletler ön dezenfeksiyon solüsyonunda bekletilir ve ultrasonik temizleyicide yıkanır.',
-    'Kurutulan aletler tek tek poşetlenir, poşet üzerine tarih ve içerik yazılır.',
-    'Buharlı otoklavda 134 °C’de sterilizasyon uygulanır.',
-    'Her çevrimde kimyasal ve haftalık biyolojik indikatör kullanılır; sonuçlar kayıt defterine işlenir.'
-  ];
-
-  var KORUYUCU_BILGILER = [
-    {
-      harf: 'A',
-      baslik: 'Fırçalama ve diş arası temizliği',
-      metin: 'Dişler günde iki kez, en az iki dakika fırçalanır. Fırça, diş eti ile diş yüzeyinin birleştiği çizgiye yaklaşık 45 derece açıyla yerleştirilir ve küçük hareketlerle temizlik yapılır. Fırçanın ulaşamadığı diş aralarında diş ipi veya arayüz fırçası kullanılır. Fırça kılları dağıldığında, ortalama üç ayda bir değiştirilir.'
-    },
-    {
-      harf: 'B',
-      baslik: 'Çocuklarda ilk hekim ziyareti',
-      metin: 'İlk süt dişi çıktıktan sonraki altı ay içinde, en geç birinci yaş gününde bir diş hekimine görünülmesi önerilir. Bu ziyarette ağız içi incelenir, beslenme ve temizlik alışkanlıkları konuşulur. Süt dişleri çene gelişimi ve konuşma açısından önemlidir; düşeceği düşünülerek tedavisiz bırakılmaz.'
-    },
-    {
-      harf: 'C',
-      baslik: 'Diş eti sağlığı',
-      metin: 'Fırçalama sırasında görülen kanama, çoğunlukla diş eti iltihabının erken belirtisidir ve fırçalamayı azaltmak için değil, hekime başvurmak için bir nedendir. Diş taşı, fırçayla temizlenemeyen sertleşmiş bakteri tabakasıdır. Sigara kullanımı ve düzensiz kan şekeri diş eti hastalıklarının seyrini etkiler.'
-    }
   ];
 
   /* Tedavi kartlarındaki simgeler — tasarım dosyasındaki yolların birebir aynısı. */
@@ -117,44 +46,14 @@ import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
     }, yollar.map(function (d, i) { return h('path', { key: i, d: d }); }));
   }
 
-  var TEDAVILER = [
-    {
-      ad: 'İmplantoloji',
-      ton: 'emerald',
-      simge: ['M7.6 6.2c0-2.1 1.7-3.4 3.4-2.7 1.3.5 2.7.5 4 0 1.7-.7 3.4.6 3.4 2.7 0 1.9-.5 3.4-1.3 4.6', 'M12.6 12.4v8', 'M10.3 14.6h4.6', 'M10.7 17.2h3.8', 'M3.4 12.6h5.2'],
-      metin: 'Tedaviye panoramik röntgen ve gerektiğinde hacimsel tomografi ile kemik yapısının değerlendirilmesiyle başlanır. Cerrahi aşamayı iyileşme süresi ve ardından üst yapı izler.'
-    },
-    {
-      ad: 'Ortodonti',
-      ton: 'emerald',
-      simgeOzel: true,
-      metin: 'Diş ve çene ilişkisindeki düzensizlikler değerlendirilir. Kayıt alındıktan sonra sabit ya da hareketli apareylerle plan yapılır; kontroller belirli aralıklarla sürer.'
-    },
-    {
-      ad: 'Endodonti',
-      ton: 'emerald',
-      simge: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M10.4 9.4v4.4', 'M13.6 9.4v4.4'],
-      metin: 'Diş içindeki pulpa dokusunun iltihaplandığı durumlarda kanal tedavisi uygulanır. Kanallar temizlenip doldurulur, diş uygun bir üst yapıyla kapatılır.'
-    },
-    {
-      ad: 'Pedodonti',
-      ton: 'amber',
-      simge: ['M3.4 8.4c0-1.8 1.4-2.9 2.9-2.3 1.1.4 2.4.4 3.5 0 1.4-.6 2.9.5 2.9 2.3 0 2.1-.5 4-1.3 5.9-.4.9-.7 1.8-.9 2.8l-.3 1.8c-.2 1-1.5 1-1.7 0l-.5-2.7c-.1-.6-1-.6-1.1 0l-.5 2.7c-.2 1-1.5 1-1.7 0l-.3-1.8c-.2-1-.5-1.9-.9-2.8-.8-1.9-1.3-3.8-1.3-5.9Z', 'M16.6 5.4h4.2', 'M18.7 3.3v4.2', 'M15.6 12.4c1.6 1.2 3.2 1.2 4.8 0'],
-      metin: 'Süt ve karma dişlenme dönemindeki çocuklar için koruyucu uygulamalar ve tedaviler yapılır. Randevular ayrı bölümde ve çocuğun uyum süresi gözetilerek planlanır.'
-    },
-    {
-      ad: 'Periodontoloji',
-      ton: 'emerald',
-      simge: ['M7 4.6c0-1.9 1.6-3.1 3.1-2.5 1.2.5 2.6.5 3.8 0 1.5-.6 3.1.6 3.1 2.5 0 2-.5 3.9-1.4 5.7', 'M8.4 10.3c-.4-.8-.8-1.7-1-2.6', 'M2.6 15.4c1.6-1.6 3.2-1.6 4.8 0s3.2 1.6 4.8 0 3.2-1.6 4.8 0 3.2 1.6 4.4.2', 'M12 12.6v3'],
-      metin: 'Diş eti ve dişi çevreleyen dokuların hastalıkları izlenir. Diş taşı temizliği, kök yüzeyi düzleştirmesi ve düzenli kontrollerle sürecin takibi yapılır.'
-    },
-    {
-      ad: 'Restoratif diş tedavisi',
-      ton: 'emerald',
-      simge: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M8.4 8.2h4.4v3.6H9.2'],
-      metin: 'Çürük ve madde kaybı bulunan dişlerde dolgu uygulamaları yapılır. İşlem öncesinde dişin durumu muayene ve gerekirse röntgenle değerlendirilir.'
-    }
-  ];
+  /* site.config.ts'teki tedavi id'sine göre seçilir. */
+  var TEDAVI_SIMGE_YOLLARI = {
+    implantoloji: ['M7.6 6.2c0-2.1 1.7-3.4 3.4-2.7 1.3.5 2.7.5 4 0 1.7-.7 3.4.6 3.4 2.7 0 1.9-.5 3.4-1.3 4.6', 'M12.6 12.4v8', 'M10.3 14.6h4.6', 'M10.7 17.2h3.8', 'M3.4 12.6h5.2'],
+    endodonti: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M10.4 9.4v4.4', 'M13.6 9.4v4.4'],
+    pedodonti: ['M3.4 8.4c0-1.8 1.4-2.9 2.9-2.3 1.1.4 2.4.4 3.5 0 1.4-.6 2.9.5 2.9 2.3 0 2.1-.5 4-1.3 5.9-.4.9-.7 1.8-.9 2.8l-.3 1.8c-.2 1-1.5 1-1.7 0l-.5-2.7c-.1-.6-1-.6-1.1 0l-.5 2.7c-.2 1-1.5 1-1.7 0l-.3-1.8c-.2-1-.5-1.9-.9-2.8-.8-1.9-1.3-3.8-1.3-5.9Z', 'M16.6 5.4h4.2', 'M18.7 3.3v4.2', 'M15.6 12.4c1.6 1.2 3.2 1.2 4.8 0'],
+    periodontoloji: ['M7 4.6c0-1.9 1.6-3.1 3.1-2.5 1.2.5 2.6.5 3.8 0 1.5-.6 3.1.6 3.1 2.5 0 2-.5 3.9-1.4 5.7', 'M8.4 10.3c-.4-.8-.8-1.7-1-2.6', 'M2.6 15.4c1.6-1.6 3.2-1.6 4.8 0s3.2 1.6 4.8 0 3.2-1.6 4.8 0 3.2 1.6 4.4.2', 'M12 12.6v3'],
+    restoratif: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M8.4 8.2h4.4v3.6H9.2']
+  };
 
   /* Ortodonti simgesi path dışında öğeler de içerir. */
   function ortodontiSimgesi() {
@@ -170,16 +69,14 @@ import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
     );
   }
 
+  function tedaviSimgesi(id) {
+    return id === 'ortodonti' ? ortodontiSimgesi() : simge(TEDAVI_SIMGE_YOLLARI[id]);
+  }
+
   var MEKANLAR = [
     { etiket: 'BEKLEME ALANI', genislik: '52%', oran: '1.2/1', yuvarlak: 'var(--radius-blob)' },
     { etiket: 'MUAYENE ODASI', genislik: '46%', oran: '1/1.3', yuvarlak: '999px' },
     { etiket: 'ÇOCUK BÖLÜMÜ', genislik: '58%', oran: '1.4/1', yuvarlak: 'var(--radius-blob)' }
-  ];
-
-  var ULASIM_NOTLARI = [
-    'İZBAN ve metro Alsancak durağına 400 m yürüme mesafesinde.',
-    'Caddedeki otobüs durağı bina önündedir.',
-    'Binanın kapalı otoparkı yoktur; caddede ücretli park alanı bulunur.'
   ];
 
   /* ------------------------------------------------------------------ */
@@ -603,7 +500,7 @@ import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
                 color: t.ton === 'amber' ? 'var(--amber-700)' : 'var(--emerald-700)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center'
               }
-            }, t.simgeOzel ? ortodontiSimgesi() : simge(t.simge)),
+            }, tedaviSimgesi(t.id)),
             h('h3', { style: Object.assign({}, S.h3, { margin: '18px 0 0' }) }, t.ad),
             h('p', { style: S.kartMetin }, t.metin)
           );
