@@ -37,6 +37,26 @@ export type Klinik = {
   harita: string;
   adresKisa: string;
   adresTam: string;
+
+  /* Arama motorlarına gönderilen yapısal veri (JSON-LD) adresi parça parça
+     ister; adresTam tek satır olduğu için ayrıca yazılır. */
+  sokak: string;
+  ilce: string;
+  il: string;
+  postaKodu: string;
+
+  /** Sayfa başlıklarında klinik adının yanına gelir. Semt adı ilçeden daha çok
+      arandığı için ilçe değil, hastanın kullandığı ad yazılır. */
+  konum: string;
+  /** Ana sayfadaki büyük başlık — kliniğin tek cümlelik tanımı. */
+  tanitim: string;
+  /** Başlığın altındaki metin. Dal sayısı cümlesi otomatik eklenir, yazmayın. */
+  tanitimAlt: string;
+  /** Arama sonuçlarında görünen açıklama. 150-160 karakter idealdir. */
+  metaAciklama: string;
+  /** Harita kartındaki iki satırlık konum etiketi. */
+  haritaEtiketleri: [string, string];
+
   ruhsat: string;
   editor: string;
   sonGuncelleme: string;
@@ -91,10 +111,35 @@ export const klinik: Klinik = {
   harita: 'https://www.google.com/maps',
   adresKisa: 'Kıbrıs Şehitleri Cad. No: 148, Konak / İzmir',
   adresTam: 'Kıbrıs Şehitleri Caddesi No: 148, Kat 1 — 35220 Konak / İzmir',
+
+  sokak: 'Kıbrıs Şehitleri Caddesi No: 148, Kat 1',
+  ilce: 'Konak',
+  il: 'İzmir',
+  postaKodu: '35220',
+
+  konum: 'Alsancak, İzmir',
+  tanitim: 'Alsancak’ta, zemin katta bir ağız ve diş sağlığı polikliniği.',
+  tanitimAlt:
+    'Girişte eşik ve merdiven yok. Çocuk hastalar için ayrı bir bekleme ve tedavi bölümü ' +
+    'bulunuyor.',
+  metaAciklama:
+    'Alsancak’ta zemin katta ağız ve diş sağlığı polikliniği. Girişte eşik ve merdiven yok, ' +
+    'çocuk hastalar için ayrı bölüm bulunuyor.',
+  haritaEtiketleri: ['Kıbrıs Şehitleri Cad.', 'Alsancak Garı'],
+
   ruhsat: 'İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000',
   editor: 'Site editörü: Ayşe Demir · editor@mesepoliklinik.example',
   sonGuncelleme: 'Son güncelleme: 10.08.2026'
 };
+
+/** Dal sayısını yazıyla verir; hero metnindeki cümle bundan üretilir. */
+export function dalSayisiYaziyla(adet: number) {
+  const yazi = [
+    '', 'bir', 'iki', 'üç', 'dört', 'beş',
+    'altı', 'yedi', 'sekiz', 'dokuz', 'on'
+  ];
+  return yazi[adet] ?? String(adet);
+}
 
 export const saatler: CalismaSaati[] = [
   { ad: 'Pazartesi – Cuma', gunler: [1, 2, 3, 4, 5], ac: '09:00', kap: '19:00' },
@@ -144,7 +189,7 @@ export const tedaviler: Tedavi[] = [
       'değerlendirilmesiyle başlanır. Cerrahi aşamayı iyileşme süresi ve ardından üst yapı izler.',
     metaAciklama:
       'İmplant tedavisinde değerlendirme, cerrahi aşama, iyileşme dönemi ve üst yapı adımları. ' +
-      'Alsancak’taki polikliniğimizde izlenen süreç.',
+      'Polikliniğimizde izlenen süreç.',
     giris:
       'İmplant, eksik bir dişin yerine çene kemiğine yerleştirilen ve üzerine protetik bir üst ' +
       'yapı uygulanan titanyum bir kök parçasıdır. Tedavi tek bir işlem değil, birbirini izleyen ' +

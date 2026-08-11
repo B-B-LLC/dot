@@ -7,6 +7,7 @@ import * as React from 'react';
 import { Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
 import {
   klinik as KLINIK,
+  dalSayisiYaziyla,
   hekimler as HEKIMLER,
   tedaviler as TEDAVILER,
   sorular as SORULAR,
@@ -139,7 +140,7 @@ var useCallback = React.useCallback;
             margin: 0,
             textWrap: 'balance'
           }
-        }, 'Alsancak’ta, zemin katta bir ağız ve diş sağlığı polikliniği.'),
+        }, KLINIK.tanitim),
         h('p', {
           style: {
             fontSize: 'clamp(16px,1.4vw,18px)',
@@ -149,7 +150,11 @@ var useCallback = React.useCallback;
             maxWidth: '46ch',
             textWrap: 'pretty'
           }
-        }, 'Girişte eşik ve merdiven yok. Çocuk hastalar için ayrı bir bekleme ve tedavi bölümü bulunuyor. Altı dalda hasta kabul ediliyor.'),
+        /* Dal sayısı cümlesi listeden üretilir; config'te tedavi eklenip
+           çıkarıldığında metinle sayı birbirini tutmaya devam eder. */
+        }, KLINIK.tanitimAlt + ' ' + dalSayisiYaziyla(TEDAVILER.length).replace(/^./, function (c) {
+          return c.toLocaleUpperCase('tr');
+        }) + ' dalda hasta kabul ediliyor.'),
         h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 34 } },
           h(Button, { size: 'lg', onClick: function () { bolumeGit('randevu'); } }, 'Randevu talebi'),
           h(Button, {
@@ -467,10 +472,10 @@ var useCallback = React.useCallback;
         }),
         h('span', {
           style: { position: 'absolute', left: 12, top: 'calc(38% + 20px)', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
-        }, 'Kıbrıs Şehitleri Cad.'),
+        }, KLINIK.haritaEtiketleri[0]),
         h('span', {
           style: { position: 'absolute', left: 'calc(62% + 16px)', top: 14, fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
-        }, 'Alsancak Garı')
+        }, KLINIK.haritaEtiketleri[1])
       ),
       h('div', {
         style: { position: 'relative', padding: '16px 18px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: 230, boxSizing: 'border-box' }
