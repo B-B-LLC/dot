@@ -1,15 +1,12 @@
 'use client';
 
-/* Klinik sitesi uygulaması. Verdant Dental tasarım sistemi (954de0fa)
-   üzerine kurulur. Metinler ve klinik bilgileri site.config.ts'ten gelir.
-
-   Not: görünüm kodu hâlâ tek parça; sayfalara bölme sonraki adımda. */
+/* Ana sayfa bölümleri. Çerçeve app/_ortak/cerceve.js'te,
+   ortak stil ve yardımcılar app/_ortak/temel.js'te. */
 
 import * as React from 'react';
-import { NavBar, Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
+import { Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
 import {
   klinik as KLINIK,
-  saatler as SAATLER,
   hekimler as HEKIMLER,
   tedaviler as TEDAVILER,
   sorular as SORULAR,
@@ -17,283 +14,17 @@ import {
   koruyucuBilgiler as KORUYUCU_BILGILER,
   ulasimNotlari as ULASIM_NOTLARI
 } from '@/site.config';
+import SayfaCercevesi from './_ortak/cerceve';
+import {
+  h, BOLUMLER, MEKANLAR, tedaviSimgesi, S, BolumBasligi,
+  iki, durum, hafta, CALISMA_SAATLERI, bolumeGit
+} from './_ortak/temel';
 
-  var h = React.createElement;
-  var Fragment = React.Fragment;
-  var useState = React.useState;
-  var useEffect = React.useEffect;
-  var useRef = React.useRef;
-  var useCallback = React.useCallback;
-
-
-  /* ------------------------------------------------------------------ */
-  /* Görünüme ait sabitler (içerik site.config.ts'te)                    */
-  /* ------------------------------------------------------------------ */
-
-  var BOLUMLER = [
-    { id: 'tedaviler', etiket: 'Tedaviler' },
-    { id: 'klinik', etiket: 'Klinik' },
-    { id: 'hekimler', etiket: 'Hekimler' },
-    { id: 'bilgi', etiket: 'Bilgi' },
-    { id: 'ulasim', etiket: 'Ulaşım' }
-  ];
-
-  /* Tedavi kartlarındaki simgeler — tasarım dosyasındaki yolların birebir aynısı. */
-  function simge(yollar) {
-    return h('svg', {
-      width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
-      strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true'
-    }, yollar.map(function (d, i) { return h('path', { key: i, d: d }); }));
-  }
-
-  /* site.config.ts'teki tedavi id'sine göre seçilir. */
-  var TEDAVI_SIMGE_YOLLARI = {
-    implantoloji: ['M7.6 6.2c0-2.1 1.7-3.4 3.4-2.7 1.3.5 2.7.5 4 0 1.7-.7 3.4.6 3.4 2.7 0 1.9-.5 3.4-1.3 4.6', 'M12.6 12.4v8', 'M10.3 14.6h4.6', 'M10.7 17.2h3.8', 'M3.4 12.6h5.2'],
-    endodonti: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M10.4 9.4v4.4', 'M13.6 9.4v4.4'],
-    pedodonti: ['M3.4 8.4c0-1.8 1.4-2.9 2.9-2.3 1.1.4 2.4.4 3.5 0 1.4-.6 2.9.5 2.9 2.3 0 2.1-.5 4-1.3 5.9-.4.9-.7 1.8-.9 2.8l-.3 1.8c-.2 1-1.5 1-1.7 0l-.5-2.7c-.1-.6-1-.6-1.1 0l-.5 2.7c-.2 1-1.5 1-1.7 0l-.3-1.8c-.2-1-.5-1.9-.9-2.8-.8-1.9-1.3-3.8-1.3-5.9Z', 'M16.6 5.4h4.2', 'M18.7 3.3v4.2', 'M15.6 12.4c1.6 1.2 3.2 1.2 4.8 0'],
-    periodontoloji: ['M7 4.6c0-1.9 1.6-3.1 3.1-2.5 1.2.5 2.6.5 3.8 0 1.5-.6 3.1.6 3.1 2.5 0 2-.5 3.9-1.4 5.7', 'M8.4 10.3c-.4-.8-.8-1.7-1-2.6', 'M2.6 15.4c1.6-1.6 3.2-1.6 4.8 0s3.2 1.6 4.8 0 3.2-1.6 4.8 0 3.2 1.6 4.4.2', 'M12 12.6v3'],
-    restoratif: ['M6.2 6.6c0-2.2 1.8-3.6 3.6-2.9 1.4.5 3 .5 4.4 0 1.8-.7 3.6.7 3.6 2.9 0 2.6-.6 5-1.6 7.3-.5 1.1-.9 2.3-1.1 3.5l-.4 2.3c-.2 1.2-1.9 1.2-2.1 0l-.6-3.4c-.1-.8-1.3-.8-1.4 0l-.6 3.4c-.2 1.2-1.9 1.2-2.1 0l-.4-2.3c-.2-1.2-.6-2.4-1.1-3.5-1-2.3-1.6-4.7-1.6-7.3Z', 'M8.4 8.2h4.4v3.6H9.2']
-  };
-
-  /* Ortodonti simgesi path dışında öğeler de içerir. */
-  function ortodontiSimgesi() {
-    return h('svg', {
-      width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
-      strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true'
-    },
-      h('path', { d: 'M2.8 13.6c6-2.6 12.4-2.6 18.4 0' }),
-      h('rect', { x: 9.6, y: 9.4, width: 5, height: 5, rx: 1.4 }),
-      h('path', { d: 'M5.4 10.6v2.2' }),
-      h('path', { d: 'M18.6 10.6v2.2' }),
-      h('path', { d: 'M8 18.4c2.6 1.4 5.4 1.4 8 0' })
-    );
-  }
-
-  function tedaviSimgesi(id) {
-    return id === 'ortodonti' ? ortodontiSimgesi() : simge(TEDAVI_SIMGE_YOLLARI[id]);
-  }
-
-  var MEKANLAR = [
-    { etiket: 'BEKLEME ALANI', genislik: '52%', oran: '1.2/1', yuvarlak: 'var(--radius-blob)' },
-    { etiket: 'MUAYENE ODASI', genislik: '46%', oran: '1/1.3', yuvarlak: '999px' },
-    { etiket: 'ÇOCUK BÖLÜMÜ', genislik: '58%', oran: '1.4/1', yuvarlak: 'var(--radius-blob)' }
-  ];
-
-  /* ------------------------------------------------------------------ */
-  /* Ortak stiller                                                       */
-  /* ------------------------------------------------------------------ */
-
-  var S = {
-    bolum: {
-      maxWidth: 1180,
-      margin: '0 auto',
-      padding: 'clamp(64px,9vw,110px) clamp(20px,5vw,40px) 0'
-    },
-    baslikSatiri: { display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 },
-    numara: { fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 500, color: 'var(--emerald-600)' },
-    kas: { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: 'var(--text-faint)' },
-    cizgi: { flex: 1, height: 1, background: 'var(--line-hairline)' },
-    h2: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'clamp(26px,3.6vw,40px)',
-      lineHeight: 1.12,
-      letterSpacing: '-.028em',
-      fontWeight: 700,
-      color: 'var(--text-strong)',
-      margin: 0,
-      maxWidth: '22ch'
-    },
-    h3: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 19,
-      letterSpacing: '-.012em',
-      color: 'var(--text-strong)',
-      margin: 0
-    },
-    kartMetin: { fontSize: 14.5, lineHeight: 1.6, color: 'var(--text-muted)', margin: '8px 0 0' },
-    dipnot: { fontSize: 13, lineHeight: 1.6, color: 'var(--text-faint)', margin: '16px 0 0', maxWidth: '78ch' },
-    izgara: function (min) {
-      return {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit,minmax(' + min + 'px,1fr))',
-        gap: 20
-      };
-    },
-    ayirici: { height: 1, background: 'var(--line-hairline)' },
-    blob: {
-      background: 'linear-gradient(150deg,#fff 0%,var(--sand-150) 100%)',
-      boxShadow: 'inset -8px -10px 24px rgba(58,45,32,.07),inset 8px 10px 24px #fff'
-    }
-  };
-
-  function BolumBasligi(props) {
-    return h('div', null,
-      h('div', { style: S.baslikSatiri },
-        h('span', { style: S.numara }, props.numara),
-        h('span', { style: S.kas }, props.kas),
-        h('span', { style: S.cizgi })
-      ),
-      h('h2', { style: Object.assign({}, S.h2, props.baslikStil) }, props.baslik),
-      props.giris
-        ? h('p', {
-            style: { fontSize: 16, lineHeight: 1.62, color: 'var(--text-muted)', margin: '14px 0 0', maxWidth: '56ch' }
-          }, props.giris)
-        : null
-    );
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Yardımcılar                                                         */
-  /* ------------------------------------------------------------------ */
-
-  function iki(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function dakika(s) { return parseInt(s.slice(0, 2), 10) * 60 + parseInt(s.slice(3), 10); }
-
-  function gununKurali(gun) {
-    return SAATLER.find(function (s) { return s.gunler.indexOf(gun) > -1; });
-  }
-
-  /** Verilen ana göre danışmanın açık/kapalı durumunu ve bir sonraki açılışı döndürür. */
-  function durum(now) {
-    var adlar = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-    var g = now.getDay();
-    var dk = now.getHours() * 60 + now.getMinutes();
-    var bugun = gununKurali(g);
-
-    if (bugun && !bugun.kapali && dk >= dakika(bugun.ac) && dk < dakika(bugun.kap)) {
-      return { acik: true, baslik: 'Danışma şu anda açık', alt: bugun.kap + '’a kadar hasta kabul ediliyor' };
-    }
-    if (bugun && !bugun.kapali && dk < dakika(bugun.ac)) {
-      return { acik: false, baslik: 'Danışma şu anda kapalı', alt: 'Bugün ' + bugun.ac + '’da açılıyor' };
-    }
-    for (var i = 1; i <= 7; i++) {
-      var d = (g + i) % 7;
-      var k = gununKurali(d);
-      if (k && !k.kapali) {
-        return { acik: false, baslik: 'Danışma şu anda kapalı', alt: adlar[d] + ' ' + k.ac + '’da açılıyor' };
-      }
-    }
-    return { acik: false, baslik: 'Danışma şu anda kapalı', alt: '' };
-  }
-
-  /** Haftalık şerit: bugün koyu, açık günler yeşil, kapalı günler kum rengi. */
-  function hafta(now) {
-    var kisa = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
-    var sira = [1, 2, 3, 4, 5, 6, 0];
-    var bugun = now.getDay();
-    return sira.map(function (d, i) {
-      var k = gununKurali(d);
-      var kapali = !k || k.kapali;
-      return {
-        kisa: kisa[i],
-        renk: d === bugun
-          ? (kapali ? 'var(--sand-300)' : 'var(--emerald-600)')
-          : (kapali ? 'var(--sand-200)' : 'var(--emerald-200)')
-      };
-    });
-  }
-
-  var CALISMA_SAATLERI = SAATLER.map(function (s) {
-    return { ad: s.ad, saat: s.kapali ? 'Kapalı' : s.ac + ' – ' + s.kap };
-  });
-
-  function bolumeGit(id) {
-    var n = document.getElementById(id);
-    if (!n) return;
-    window.scrollTo({
-      top: n.getBoundingClientRect().top + window.scrollY - 96,
-      behavior: 'smooth'
-    });
-  }
-
-  var DAR_ESIK = 860;
-
-  /** 860 px altını "dar" sayar: mobil eylem çubuğu ve sadeleşen NavBar bunu kullanır.
-      Genişliği ResizeObserver ile izler — pencere `resize` olayı üretmeden boyut
-      değiştiren gömülü çerçevelerde de doğru sonuç verir. */
-  function useDar() {
-    /* Sunucuda pencere genişliği bilinmez; aşağıdaki effect mount anında düzeltir. */
-    var pair = useState(false);
-    var dar = pair[0], setDar = pair[1];
-
-    useEffect(function () {
-      var uygula = function () { setDar(document.documentElement.clientWidth < DAR_ESIK); };
-      uygula();
-
-      var gozlemci = new ResizeObserver(uygula);
-      gozlemci.observe(document.documentElement);
-      window.addEventListener('orientationchange', uygula);
-
-      return function () {
-        gozlemci.disconnect();
-        window.removeEventListener('orientationchange', uygula);
-      };
-    }, []);
-
-    return dar;
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Üst gezinme                                                         */
-  /* ------------------------------------------------------------------ */
-
-  function UstGezinme(props) {
-    var navRef = useRef(null);
-
-    useEffect(function () {
-      var uygula = function () {
-        var el = navRef.current;
-        if (!el) return;
-        var kucult = window.scrollY > 40;
-        el.style.paddingTop = kucult ? '8px' : '18px';
-        el.style.transform = kucult ? 'scale(.97)' : 'scale(1)';
-      };
-      uygula();
-      window.addEventListener('scroll', uygula, { passive: true });
-      return function () { window.removeEventListener('scroll', uygula); };
-    }, []);
-
-    return h('div', {
-      ref: navRef,
-      style: {
-        position: 'sticky',
-        top: 0,
-        zIndex: 40,
-        padding: '18px clamp(16px,4vw,40px) 0',
-        transformOrigin: 'top center',
-        transition: 'padding var(--dur-base) var(--ease-glass),transform var(--dur-base) var(--ease-glass)'
-      }
-    },
-      h('div', { style: { maxWidth: 1180, margin: '0 auto' } },
-        h(NavBar, {
-          brand: KLINIK.marka,
-          /* Dar ekranda bağlantı listesi 68 px’lik çubuğa sığmıyor; gezinme
-             alttaki sabit eylem çubuğuna ve altbilgiye bırakılıyor. */
-          links: props.dar ? [] : BOLUMLER.map(function (b) { return b.etiket; }),
-          active: props.aktif,
-          onNavigate: function (etiket) {
-            var b = BOLUMLER.find(function (x) { return x.etiket === etiket; });
-            if (b) bolumeGit(b.id);
-          },
-          actions: h(Fragment, null,
-            props.dar ? null : h('a', {
-              href: KLINIK.telHref,
-              style: {
-                fontFamily: 'var(--font-mono)',
-                fontSize: 14,
-                fontWeight: 500,
-                color: 'var(--text-strong)',
-                letterSpacing: '-.01em',
-                marginRight: 4
-              }
-            }, KLINIK.telefon),
-            h(Button, { size: 'sm', onClick: function () { bolumeGit('randevu'); } }, 'Randevu talebi')
-          )
-        })
-      )
-    );
-  }
+var Fragment = React.Fragment;
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useRef = React.useRef;
+var useCallback = React.useCallback;
 
   /* ------------------------------------------------------------------ */
   /* Hero + canlı saat kartı                                             */
@@ -492,17 +223,31 @@ import {
       }),
       h('div', { style: Object.assign({}, S.izgara(268), { marginTop: 36 }) },
         TEDAVILER.map(function (t) {
-          return h(Card, { key: t.ad, tone: 'cream', padding: 'md' },
-            h('div', {
-              style: {
-                width: 46, height: 46, borderRadius: 13,
-                background: t.ton === 'amber' ? 'var(--amber-100)' : 'var(--emerald-100)',
-                color: t.ton === 'amber' ? 'var(--amber-700)' : 'var(--emerald-700)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }
-            }, tedaviSimgesi(t.id)),
-            h('h3', { style: Object.assign({}, S.h3, { margin: '18px 0 0' }) }, t.ad),
-            h('p', { style: S.kartMetin }, t.metin)
+          /* Kart, tedavinin kendi sayfasına açılır. Card sabit bir div ürettiği
+             için bağlantı dışarıdan sarılıyor. */
+          return h('a', {
+            key: t.id,
+            href: '/tedaviler/' + t.id,
+            style: { display: 'block', color: 'inherit' }
+          },
+            h(Card, { tone: 'cream', padding: 'md', interactive: true },
+              h('div', {
+                style: {
+                  width: 46, height: 46, borderRadius: 13,
+                  background: t.ton === 'amber' ? 'var(--amber-100)' : 'var(--emerald-100)',
+                  color: t.ton === 'amber' ? 'var(--amber-700)' : 'var(--emerald-700)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }
+              }, tedaviSimgesi(t.id)),
+              h('h3', { style: Object.assign({}, S.h3, { margin: '18px 0 0' }) }, t.ad),
+              h('p', { style: S.kartMetin }, t.ozet),
+              h('span', {
+                style: {
+                  display: 'inline-block', marginTop: 14, fontSize: 14,
+                  fontWeight: 'var(--fw-semibold)', color: 'var(--emerald-700)'
+                }
+              }, 'Süreci oku →')
+            )
           );
         })
       )
@@ -873,7 +618,7 @@ import {
         ),
 
         h('p', { style: { fontSize: 13, lineHeight: 1.6, color: 'var(--text-muted)', margin: '20px 0 0' } },
-          'Kişisel verileriniz ', h('a', { href: '#kvkk' }, 'Aydınlatma Metni'), ' kapsamında işlenecektir.'),
+          'Kişisel verileriniz ', h('a', { href: '/kvkk' }, 'Aydınlatma Metni'), ' kapsamında işlenecektir.'),
 
         h('div', { style: { marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--line-hairline)' } },
           h(Checkbox, {
@@ -912,154 +657,17 @@ import {
   /* Altbilgi                                                            */
   /* ------------------------------------------------------------------ */
 
-  function Altbilgi() {
-    var sutunBasligi = { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: 'var(--emerald-300)', marginBottom: 14 };
-    var sutunGovde = { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14, color: 'var(--text-on-dark-muted)' };
+/* Kendi sayfaları da olan bölümler; /hekimler ve /iletisim bunları yeniden kullanır. */
+export { Hekimler as HekimlerBolumu, Ulasim as UlasimBolumu };
 
-    return h('footer', {
-      style: { marginTop: 'clamp(64px,9vw,110px)', background: 'var(--emerald-900)', color: 'var(--text-on-dark)' }
-    },
-      h('div', { style: { maxWidth: 1180, margin: '0 auto', padding: 'clamp(44px,6vw,72px) clamp(20px,5vw,40px)' } },
-        h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 36 } },
-
-          h('div', null,
-            h('div', {
-              style: { fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, letterSpacing: '-.035em', color: '#fff' }
-            }, 'Meşe', h('span', { style: { color: 'var(--amber-500)' } }, '.')),
-            h('p', { style: { fontSize: 14, lineHeight: 1.6, color: 'var(--text-on-dark-muted)', margin: '14px 0 0', maxWidth: '32ch' } }, KLINIK.ad),
-            h('p', { style: { fontSize: 13, lineHeight: 1.6, color: 'rgba(255,255,255,.5)', margin: '10px 0 0', maxWidth: '32ch' } }, KLINIK.ruhsat)
-          ),
-
-          h('div', null,
-            h('div', { style: sutunBasligi }, 'İLETİŞİM'),
-            h('div', { style: sutunGovde },
-              h('a', { href: KLINIK.telHref, style: { fontFamily: 'var(--font-mono)', color: '#fff' } }, KLINIK.telefon),
-              h('a', { className: 'footer-link', href: 'mailto:' + KLINIK.eposta }, KLINIK.eposta),
-              h('span', null, 'Kıbrıs Şehitleri Cad. No: 148, Kat 1', h('br'), '35220 Konak / İzmir')
-            )
-          ),
-
-          h('div', null,
-            h('div', { style: sutunBasligi }, 'ÇALIŞMA SAATLERİ'),
-            h('div', { style: sutunGovde },
-              CALISMA_SAATLERI.map(function (c) {
-                return h('div', { key: c.ad, style: { display: 'flex', justifyContent: 'space-between', gap: 14 } },
-                  h('span', null, c.ad),
-                  h('span', { style: { fontFamily: 'var(--font-mono)', color: '#fff' } }, c.saat)
-                );
-              })
-            )
-          ),
-
-          h('div', null,
-            h('div', { style: sutunBasligi }, 'YASAL'),
-            h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14 } },
-              h('a', { className: 'footer-link', href: '#kvkk' }, 'KVKK Aydınlatma Metni'),
-              h('a', { className: 'footer-link', href: '#gizlilik' }, 'Gizlilik Politikası'),
-              h('a', { className: 'footer-link', href: '#cerez' }, 'Çerez Politikası')
-            )
-          )
-        ),
-
-        h('div', { style: { height: 1, background: 'var(--line-on-dark)', margin: '36px 0 20px' } }),
-        h('div', {
-          style: { display: 'flex', flexWrap: 'wrap', gap: '8px 28px', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'rgba(255,255,255,.55)' }
-        },
-          h('span', null, KLINIK.sonGuncelleme),
-          h('span', null, KLINIK.editor)
-        ),
-        h('p', { style: { fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,.45)', margin: '16px 0 0', maxWidth: '84ch' } },
-          'Bu site bilgilendirme amaçlıdır ve tıbbi tavsiye yerine geçmez. Sayfadaki içerikler Sağlık Hizmetlerinde Tanıtım ve Bilgilendirme Faaliyetleri Hakkında Yönetmelik kapsamında hazırlanmıştır.')
-      )
-    );
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Mobil eylem çubuğu                                                  */
-  /* ------------------------------------------------------------------ */
-
-  function MobilBar() {
-    function ikon(yollar, ekler) {
-      return h('svg', {
-        width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
-        strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true'
-      }, yollar.map(function (d, i) { return h('path', { key: i, d: d }); }), ekler);
-    }
-
-    return h('nav', {
-      className: 'mobil-bar',
-      'aria-label': 'Hızlı iletişim',
-      style: {
-        position: 'fixed', left: 12, right: 12, bottom: 12, zIndex: 50,
-        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, padding: 7,
-        borderRadius: 999,
-        background: 'rgba(255,255,255,.72)',
-        backdropFilter: 'blur(30px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(30px) saturate(180%)',
-        border: '1px solid rgba(255,255,255,.9)',
-        boxShadow: 'var(--shadow-3),var(--inner-glass)'
-      }
-    },
-      h('a', { className: 'mobil-bar-link mobil-bar-link--ara', href: KLINIK.telHref },
-        ikon(['M6.2 3.6h3l1.5 3.7-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 3.7 1.5v3a1.8 1.8 0 0 1-2 1.8A16.4 16.4 0 0 1 4.4 5.6a1.8 1.8 0 0 1 1.8-2Z']),
-        'Ara'
-      ),
-      h('a', { className: 'mobil-bar-link', href: KLINIK.harita, target: '_blank', rel: 'noopener' },
-        ikon(
-          ['M12 21c4.2-4.4 6.3-7.7 6.3-10.4A6.3 6.3 0 0 0 5.7 10.6C5.7 13.3 7.8 16.6 12 21Z'],
-          h('circle', { cx: 12, cy: 10.4, r: 2.3 })
-        ),
-        'Yol tarifi'
-      ),
-      h('a', { className: 'mobil-bar-link', href: KLINIK.whatsapp, target: '_blank', rel: 'noopener' },
-        ikon([
-          'M20.4 11.6a8.4 8.4 0 0 1-12.3 7.5L3.6 20.4l1.3-4.5A8.4 8.4 0 1 1 20.4 11.6Z',
-          'M9.3 9.1c.4 2.6 2.3 4.5 4.9 5.2l1-1.4 1.8.8v1.4c-2.9.5-6.4-2.4-7.5-5.3l1.4-.7Z'
-        ]),
-        'WhatsApp'
-      )
-    );
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* Uygulama                                                            */
-  /* ------------------------------------------------------------------ */
-
-  function App() {
-    var dar = useDar();
-    var a = useState(BOLUMLER[0].etiket);
-    var aktif = a[0], setAktif = a[1];
-
-    /* Kaydırma takibi: üstten 220 px’in üzerine çıkan son bölüm etkin sayılır. */
-    useEffect(function () {
-      var uygula = function () {
-        var bulunan = BOLUMLER[0].etiket;
-        BOLUMLER.forEach(function (b) {
-          var n = document.getElementById(b.id);
-          if (n && n.getBoundingClientRect().top < 220) bulunan = b.etiket;
-        });
-        setAktif(bulunan);
-      };
-      uygula();
-      window.addEventListener('scroll', uygula, { passive: true });
-      return function () { window.removeEventListener('scroll', uygula); };
-    }, []);
-
-    return h('div', { style: { minHeight: '100vh', paddingBottom: dar ? 140 : 0, overflowX: 'hidden' } },
-      h('a', { className: 'skip-link', href: '#icerik' }, 'İçeriğe geç'),
-      h(UstGezinme, { dar: dar, aktif: aktif }),
-      h('main', { id: 'icerik' },
-        h(Hero),
-        h(Tedaviler),
-        h(Klinik),
-        h(Hekimler),
-        h(Bilgi),
-        h(SSS),
-        h(Ulasim)
-      ),
-      h(Altbilgi),
-      dar ? h(MobilBar) : null
-    );
-  }
-
-export default App;
+export default function AnaSayfa() {
+  return h(SayfaCercevesi, { bolumleriIzle: true },
+    h(Hero),
+    h(Tedaviler),
+    h(Klinik),
+    h(Hekimler),
+    h(Bilgi),
+    h(SSS),
+    h(Ulasim)
+  );
+}
