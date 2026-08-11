@@ -46,8 +46,22 @@ hem adresi (`/tedaviler/<id>`) hem de kart ikonunu belirler.
 | `/tedaviler/<id>` | Tedavi sayfası: giriş, aşamalar, süreç notları, sorular |
 | `/hekimler` | Hekim kadrosu |
 | `/iletisim` | Adres, ulaşım, çalışma saatleri, randevu formu |
-| `/kvkk`, `/cerez` | Yasal metinler (arama motorlarına kapalı) |
+| `/kvkk`, `/gizlilik`, `/cerez` | Yasal metinler (arama motorlarına kapalı) |
 | `/api/randevu` | Randevu formunun gönderim ucu |
+| `/sitemap.xml`, `/robots.txt` | Config'ten üretilir |
+
+## Demo modu
+
+`site.config.ts` içindeki `site.demoModu` varsayılan olarak `true`. Bu hâldeyken
+`robots.txt` tüm taramayı kapatır ve sayfalar `noindex` işaretlenir.
+
+Böyle olmasının nedeni: aynı metinle birden çok klinik demosu yayınlandığında
+bunlar birbirinin kopyası sayılır; ayrıca demo alan adı arama motoruna "diş
+kliniği" olarak kaydedilirse sonradan düzeltmesi zaman alır.
+
+Gerçek bir kliniğin sitesi yayına alınırken `demoModu` `false` yapılır ve
+`site.adres` kliniğin alan adına çevrilir. `canonical`, `sitemap` ve OG
+etiketlerinin tamamı bu iki değerden beslenir.
 
 ## Randevu formu
 
@@ -134,12 +148,15 @@ bölümüne ayrıca girilmelidir.
   hukukçu tarafından gözden geçirilmelidir; saklama süresi ve kullanılan üçüncü
   taraf hizmetler kliniğe göre değişir.
 - **Örnek veriler gerçek değil:** telefon `0232 000 00 00`, ruhsat numarası
-  `0000/000`, e-posta ve `canonical` adresi yer tutucudur.
+  `0000/000`, e-posta ve `site.adres` yer tutucudur. Demo için bilinçli tercih;
+  gerçek klinikte hepsi değiştirilmelidir.
 - **Fotoğraflar yer tutucu.** Hero kartı, mekân kartları ve hekim portreleri
   soyut şekillerle temsil ediliyor.
-- **Gizlilik politikası sayfası yok.**
-- **404 sayfasının kendi başlığı yok**; site başlığını gösterir.
-- **`sitemap.xml` ve `robots.txt` eklenmedi.**
+- **CAPTCHA yok.** Bot tuzağı ve hız sınırı var; hız sınırı sunucu belleğinde
+  tutulduğu için birden çok sunucu örneğinde zayıflar. Site herkese açık
+  yayına girmeden önce Cloudflare Turnstile eklenmelidir.
+- **`/hekimler` ve `/iletisim` ana sayfa bölümlerini yeniden kullanır**; bu
+  sayfalar ana sayfa modülünü de yükler. Ayrıştırılabilir.
 - **Eski statik sürüm depoda duruyor** (`index.html`, `assets/`, `support.js`,
   `tools/serve.js`, `Klinik Sitesi.dc.html`). Karşılaştırma için tutuluyor;
   yayına giren sürüme dâhil değil.
