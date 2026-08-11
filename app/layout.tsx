@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 
+import { site } from '@/site.config';
+
 import '@/ds/styles.css';
 import './globals.css';
 
@@ -26,10 +28,12 @@ const ACIKLAMA =
   'endodonti, pedodonti, periodontoloji ve restoratif diş tedavisi dallarında hasta kabul edilir.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.mesepoliklinik.example'),
+  metadataBase: new URL(site.adres),
   title: BASLIK,
   description: ACIKLAMA,
   alternates: { canonical: '/' },
+  /* Demo sürümü arama motorlarına kapalı — bkz. site.config.ts */
+  robots: site.demoModu ? { index: false, follow: false } : undefined,
   openGraph: {
     type: 'website',
     locale: 'tr_TR',

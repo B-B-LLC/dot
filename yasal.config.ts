@@ -88,6 +88,80 @@ export const kvkkMetni: YasalMetin = {
   ]
 };
 
+export const gizlilikMetni: YasalMetin = {
+  baslik: 'Gizlilik Politikası',
+  ozet:
+    'Bu sitede hangi bilgilerin toplandığına, nasıl kullanıldığına ve kimlerle ' +
+    'paylaşıldığına ilişkin genel bilgilendirme.',
+  bolumler: [
+    {
+      baslik: 'Kapsam',
+      paragraflar: [
+        `Bu politika yalnızca ${klinik.ad} tarafından işletilen bu web sitesini kapsar.`,
+        'Klinikte yüz yüze gerçekleşen muayene ve tedavi süreçlerinde toplanan sağlık ' +
+          'kayıtları bu politikanın konusu değildir; bunlar ilgili sağlık mevzuatına göre ' +
+          'klinik kayıt sisteminde tutulur.'
+      ]
+    },
+    {
+      baslik: 'Toplanan bilgiler',
+      paragraflar: [
+        'Site yalnızca randevu formunu doldurduğunuzda bilgi toplar: ad ve soyad, telefon ' +
+          'numarası, tercih ettiğiniz tarih ve varsa notunuz.',
+        'Sayfaları gezmek için herhangi bir bilgi vermeniz gerekmez. Üyelik, oturum açma ya ' +
+          'da profil oluşturma yoktur.',
+        'Reklam ağı, sosyal medya izleyicisi veya ziyaretçi davranışı ölçen bir araç ' +
+          'kullanılmaz.'
+      ]
+    },
+    {
+      baslik: 'Bilgilerin kullanımı',
+      paragraflar: [
+        'Randevu formundaki bilgiler yalnızca size dönüş yapmak ve randevu saatini ' +
+          'belirlemek için kullanılır.',
+        'Talebiniz site üzerinde bir veri tabanında saklanmaz; doğrudan kliniğin e-posta ' +
+          'adresine iletilir.',
+        'Bilgileriniz pazarlama amacıyla kullanılmaz ve satılmaz. Yalnızca bilgilendirme ' +
+          'kutucuğunu işaretlemeniz hâlinde ağız ve diş sağlığı içerikleri gönderilebilir; ' +
+          'bu izni dilediğiniz zaman geri alabilirsiniz.'
+      ]
+    },
+    {
+      baslik: 'Paylaşım',
+      paragraflar: [
+        'Bilgileriniz üçüncü kişilerle paylaşılmaz. Tek istisna, yasal yükümlülük gereği ' +
+          'yetkili kamu kurumlarından gelen taleplerdir.',
+        'Formun iletilmesi için bir e-posta gönderim hizmeti kullanılır; bu hizmet verileri ' +
+          'yalnızca iletim amacıyla işler.'
+      ]
+    },
+    {
+      baslik: 'Güvenlik',
+      paragraflar: [
+        'Site şifreli bağlantı (HTTPS) üzerinden sunulur.',
+        'Randevu formunda kimlik numarası, sağlık geçmişi veya ödeme bilgisi sorulmaz. ' +
+          'Tedaviye ilişkin ayrıntıları form üzerinden değil, muayene sırasında hekiminizle ' +
+          'paylaşmanız önerilir.'
+      ]
+    },
+    {
+      baslik: 'Çocukların gizliliği',
+      paragraflar: [
+        'Site çocuklara yönelik değildir. Çocuk hastalar için randevu talebi ebeveyn veya ' +
+          'yasal temsilci tarafından oluşturulmalıdır.'
+      ]
+    },
+    {
+      baslik: 'Değişiklikler ve iletişim',
+      paragraflar: [
+        'Bu politika güncellenebilir; geçerli sürüm her zaman bu sayfada yayımlanır.',
+        `Sorularınız için ${klinik.eposta} adresine yazabilirsiniz. Kişisel verilerinize ` +
+          'ilişkin haklarınız ve başvuru yolu KVKK Aydınlatma Metni’nde ayrıca açıklanmıştır.'
+      ]
+    }
+  ]
+};
+
 export const cerezMetni: YasalMetin = {
   baslik: 'Çerez Politikası',
   ozet:

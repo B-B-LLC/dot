@@ -2,10 +2,10 @@
 
 import { Button, Card } from '@/ds/bundle';
 import { klinik as KLINIK, tedaviler as TEDAVILER } from '@/site.config';
-import SayfaCercevesi from './_ortak/cerceve';
-import { h, S, BolumBasligi } from './_ortak/temel';
+import SayfaCercevesi from './cerceve';
+import { h, S, BolumBasligi } from './temel';
 
-export default function Bulunamadi() {
+export default function BulunamadiIcerik() {
   return h(SayfaCercevesi, null,
     h('section', { style: S.bolum },
       h(BolumBasligi, {

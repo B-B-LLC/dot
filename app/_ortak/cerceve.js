@@ -138,8 +138,8 @@ var useEffect = React.useEffect;
             h('div', { style: sutunBasligi }, 'YASAL'),
             h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14 } },
               h('a', { className: 'footer-link', href: '/kvkk' }, 'KVKK Aydınlatma Metni'),
+              h('a', { className: 'footer-link', href: '/gizlilik' }, 'Gizlilik Politikası'),
               h('a', { className: 'footer-link', href: '/cerez' }, 'Çerez Politikası'),
-              h('a', { className: 'footer-link', href: '/hekimler' }, 'Hekim kadrosu'),
               h('a', { className: 'footer-link', href: '/iletisim' }, 'İletişim ve ulaşım')
             )
           )

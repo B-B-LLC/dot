@@ -8,6 +8,23 @@
    Tasarım değerleri (renk, ölçü, ikon) bu dosyada tutulmaz.
    ==================================================================== */
 
+/* ---------- Site ayarları ---------- */
+
+export const site = {
+  /** Sitenin yayınlandığı adres. canonical, sitemap ve OG etiketleri bunu kullanır. */
+  adres: 'https://www.mesepoliklinik.example',
+
+  /* Demo sürümlerinde true bırakın.
+
+     Aynı metinle birden çok klinik demosu yayınlandığında bunlar birbirinin
+     kopyası sayılır; ayrıca demo alan adı arama motoruna "diş kliniği" olarak
+     kaydedilirse sonradan düzeltmesi zaman alır. true iken robots.txt tüm
+     taramayı kapatır ve sayfalar index dışı işaretlenir.
+
+     Gerçek bir kliniğin sitesi yayına alınırken false yapın. */
+  demoModu: true
+};
+
 /* ---------- Tipler ---------- */
 
 export type Klinik = {
