@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import { saatler as SAATLER } from '@/site.config';
+import { TEDAVI_IKONLARI } from './tedavi-ikonlari';
 
 var h = React.createElement;
 var useState = React.useState;
@@ -32,6 +33,16 @@ var useEffect = React.useEffect;
     }, yollar.map(function (d, i) { return h('path', { key: i, d: d }); }));
   }
 
+  /* Klinik kendi ikon görsellerini verdiyse çizgi simge yerine o kullanılır.
+     Kart metni dalın adını zaten yazdığı için görsel süsleyicidir: alt boş
+     bırakılır ve ekran okuyucudan saklanır. */
+  function ikonGorseli(kaynak) {
+    return h('img', {
+      src: kaynak, alt: '', 'aria-hidden': 'true', width: 26, height: 26,
+      style: { width: 26, height: 26, borderRadius: 7, objectFit: 'cover', display: 'block' }
+    });
+  }
+
   /* site.config.ts'teki tedavi id'sine göre seçilir. */
   var TEDAVI_SIMGE_YOLLARI = {
     implantoloji: ['M7.6 6.2c0-2.1 1.7-3.4 3.4-2.7 1.3.5 2.7.5 4 0 1.7-.7 3.4.6 3.4 2.7 0 1.9-.5 3.4-1.3 4.6', 'M12.6 12.4v8', 'M10.3 14.6h4.6', 'M10.7 17.2h3.8', 'M3.4 12.6h5.2'],
@@ -56,6 +67,7 @@ var useEffect = React.useEffect;
   }
 
   function tedaviSimgesi(id) {
+    if (TEDAVI_IKONLARI[id]) return ikonGorseli(TEDAVI_IKONLARI[id]);
     return id === 'ortodonti' ? ortodontiSimgesi() : simge(TEDAVI_SIMGE_YOLLARI[id]);
   }
 
