@@ -5,7 +5,7 @@
 import * as React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { NavBar, Button } from '@/ds/bundle';
-import { klinik as KLINIK } from '@/site.config';
+import { klinik as KLINIK, haritaYolTarifi } from '@/site.config';
 import { h, BOLUMLER, CALISMA_SAATLERI, bolumeGit, useDar } from './temel';
 
 var Fragment = React.Fragment;
@@ -188,7 +188,7 @@ var useEffect = React.useEffect;
         ikon(['M6.2 3.6h3l1.5 3.7-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 3.7 1.5v3a1.8 1.8 0 0 1-2 1.8A16.4 16.4 0 0 1 4.4 5.6a1.8 1.8 0 0 1 1.8-2Z']),
         'Ara'
       ),
-      h('a', { className: 'mobil-bar-link', href: KLINIK.harita, target: '_blank', rel: 'noopener' },
+      h('a', { className: 'mobil-bar-link', href: haritaYolTarifi(), target: '_blank', rel: 'noopener' },
         ikon(
           ['M12 21c4.2-4.4 6.3-7.7 6.3-10.4A6.3 6.3 0 0 0 5.7 10.6C5.7 13.3 7.8 16.6 12 21Z'],
           h('circle', { cx: 12, cy: 10.4, r: 2.3 })

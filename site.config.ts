@@ -56,6 +56,10 @@ export type Klinik = {
   metaAciklama: string;
   /** Harita kartındaki iki satırlık konum etiketi. */
   haritaEtiketleri: [string, string];
+  /** Gömülü haritanın merkezi. Boş bırakılırsa adres metni aranır; binayı tam
+      göstermek için Google Haritalar'dan "enlem,boylam" kopyalayıp yazın
+      (ör. '38.4345,27.1428'). */
+  haritaKoordinat?: string;
 
   ruhsat: string;
   editor: string;
@@ -108,7 +112,9 @@ export const klinik: Klinik = {
   telHref: 'tel:+902320000000',
   eposta: 'danisma@mesepoliklinik.example',
   whatsapp: 'https://wa.me/902320000000',
-  harita: 'https://www.google.com/maps',
+  /* Doldurmayın: aşağıdaki haritaYolTarifi() adresten üretir. Elle bir
+     bağlantı vermek isterseniz buraya yazın, o zaman o kullanılır. */
+  harita: '',
   adresKisa: 'Kıbrıs Şehitleri Cad. No: 148, Konak / İzmir',
   adresTam: 'Kıbrıs Şehitleri Caddesi No: 148, Kat 1 — 35220 Konak / İzmir',
 
@@ -126,6 +132,7 @@ export const klinik: Klinik = {
     'Alsancak’ta zemin katta ağız ve diş sağlığı polikliniği. Girişte eşik ve merdiven yok, ' +
     'çocuk hastalar için ayrı bölüm bulunuyor.',
   haritaEtiketleri: ['Kıbrıs Şehitleri Cad.', 'Alsancak Garı'],
+  haritaKoordinat: '',
 
   ruhsat: 'İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000',
   editor: 'Site editörü: Ayşe Demir · editor@mesepoliklinik.example',
@@ -133,6 +140,28 @@ export const klinik: Klinik = {
 };
 
 /** Dal sayısını yazıyla verir; hero metnindeki cümle bundan üretilir. */
+/* --- Harita ---------------------------------------------------------------
+   Adres tek bir yerde (klinik.adresTam) durur; hem "Yol tarifi" bağlantısı hem
+   de gömülü harita ondan üretilir. Yeni klinik için adresi değiştirmek yeter.
+   Koordinat verilmişse ona, verilmemişse adres metnine göre konumlanır. */
+
+function haritaSorgusu(k: Klinik) {
+  /* adresTam kat bilgisi ve uzun tire içerdiği için aramada iyi sonuç
+     vermiyor; adresKisa zaten ilçe ve ili taşıyor. */
+  return encodeURIComponent(k.haritaKoordinat || k.adresKisa);
+}
+
+/** Google Haritalar'da yol tarifi ekranını açan bağlantı. */
+export function haritaYolTarifi(k: Klinik = klinik) {
+  if (k.harita) return k.harita;
+  return `https://www.google.com/maps/dir/?api=1&destination=${haritaSorgusu(k)}`;
+}
+
+/** Karta gömülen haritanın iframe adresi. Anahtar gerektirmez. */
+export function haritaGomme(k: Klinik = klinik) {
+  return `https://www.google.com/maps?q=${haritaSorgusu(k)}&hl=tr&z=16&output=embed`;
+}
+
 export function dalSayisiYaziyla(adet: number) {
   const yazi = [
     '', 'bir', 'iki', 'üç', 'dört', 'beş',

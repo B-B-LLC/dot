@@ -7,6 +7,8 @@ import * as React from 'react';
 import { Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
 import {
   klinik as KLINIK,
+  haritaYolTarifi,
+  haritaGomme,
   dalSayisiYaziyla,
   hekimler as HEKIMLER,
   tedaviler as TEDAVILER,
@@ -159,7 +161,7 @@ var useCallback = React.useCallback;
           h(Button, { size: 'lg', onClick: function () { bolumeGit('randevu'); } }, 'Randevu talebi'),
           h(Button, {
             size: 'lg', variant: 'cream', as: 'a',
-            href: KLINIK.harita, target: '_blank', rel: 'noopener'
+            href: haritaYolTarifi(), target: '_blank', rel: 'noopener'
           }, 'Yol tarifi')
         ),
         h('div', {
@@ -455,34 +457,63 @@ var useCallback = React.useCallback;
   /* ------------------------------------------------------------------ */
 
   function HaritaKarti() {
+    var pair = useState(false);
+    var acik = pair[0], setAcik = pair[1];
+
+    /* Harita ziyaretçi isteyene kadar yüklenmez: sayfa açılırken Google'a
+       istek gitmesin (çerez/KVKK) ve iframe'in yükü boşuna inmesin. Açılana
+       kadar aşağıdaki çizim gösterilir. */
+    var cizim = h('div', {
+      'aria-hidden': 'true',
+      style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#f6f0e6 0%,#efe6d9 100%)' }
+    },
+      h('div', { style: { position: 'absolute', left: 0, right: 0, top: '38%', height: 14, background: '#fff', opacity: .85 } }),
+      h('div', { style: { position: 'absolute', top: 0, bottom: 0, left: '62%', width: 10, background: '#fff', opacity: .7 } }),
+      h('div', { style: { position: 'absolute', left: '8%', top: '62%', width: '34%', height: 8, background: '#fff', opacity: .6, transform: 'rotate(-6deg)' } }),
+      h('div', {
+        style: {
+          position: 'absolute', left: 'calc(62% - 62px)', top: 'calc(38% - 44px)',
+          width: 44, height: 44, borderRadius: '50% 50% 50% 6px', transform: 'rotate(-45deg)',
+          background: 'var(--grad-emerald)', boxShadow: 'var(--shadow-brand)'
+        }
+      }),
+      h('span', {
+        style: { position: 'absolute', left: 12, top: 'calc(38% + 20px)', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
+      }, KLINIK.haritaEtiketleri[0]),
+      h('span', {
+        style: { position: 'absolute', left: 'calc(62% + 16px)', top: 14, fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
+      }, KLINIK.haritaEtiketleri[1])
+    );
+
+    var gomme = h('iframe', {
+      src: haritaGomme(),
+      title: KLINIK.ad + ' — harita üzerinde konum',
+      loading: 'lazy',
+      referrerPolicy: 'no-referrer-when-downgrade',
+      allowFullScreen: true,
+      style: { position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0, display: 'block' }
+    });
+
     return h(Card, { tone: 'plain', padding: 'none' },
+      acik ? gomme : cizim,
       h('div', {
-        'aria-hidden': 'true',
-        style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#f6f0e6 0%,#efe6d9 100%)' }
+        /* Katman haritanın üstünde durur; tıklamalar iframe'e geçsin diye
+           yalnızca düğmeler olay alır. */
+        style: {
+          position: 'relative', padding: '16px 18px', display: 'flex', gap: 10,
+          justifyContent: 'flex-end', alignItems: 'flex-end', height: 230,
+          boxSizing: 'border-box', pointerEvents: 'none'
+        }
       },
-        h('div', { style: { position: 'absolute', left: 0, right: 0, top: '38%', height: 14, background: '#fff', opacity: .85 } }),
-        h('div', { style: { position: 'absolute', top: 0, bottom: 0, left: '62%', width: 10, background: '#fff', opacity: .7 } }),
-        h('div', { style: { position: 'absolute', left: '8%', top: '62%', width: '34%', height: 8, background: '#fff', opacity: .6, transform: 'rotate(-6deg)' } }),
-        h('div', {
-          style: {
-            position: 'absolute', left: 'calc(62% - 62px)', top: 'calc(38% - 44px)',
-            width: 44, height: 44, borderRadius: '50% 50% 50% 6px', transform: 'rotate(-45deg)',
-            background: 'var(--grad-emerald)', boxShadow: 'var(--shadow-brand)'
-          }
-        }),
-        h('span', {
-          style: { position: 'absolute', left: 12, top: 'calc(38% + 20px)', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
-        }, KLINIK.haritaEtiketleri[0]),
-        h('span', {
-          style: { position: 'absolute', left: 'calc(62% + 16px)', top: 14, fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)' }
-        }, KLINIK.haritaEtiketleri[1])
-      ),
-      h('div', {
-        style: { position: 'relative', padding: '16px 18px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: 230, boxSizing: 'border-box' }
-      },
+        acik ? null : h(Button, {
+          size: 'sm', variant: 'glass',
+          style: { pointerEvents: 'auto' },
+          onClick: function () { setAcik(true); }
+        }, 'Haritayı göster'),
         h(Button, {
           size: 'sm', variant: 'glass', as: 'a',
-          href: KLINIK.harita, target: '_blank', rel: 'noopener'
+          style: { pointerEvents: 'auto' },
+          href: haritaYolTarifi(), target: '_blank', rel: 'noopener'
         }, 'Yol tarifi')
       )
     );

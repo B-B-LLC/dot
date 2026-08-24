@@ -194,6 +194,17 @@ export const cerezMetni: YasalMetin = {
       ]
     },
     {
+      baslik: 'Gömülü harita',
+      paragraflar: [
+        'İletişim bölümündeki harita, siz “Haritayı göster” düğmesine basana kadar yüklenmez. ' +
+          'Düğmeye basmadığınız sürece Google’a hiçbir istek gitmez ve tarayıcınıza Google ' +
+          'çerezi yazılmaz.',
+        'Düğmeye bastığınızda harita Google Haritalar’dan yüklenir; bu andan itibaren Google’ın ' +
+          'kendi çerez ve veri uygulamaları geçerli olur. Haritayı açmak tamamen size bağlıdır, ' +
+          'sitenin geri kalanı harita olmadan da çalışır.'
+      ]
+    },
+    {
       baslik: 'Çerezleri yönetme',
       paragraflar: [
         'Tarayıcınızın ayarlar bölümünden çerezleri görüntüleyebilir, silebilir veya ' +
