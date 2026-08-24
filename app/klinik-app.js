@@ -8,6 +8,7 @@ import { Card, Button, Field, Input, Checkbox } from '@/ds/bundle';
 import {
   klinik as KLINIK,
   haritaYolTarifi,
+  haritaYolTarifiApple,
   haritaGomme,
   dalSayisiYaziyla,
   hekimler as HEKIMLER,
@@ -512,22 +513,31 @@ var useCallback = React.useCallback;
     });
 
     return h(Card, { tone: 'plain', padding: 'none' },
-      acik ? gomme : cizim,
+      /* Kartın yüksekliği bu kutudan gelir: harita da yer tutucu çizim de
+         mutlak konumlandığı için kendi başlarına yer kaplamaz. */
+      h('div', { ref: kutu, style: { position: 'relative', height: 230 } },
+        acik ? gomme : cizim
+      ),
+      /* Yol tarifi bağlantıları haritanın üstünde değil altında durur; üstteki
+         katman haritanın kendi denetimlerini örtüyordu. İki sağlayıcı birden
+         veriliyor: iPhone kullanıcısı Google Haritalar kurulu olmasa da
+         yol tarifini kendi uygulamasında açabiliyor. */
       h('div', {
-        ref: kutu,
-        /* Katman haritanın üstünde durur; tıklamalar iframe'e geçsin diye
-           yalnızca "Yol tarifi" düğmesi olay alır. */
         style: {
-          position: 'relative', padding: '16px 18px', display: 'flex',
-          justifyContent: 'flex-end', alignItems: 'flex-end', height: 230,
-          boxSizing: 'border-box', pointerEvents: 'none'
+          display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10,
+          padding: '14px 16px', borderTop: '1px solid var(--line-hairline)',
+          background: 'var(--surface-card)'
         }
       },
+        h('span', { style: { fontSize: 13.5, color: 'var(--text-muted)' } }, 'Yol tarifi'),
         h(Button, {
-          size: 'sm', variant: 'glass', as: 'a',
-          style: { pointerEvents: 'auto' },
+          size: 'sm', variant: 'cream', as: 'a', style: { flex: '1 1 132px' },
           href: haritaYolTarifi(), target: '_blank', rel: 'noopener'
-        }, 'Yol tarifi')
+        }, 'Google Haritalar'),
+        h(Button, {
+          size: 'sm', variant: 'glass', as: 'a', style: { flex: '1 1 132px' },
+          href: haritaYolTarifiApple(), target: '_blank', rel: 'noopener'
+        }, 'Apple Haritalar')
       )
     );
   }

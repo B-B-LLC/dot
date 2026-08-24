@@ -139,9 +139,8 @@ export const klinik: Klinik = {
   sonGuncelleme: 'Son güncelleme: 10.08.2026'
 };
 
-/** Dal sayısını yazıyla verir; hero metnindeki cümle bundan üretilir. */
 /* --- Harita ---------------------------------------------------------------
-   Adres tek bir yerde (klinik.adresTam) durur; hem "Yol tarifi" bağlantısı hem
+   Adres tek bir yerde (klinik.adresTam) durur; hem yol tarifi bağlantıları hem
    de gömülü harita ondan üretilir. Yeni klinik için adresi değiştirmek yeter.
    Koordinat verilmişse ona, verilmemişse adres metnine göre konumlanır. */
 
@@ -157,11 +156,20 @@ export function haritaYolTarifi(k: Klinik = klinik) {
   return `https://www.google.com/maps/dir/?api=1&destination=${haritaSorgusu(k)}`;
 }
 
+/** Apple Haritalar'da yol tarifi ekranını açan bağlantı. iPhone ve Mac'te
+    Haritalar uygulamasını, diğer sistemlerde maps.apple.com'un web sürümünü
+    açar. klinik.harita elle doldurulsa bile bu bağlantı adresten üretilir;
+    o alan yalnızca Google bağlantısını değiştirir. */
+export function haritaYolTarifiApple(k: Klinik = klinik) {
+  return `https://maps.apple.com/?daddr=${haritaSorgusu(k)}&dirflg=d`;
+}
+
 /** Karta gömülen haritanın iframe adresi. Anahtar gerektirmez. */
 export function haritaGomme(k: Klinik = klinik) {
   return `https://www.google.com/maps?q=${haritaSorgusu(k)}&hl=tr&z=16&output=embed`;
 }
 
+/** Dal sayısını yazıyla verir; hero metnindeki cümle bundan üretilir. */
 export function dalSayisiYaziyla(adet: number) {
   const yazi = [
     '', 'bir', 'iki', 'üç', 'dört', 'beş',
