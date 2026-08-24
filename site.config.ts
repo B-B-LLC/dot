@@ -412,7 +412,7 @@ export const tedaviler: Tedavi[] = [
   {
     id: 'pedodonti',
     ad: 'Pedodonti',
-    ton: 'amber',
+    ton: 'emerald',
     ozet:
       'Süt ve karma dişlenme dönemindeki çocuklar için koruyucu uygulamalar ve tedaviler yapılır. ' +
       'Randevular ayrı bölümde ve çocuğun uyum süresi gözetilerek planlanır.',
