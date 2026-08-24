@@ -459,10 +459,27 @@ var useCallback = React.useCallback;
   function HaritaKarti() {
     var pair = useState(false);
     var acik = pair[0], setAcik = pair[1];
+    var kutu = useRef(null);
 
-    /* Harita ziyaretçi isteyene kadar yüklenmez: sayfa açılırken Google'a
-       istek gitmesin (çerez/KVKK) ve iframe'in yükü boşuna inmesin. Açılana
-       kadar aşağıdaki çizim gösterilir. */
+    /* Harita, kart görüş alanına girmeden yüklenmez: sayfanın üst kısmında
+       gezinen ziyaretçi için Google'a istek gitmez, iframe'in yükü boşuna
+       inmez. rootMargin biraz erken tetikler, böylece bölüme gelindiğinde
+       harita çoktan açılmış olur. */
+    useEffect(function () {
+      if (acik) return;
+      var el = kutu.current;
+      if (!el) return;
+      if (typeof IntersectionObserver === 'undefined') { setAcik(true); return; }
+      var gozcu = new IntersectionObserver(function (girisler) {
+        if (girisler.some(function (g) { return g.isIntersecting; })) {
+          setAcik(true);
+          gozcu.disconnect();
+        }
+      }, { rootMargin: '300px 0px' });
+      gozcu.observe(el);
+      return function () { gozcu.disconnect(); };
+    }, [acik]);
+
     var cizim = h('div', {
       'aria-hidden': 'true',
       style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#f6f0e6 0%,#efe6d9 100%)' }
@@ -497,19 +514,15 @@ var useCallback = React.useCallback;
     return h(Card, { tone: 'plain', padding: 'none' },
       acik ? gomme : cizim,
       h('div', {
+        ref: kutu,
         /* Katman haritanın üstünde durur; tıklamalar iframe'e geçsin diye
-           yalnızca düğmeler olay alır. */
+           yalnızca "Yol tarifi" düğmesi olay alır. */
         style: {
-          position: 'relative', padding: '16px 18px', display: 'flex', gap: 10,
+          position: 'relative', padding: '16px 18px', display: 'flex',
           justifyContent: 'flex-end', alignItems: 'flex-end', height: 230,
           boxSizing: 'border-box', pointerEvents: 'none'
         }
       },
-        acik ? null : h(Button, {
-          size: 'sm', variant: 'glass',
-          style: { pointerEvents: 'auto' },
-          onClick: function () { setAcik(true); }
-        }, 'Haritayı göster'),
         h(Button, {
           size: 'sm', variant: 'glass', as: 'a',
           style: { pointerEvents: 'auto' },
