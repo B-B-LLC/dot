@@ -66,6 +66,12 @@ biçiminde yerelleştirilir. Bu üsluba uyun.
 
 - `app/_ortak/temel.js` — `h`, `BOLUMLER`, `MEKANLAR`, `KapakGorseli`,
   `tedaviSimgesi`, saat yardımcıları (`durum`, `hafta`, `gununKurali`), `useDar`
+
+Kırılma noktaları medya sorgusuyla değil `useDar(esik)` kancasıyla kurulur:
+eşiksiz çağrı 860 px (`DAR_ESIK`; mobil eylem çubuğu ve sadeleşen NavBar), kendi
+eşiği olanlar sayı geçirir (saat kartı 560 px altında iki sütunu alt alta alır).
+Kanca sunucuda `false` döner ve mount anında düzeltir, yani dar ekranda ilk kare
+geniş düzenle çizilir.
 - `app/_ortak/cerceve.js` — `SayfaCercevesi`: üst gezinme, altbilgi, mobil çubuk
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
@@ -93,10 +99,16 @@ yer tutucusunu gösterir — yani eksik fotoğraf siteyi bozmaz. `next/image` il
 `objectFit: cover` kullanılır; `secenek.olcu` (sizes) yanlış verilirse gereksiz
 büyük dosya iner.
 
-Tedavi kartı ikonları `app/_ortak/tedavi-ikonlari.js` içinde 48×48 PNG veri
-adresi olarak gömülüdür; anahtarlar `Tedavi.id` ile birebir aynıdır. Bir anahtar
-silinirse `temel.js` o dal için çizgi simgeye (`TEDAVI_SIMGE_YOLLARI`, ortodonti
-ayrı fonksiyon) geri döner.
+Tedavi kartı ikonları `app/_ortak/tedavi-ikonlari.js` içinde 104×104 saydam PNG
+veri adresi olarak gömülüdür; anahtarlar `Tedavi.id` ile birebir aynıdır. Bir
+anahtar silinirse `temel.js` o dal için çizgi simgeye (`TEDAVI_SIMGE_YOLLARI`,
+ortodonti ayrı fonksiyon) geri döner.
+
+İkonlar kartta 26 px kutuda gösterilir; 104 px bunun 4 katıdır, yoğun piksel
+yoğunluklu ekranlar için. Yenisi üretilirken kaynak tek renk çizgi ve saydam
+olduğu için renk kanalı sabit tutulup yalnızca alfa ölçeklenir (küçültmede kenar
+halkası oluşmasın diye) ve ince çizgiler solmasın diye alfaya gama 0.85 kazancı
+uygulanır. Uzun kenar 40/48 oranında kareye ortalanır.
 
 ### Randevu ucu
 
