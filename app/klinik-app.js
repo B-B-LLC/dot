@@ -253,20 +253,32 @@ var useCallback = React.useCallback;
   /* 01 — Tedaviler                                                      */
   /* ------------------------------------------------------------------ */
 
-  /* Tedavi kartları bir silindirin yüzeyine dizilir: her kart kendi açısına
+  /* Tedavi kartları bir halkanın çevresine dizilir: her kart kendi açısına
      döndürülüp yarıçap kadar öne itilir, dönüş ise tek bir transform ile
      halkaya uygulanır. Telefonda ucuz olmasının sebebi bu — dönerken tarayıcı
-     altı kartı ayrı ayrı değil, tek katmanı taşır ve düzen (layout) yeniden
-     hesaplanmaz. Ölçüler de CSS'ten gelir, JS ile ölçüm yapılmaz.
+     altı kartı ayrı ayrı değil tek katmanı taşır, düzen (layout) yeniden
+     hesaplanmaz. Ölçüler de CSS'ten gelir, JS ölçüm yapmaz.
 
-     Otomatik dönüş yalnızca bölüm ekrandayken, sekme öndeyken ve kullanıcı
-     henüz devralmamışken çalışır; `prefers-reduced-motion` açıksa hiç
-     çalışmaz. Kullanıcı sürüklediği ya da bir kart seçtiği anda susar. */
+     Halkayı üç şey çevirir ve üçü tek bir hedef açıda toplanır:
+       • sayfa kaydırma — bölüm ekrandan geçerken halka CARK_KAYDIRMA_ACI kadar
+         döner, kaydırmaya bağlı asıl etki budur;
+       • boştaki sürüklenme — kimse dokunmazken çok yavaş dönmeye devam eder;
+       • kullanıcı — parmakla sürükleme, oklar, noktalar.
+     Çizilen açı hedefe yumuşayarak yaklaşır; akıcılık buradan gelir.
 
-  var CARK_BEKLEME = 5200;                                    /* kartlar arası duraklama */
-  var CARK_GECIS = 'transform .78s cubic-bezier(.22,.61,.36,1)';
-  var CARK_KART_G = 'clamp(232px,74vw,340px)';                /* kart genişliği */
-  var CARK_KART_Y = 'clamp(268px,84vw,292px)';                /* kart yüksekliği */
+     Kare döngüsü React durumuna dokunmaz: transform ve saydamlıklar doğrudan
+     DOM'a yazılır, yalnızca öndeki kart değiştiğinde (noktaları güncellemek
+     için) bir kez setState çağrılır. Döngü de ancak bölüm ekrandayken, sekme
+     öndeyken ve `prefers-reduced-motion` kapalıyken çalışır; hedefe varıp
+     sürüklenme de kapalıysa kendini durdurur. */
+
+  var CARK_KART_G = 'clamp(232px,74vw,320px)';                /* kart genişliği */
+  var CARK_KART_Y = 'clamp(268px,84vw,296px)';                /* kart yüksekliği */
+  var CARK_YARICAP = 'clamp(330px,60vw,600px)';               /* halkanın yarıçapı */
+  var CARK_KAYDIRMA_ACI = 190;    /* bölüm ekrandan geçerken toplam dönüş (derece) */
+  var CARK_SURUKLENME = 2;        /* boştayken saniyede derece */
+  var CARK_YUMUSAMA = 0.1;        /* 60 Hz'de kare başına hedefe yaklaşma oranı */
+  var CARK_SOLMA = 108;           /* bu açıdan sonra kart tamamen soluk */
 
   function carkOku(yon) {
     return h('svg', {
@@ -275,127 +287,238 @@ var useCallback = React.useCallback;
     }, h('path', { d: yon < 0 ? 'M15 6l-6 6 6 6' : 'M9 6l6 6-6 6' }));
   }
 
+  /* Açıyı (-180,180] aralığına indirir; hep kısa yoldan dönmek için. */
+  function carkSapma(a) {
+    var d = ((a + 180) % 360 + 360) % 360 - 180;
+    return d;
+  }
+
+  /* Kartın öne göre sapması: 0 tam önde, 180 tam arkada. */
+  function carkOnSapmasi(a) {
+    var b = ((a % 360) + 360) % 360;
+    return b > 180 ? 360 - b : b;
+  }
+
+  function carkSaydamlik(sapma) {
+    return Math.max(0.14, 1 - sapma / CARK_SOLMA);
+  }
+
   function TedaviCarki() {
     var n = TEDAVILER.length;
     var adim = 360 / n;
 
-    var aciPair = useState(0);                 /* sürekli açı: sarmalamak yerine büyür/küçülür */
-    var aci = aciPair[0], setAci = aciPair[1];
-    var surukPair = useState(false);
-    var surukleniyor = surukPair[0], setSurukleniyor = surukPair[1];
-    var otoPair = useState(true);
-    var otoDonsun = otoPair[0], setOtoDonsun = otoPair[1];
-    var gorunurPair = useState(false);
-    var gorunur = gorunurPair[0], setGorunur = gorunurPair[1];
-    var azPair = useState(false);
-    var azHareket = azPair[0], setAzHareket = azPair[1];
+    /* Tek React durumu: öndeki kart. Sadece değiştiğinde yazılır. */
+    var aktifPair = useState(0);
+    var aktif = aktifPair[0], setAktif = aktifPair[1];
 
     var sahneRef = useRef(null);
     var halkaRef = useRef(null);
-    var surukRef = useRef(null);               /* sürükleme sırasında React'e uğramayan durum */
-    var tasindiRef = useRef(false);            /* sürükleme bittiyse tıklama bağlantıyı açmasın */
+    var kartlarRef = useRef([]);
 
-    var aktif = ((Math.round(-aci / adim) % n) + n) % n;
+    var aciRef = useRef(0);          /* o an çizilen açı */
+    var kaydirmaRef = useRef(0);     /* kaydırmadan gelen pay */
+    var kullaniciRef = useRef(0);    /* sürükleme + düğmeler + boştaki sürüklenme */
+    var aktifRef = useRef(0);
+    var otoRef = useRef(true);       /* kullanıcı devraldıysa sürüklenme durur */
+    var azRef = useRef(false);
+    var ekrandaRef = useRef(false);
+    var kareRef = useRef(0);
+    var sonKareRef = useRef(0);      /* bir önceki karenin zaman damgası */
+    var kutuRef = useRef({ ust: 0, yukseklik: 1 });
+    var surukRef = useRef(null);
+    var tasindiRef = useRef(false);
 
-    var halkaDonusumu = useCallback(function (a) {
-      return 'translateZ(calc(-1 * var(--cark-r))) rotateY(' + a + 'deg)';
+    /* --- çizim ------------------------------------------------------- */
+
+    var yaz = useCallback(function () {
+      var a = aciRef.current;
+      if (halkaRef.current) {
+        halkaRef.current.style.transform =
+          'translateZ(calc(-1 * var(--cark-r))) rotateY(' + a.toFixed(2) + 'deg)';
+      }
+
+      var yeniAktif = 0;
+      var enYakin = 999;
+      for (var i = 0; i < n; i++) {
+        var el = kartlarRef.current[i];
+        if (!el) continue;
+        var sapma = carkOnSapmasi(i * adim + a);
+        el.style.opacity = carkSaydamlik(sapma).toFixed(3);
+        /* Arkaya dönen kart tıklamayı yutmasın. Değer her karede değil,
+           yalnız durum değişince yazılır. */
+        var onde = sapma < 62 ? '1' : '0';
+        if (el.dataset.onde !== onde) {
+          el.dataset.onde = onde;
+          el.style.pointerEvents = onde === '1' ? 'auto' : 'none';
+        }
+        if (sapma < enYakin) { enYakin = sapma; yeniAktif = i; }
+      }
+
+      if (yeniAktif !== aktifRef.current) {
+        aktifRef.current = yeniAktif;
+        setAktif(yeniAktif);
+      }
+    }, [n, adim]);
+
+    /* Hareket kare sayısına değil geçen süreye bağlanır: 60 Hz telefonda da
+       144 Hz ekranda da aynı hızda döner. */
+    var kare = useCallback(function (zaman) {
+      kareRef.current = 0;
+      if (!ekrandaRef.current || azRef.current) return;
+
+      var onceki = sonKareRef.current;
+      sonKareRef.current = zaman;
+      var gecen = onceki ? Math.min(zaman - onceki, 100) : 16.7;
+
+      if (otoRef.current && !surukRef.current) {
+        kullaniciRef.current -= CARK_SURUKLENME * (gecen / 1000);
+      }
+
+      var hedef = kaydirmaRef.current + kullaniciRef.current;
+      var fark = hedef - aciRef.current;
+      if (Math.abs(fark) < 0.02) aciRef.current = hedef;
+      else aciRef.current += fark * (1 - Math.pow(1 - CARK_YUMUSAMA, gecen / 16.7));
+
+      yaz();
+
+      /* Sürüklenme kapalı ve hedefe varıldıysa döngüyü boşuna döndürme. */
+      if (!otoRef.current && Math.abs(hedef - aciRef.current) < 0.02) return;
+      kareRef.current = requestAnimationFrame(kare);
+    }, [yaz]);
+
+    var dondur = useCallback(function () {
+      if (kareRef.current || !ekrandaRef.current) return;
+      if (azRef.current) { aciRef.current = kaydirmaRef.current + kullaniciRef.current; yaz(); return; }
+      sonKareRef.current = 0;        /* duraklamadan sonraki ilk kare sıçramasın */
+      kareRef.current = requestAnimationFrame(kare);
+    }, [kare, yaz]);
+
+    /* --- kaydırma ----------------------------------------------------- */
+
+    var kutuyuOlc = useCallback(function () {
+      var el = sahneRef.current;
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      kutuRef.current = { ust: r.top + window.scrollY, yukseklik: r.height };
+    }, []);
+
+    /* Kaydırma sırasında yalnız scrollY okunur; kutu ölçüsü önbellekten gelir,
+       böylece tarayıcı düzeni yeniden hesaplamaya zorlanmaz. */
+    var kaydirmayiOku = useCallback(function () {
+      var k = kutuRef.current;
+      var pencere = window.innerHeight;
+      var yol = k.yukseklik + pencere;
+      var ilerleme = yol > 0 ? (window.scrollY + pencere - k.ust) / yol : 0.5;
+      if (ilerleme < 0) ilerleme = 0;
+      if (ilerleme > 1) ilerleme = 1;
+      kaydirmaRef.current = -(ilerleme - 0.5) * CARK_KAYDIRMA_ACI;
     }, []);
 
     useEffect(function () {
       var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-      var uygula = function () { setAzHareket(mq.matches); };
-      uygula();
-      mq.addEventListener('change', uygula);
-      return function () { mq.removeEventListener('change', uygula); };
-    }, []);
+      var uygulaMq = function () {
+        azRef.current = mq.matches;
+        if (mq.matches && kareRef.current) {
+          cancelAnimationFrame(kareRef.current);
+          kareRef.current = 0;
+        }
+        dondur();
+      };
+      uygulaMq();
+      mq.addEventListener('change', uygulaMq);
 
-    /* Ekranda değilken ya da sekme arkadayken dönmek boşa pil harcar. */
-    useEffect(function () {
-      var el = sahneRef.current;
-      if (!el) return;
+      kutuyuOlc();
+      kaydirmayiOku();
+      aciRef.current = kaydirmaRef.current;
+      yaz();
 
-      var ekranda = false;
+      var kaydir = function () { kaydirmayiOku(); dondur(); };
+      var boyut = function () { kutuyuOlc(); kaydirmayiOku(); dondur(); };
+      window.addEventListener('scroll', kaydir, { passive: true });
+      window.addEventListener('resize', boyut);
+
+      /* Ekranda değilken ya da sekme arkadayken dönmek boşa pil harcar. */
       var sekmeAcik = !document.hidden;
-      var yaz = function () { setGorunur(ekranda && sekmeAcik); };
+      var gorunuyor = false;
+      var tazele = function () {
+        ekrandaRef.current = gorunuyor && sekmeAcik;
+        if (!ekrandaRef.current) {
+          if (kareRef.current) { cancelAnimationFrame(kareRef.current); kareRef.current = 0; }
+        } else {
+          kutuyuOlc();
+          kaydirmayiOku();
+          dondur();
+        }
+      };
 
       var gozlemci = new IntersectionObserver(function (girdiler) {
-        ekranda = girdiler[0].isIntersecting;
-        yaz();
-      }, { threshold: 0.3 });
-      gozlemci.observe(el);
+        gorunuyor = girdiler[0].isIntersecting;
+        tazele();
+      }, { rootMargin: '10% 0px' });
+      if (sahneRef.current) gozlemci.observe(sahneRef.current);
 
-      var sekme = function () { sekmeAcik = !document.hidden; yaz(); };
+      var sekme = function () { sekmeAcik = !document.hidden; tazele(); };
       document.addEventListener('visibilitychange', sekme);
 
       return function () {
-        gozlemci.disconnect();
+        mq.removeEventListener('change', uygulaMq);
+        window.removeEventListener('scroll', kaydir);
+        window.removeEventListener('resize', boyut);
         document.removeEventListener('visibilitychange', sekme);
+        gozlemci.disconnect();
+        if (kareRef.current) cancelAnimationFrame(kareRef.current);
       };
-    }, []);
+    }, [dondur, kaydirmayiOku, kutuyuOlc, yaz]);
 
-    /* Zamanlayıcı her adımdan sonra yeniden kurulur: arka planda çalışan
-       aralık (setInterval) kalmaz. */
-    useEffect(function () {
-      if (!otoDonsun || !gorunur || azHareket || surukleniyor) return;
-      var t = setTimeout(function () {
-        setAci(function (a) { return a - adim; });
-      }, CARK_BEKLEME);
-      return function () { clearTimeout(t); };
-    }, [otoDonsun, gorunur, azHareket, surukleniyor, aci, adim]);
+    /* --- kullanıcı ---------------------------------------------------- */
 
-    function devral() { setOtoDonsun(false); }
+    function devral() { otoRef.current = false; }
 
     function git(yon) {
       devral();
-      setAci(function (a) { return a - yon * adim; });
+      kullaniciRef.current -= yon * adim;
+      dondur();
     }
 
+    /* Seçilen kartı öne getirir; hangi yönün kısa olduğuna bakar. */
     function kartaGit(i) {
       devral();
-      setAci(function (a) {
-        var suanki = ((Math.round(-a / adim) % n) + n) % n;
-        var fark = (i - suanki + n) % n;
-        if (fark > n / 2) fark -= n;           /* kısa yoldan dön */
-        return a - fark * adim;
-      });
+      var hedef = kaydirmaRef.current + kullaniciRef.current;
+      kullaniciRef.current += carkSapma(-i * adim - hedef);
+      dondur();
     }
 
     function tutBasla(e) {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      surukRef.current = { x: e.clientX, aci: aci, son: aci };
+      surukRef.current = { x: e.clientX, aci: kullaniciRef.current };
       tasindiRef.current = false;
       try { e.currentTarget.setPointerCapture(e.pointerId); } catch (hata) { /* eski tarayıcı */ }
-      setSurukleniyor(true);
       devral();
+      dondur();
     }
 
-    /* Sürükleme sırasında transform doğrudan yazılır; her piksel için React
-       yeniden çizmez. */
     function tutHareket(e) {
       var s = surukRef.current;
       if (!s) return;
       var dx = e.clientX - s.x;
       if (Math.abs(dx) > 4) tasindiRef.current = true;
       var genislik = sahneRef.current ? sahneRef.current.clientWidth : 320;
-      s.son = s.aci + (dx / genislik) * adim * 1.5;
-      if (halkaRef.current) halkaRef.current.style.transform = halkaDonusumu(s.son);
+      kullaniciRef.current = s.aci + (dx / genislik) * adim * 2;
+      dondur();
     }
 
     function tutBitir() {
-      var s = surukRef.current;
-      if (!s) return;
+      if (!surukRef.current) return;
       surukRef.current = null;
-      var hedef = Math.round(s.son / adim) * adim;
-      /* Açı değişmediyse React aynı transform'u yeniden yazmaz ve DOM
-         sürükleme sırasındaki değerde kalırdı; bu yüzden elle de yazılıyor. */
-      if (halkaRef.current) halkaRef.current.style.transform = halkaDonusumu(hedef);
-      setSurukleniyor(false);
-      setAci(hedef);
+      /* Bırakınca en yakın kart öne oturur. */
+      var hedef = kaydirmaRef.current + kullaniciRef.current;
+      kullaniciRef.current += carkSapma(Math.round(hedef / adim) * adim - hedef);
+      dondur();
     }
 
     function kartTiklandi(e, i) {
       if (tasindiRef.current) { tasindiRef.current = false; e.preventDefault(); return; }
-      if (i !== aktif) { e.preventDefault(); kartaGit(i); }
+      if (i !== aktifRef.current) { e.preventDefault(); kartaGit(i); }
     }
 
     return h('div', {
@@ -403,10 +526,7 @@ var useCallback = React.useCallback;
         marginTop: 36,
         '--cark-g': CARK_KART_G,
         '--cark-y': CARK_KART_Y,
-        /* Yarıçap = (genişlik/2) / tan(180°/n); altı kart için ≈ genişlik × .866,
-           yani kartlar tam yan yana gelir. Aralarında ince bir boşluk kalsın
-           diye biraz açılıyor. */
-        '--cark-r': 'calc(' + CARK_KART_G + ' * .95)'
+        '--cark-r': CARK_YARICAP
       }
     },
       h('div', {
@@ -420,43 +540,48 @@ var useCallback = React.useCallback;
         onPointerCancel: tutBitir,
         style: {
           position: 'relative',
-          height: 'calc(var(--cark-y) + 44px)',
+          height: 'calc(var(--cark-y) + 64px)',
+          /* Bölümün yan boşluğunu aşıp ekran kenarına kadar taşar; gövdede
+             `overflow-x: clip` olduğu için yatay kaydırma açılmaz. */
+          width: '100vw',
+          marginLeft: 'calc(50% - 50vw)',
           overflow: 'hidden',
           /* Dikey kaydırma tarayıcıda kalsın, yatay hareketi çark alsın. */
           touchAction: 'pan-y',
-          cursor: surukleniyor ? 'grabbing' : 'grab',
+          cursor: 'grab',
           userSelect: 'none'
         }
       },
-        h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(820px,150vw,1300px)' } },
+        h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(1200px,180vw,2200px)' } },
           h('div', {
             ref: halkaRef,
             style: {
-              position: 'absolute', top: 22, left: '50%',
+              position: 'absolute', top: 32, left: '50%',
               width: 'var(--cark-g)', height: 'var(--cark-y)',
               marginLeft: 'calc(var(--cark-g) / -2)',
               transformStyle: 'preserve-3d',
-              transform: halkaDonusumu(aci),
-              transition: (surukleniyor || azHareket) ? 'none' : CARK_GECIS,
+              transform: 'translateZ(calc(-1 * var(--cark-r))) rotateY(0deg)',
               willChange: 'transform'
             }
           },
             TEDAVILER.map(function (t, i) {
-              /* Merkezden kaç kart uzakta: arkaya düşenler çizilmez. */
-              var uzak = Math.abs(((i - aktif + n + n / 2) % n) - n / 2);
               return h('a', {
                 key: t.id,
+                ref: function (el) { kartlarRef.current[i] = el; },
                 href: '/tedaviler/' + t.id,
                 onClick: function (e) { kartTiklandi(e, i); },
-                onFocus: function () { if (i !== aktif) kartaGit(i); },
+                onFocus: function () { if (i !== aktifRef.current) kartaGit(i); },
+                /* Kartın üstünden sürüklenince tarayıcının bağlantı sürükleme
+                   davranışı devreye girip çarkı yarıda kesiyordu. */
+                draggable: false,
+                onDragStart: function (e) { e.preventDefault(); },
                 'aria-current': i === aktif ? 'true' : undefined,
                 style: {
                   position: 'absolute', inset: 0, display: 'block', color: 'inherit',
                   transform: 'rotateY(' + (i * adim) + 'deg) translateZ(var(--cark-r))',
                   backfaceVisibility: 'hidden',
-                  opacity: uzak === 0 ? 1 : (uzak <= 1 ? 0.5 : 0),
-                  pointerEvents: uzak <= 1 ? 'auto' : 'none',
-                  transition: azHareket ? 'none' : 'opacity .5s ease'
+                  /* İlk çizimdeki değer; sonrasını kare döngüsü yazar. */
+                  opacity: carkSaydamlik(carkOnSapmasi(i * adim))
                 }
               },
                 h(Card, { tone: 'cream', padding: 'md', interactive: i === aktif, style: { height: '100%', boxSizing: 'border-box' } },
