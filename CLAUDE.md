@@ -42,6 +42,10 @@ yalnızca birden çok dosyayı okumadan görülmeyen yapı özetlenir.
 
 ### İçerik tek dosyadan gelir
 
+Yeni bir klinik için nelerin değiştirileceği alan alan `YENI-MUSTERI.txt`
+dosyasında listelidir; config şeması veya kurulum adımları değişirse o dosya da
+güncellenir.
+
 `site.config.ts` kliniğe ait her şeyi (bilgiler, metinler, görsel yolları) ve
 `yasal.config.ts` yasal metinleri tutar. Uygulama kodunda sabit metin, telefon,
 adres veya klinik adı yazılmaz — yeni bir klinik demosu yalnız config

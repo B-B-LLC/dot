@@ -1,0 +1,448 @@
+================================================================================
+YENİ MÜŞTERİ KURULUM LİSTESİ
+Bir kliniğin sitesini bu şablondan çıkarırken değişmesi gereken her şey.
+================================================================================
+
+Bu dosya kod değil, kontrol listesidir. Sırayla yukarıdan aşağı gidilir.
+Bölüm başlıklarındaki [ZORUNLU] / [İÇERİK] / [İSTEĞE BAĞLI] etiketleri neyin
+atlanabileceğini gösterir.
+
+Temel kural: uygulama kodunda (app/ klasörü) klinik adı, telefon, adres veya
+metin YAZILMAZ. Hepsi site.config.ts ve yasal.config.ts dosyalarından gelir.
+Bir yerde sabit metin görürsen ya şablon metnidir ya da hatadır.
+
+
+================================================================================
+0. BAŞLAMADAN ÖNCE — MÜŞTERİDEN İSTENECEKLER
+================================================================================
+
+Bunlar toplanmadan kuruluma başlama, yarım kalır:
+
+  [ ] Kliniğin resmî tam adı (ruhsatta yazan hâli)
+  [ ] Kısa marka adı (logoda/başlıkta görünecek, ör. "Meşe.")
+  [ ] Telefon (sabit ve varsa WhatsApp numarası)
+  [ ] E-posta adresi
+  [ ] Tam açık adres + posta kodu + ilçe + il
+  [ ] Google Haritalar'dan bina koordinatı (enlem,boylam)
+  [ ] Çalışma saatleri (hafta içi / cumartesi / pazar)
+  [ ] Hekim listesi: ad, unvan, mezuniyet, uzmanlık/doktora
+  [ ] Hekim portre fotoğrafları
+  [ ] Mekân fotoğrafları: bekleme alanı, muayene odası, çocuk bölümü, giriş
+  [ ] Hangi tedavi dallarında hasta kabul ediliyor
+  [ ] İl Sağlık Müdürlüğü ruhsat numarası
+  [ ] Siteden sorumlu kişinin adı ve e-postası (yasal zorunluluk)
+  [ ] Alan adı (varsa) veya alınacak alan adı
+  [ ] Ulaşım notları (metro/otobüs/otopark durumu)
+  [ ] Marka rengi varsa kurumsal kimlik dosyası
+
+NOT — mevzuat: Hasta fotoğrafı, tedavi öncesi-sonrası görseli, fiyat bilgisi ve
+sonuç vaadi siteye KONULAMAZ. Müşteri isterse bile konulmaz. Bu şablon buna
+göre yazılmıştır; metinleri değiştirirken bu sınırı bozma.
+
+
+================================================================================
+1. [ZORUNLU] site.config.ts → `site`
+================================================================================
+
+Dosyanın en üstündeki iki satır. Bunlar yanlışsa site ya Google'a girmez ya da
+yanlış adresle girer.
+
+  adres
+      Sitenin yayınlanacağı tam adres. Sonunda eğik çizgi YOK.
+      Örnek: 'https://www.meseklinik.com'
+      Şuraları besler (hepsi otomatik, elle dokunulmaz):
+        - her sayfanın canonical etiketi
+        - sitemap.xml içindeki tüm adresler
+        - JSON-LD'deki `url` alanı
+        - og:image ve twitter:image'in tam adresi
+        - robots.txt içindeki sitemap satırı
+      Bu tek satır düzeltilince yukarıdakilerin hepsi düzelir.
+
+  demoModu
+      true  → robots.txt tüm siteyi kapatır + her sayfa noindex olur
+      false → site Google'a açılır, sitemap robots.txt'e yazılır
+
+      Demo yayınlarken true KALSIN. Sebebi: aynı metinle birden çok demo
+      yayınlanırsa Google bunları kopya sayar; ayrıca demo alan adı "diş
+      kliniği" olarak kaydedilirse sonradan silmesi aylar alır.
+
+      >>> GERÇEK MÜŞTERİ YAYINA GİRERKEN false YAPILACAK. <<<
+      Bu tek satır unutulursa müşteri "3 aydır Google'da yokuz" diye arar.
+      Yayın günü ilk iş budur.
+
+
+================================================================================
+2. [ZORUNLU] site.config.ts → `klinik`
+================================================================================
+
+Alan alan, ne olduğu ve nereyi etkilediği:
+
+  ad
+      Resmî tam ad. "Özel ... Ağız ve Diş Sağlığı Polikliniği"
+      Etkilediği yerler: tüm sayfa başlıkları, altbilgi, JSON-LD, OG görseli,
+      randevu e-postasının konusu, KVKK/gizlilik metinlerindeki veri sorumlusu
+      satırı, 404 sayfası.
+
+  marka
+      Kısa ad, sonunda nokta olabilir: 'Meşe.'
+      Etkilediği yerler: üst menüdeki logo yazısı, altbilgi, OG görselindeki
+      büyük yazı ve tedavi OG görselindeki üst satır.
+
+  telefon
+      Ekranda görünen biçim: '0232 123 45 67'
+      Etkilediği yerler: üst menü butonu, mobil alt çubuk, ulaşım kartı,
+      altbilgi, tedavi sayfasındaki randevu kutusu, 404 sayfası, KVKK metni.
+
+  telHref
+      Tıklanınca aranan biçim, uluslararası: 'tel:+902321234567'
+      Boşluk ve parantez OLMAZ. telefon ile aynı numara olmalı — ikisini
+      birlikte değiştir, biri unutulursa yanlış numara aranır.
+      Ayrıca JSON-LD'deki `telephone` bu alandan üretilir.
+
+  eposta
+      Danışma e-postası. Altbilgi, JSON-LD ve üç yasal metnin tamamı bunu
+      kullanır (KVKK başvuru adresi olarak da geçer).
+
+  whatsapp
+      Tam bağlantı: 'https://wa.me/902321234567'
+      Mobil alt çubuktaki WhatsApp butonu. Numara başında + YOK, 90 ile başlar.
+
+  harita
+      BOŞ BIRAK. Yol tarifi bağlantısı adresten otomatik üretilir.
+      Yalnız özel bir Google Haritalar bağlantısı vermek istersen doldur;
+      o zaman Google bağlantısı bunu kullanır (Apple bağlantısı yine adresten
+      üretilir).
+
+  adresKisa
+      'Kıbrıs Şehitleri Cad. No: 148, Konak / İzmir'
+      Ulaşım kartında görünür VE harita aramasında kullanılan metin budur
+      (koordinat verilmemişse). İlçe ve il mutlaka içinde olsun.
+
+  adresTam
+      Kat bilgisi ve posta koduyla birlikte tam hâli.
+      Ulaşım kartı, altbilgi, iletişim sayfası açıklaması ve KVKK metnindeki
+      veri sorumlusu adresi.
+
+  sokak / ilce / il / postaKodu
+      YALNIZCA JSON-LD (schema.org) için. Google Haritalar'ın işletme kartında
+      görünür. adresTam ile tutarlı olsun ama parça parça yazılır.
+
+  konum
+      'Alsancak, İzmir' — semt adı ilçeden daha çok arandığı için hastanın
+      kullandığı ad yazılır (Konak değil Alsancak).
+      Sayfa başlıklarında kliniğin yanına gelir ve OG görselinin üst satırıdır.
+
+  tanitim
+      Ana sayfanın h1'i. Kliniğin tek cümlelik tanımı.
+      DİKKAT: adresTam ile çelişmesin. Şu an demoda çelişiyor — tanitim
+      "zemin katta" diyor, adresTam "Kat 1" diyor. Yeni müşteride kontrol et.
+
+  tanitimAlt
+      h1'in altındaki cümle. Dal sayısı cümlesi otomatik eklenir, sen yazma.
+
+  metaAciklama
+      Google sonuçlarında görünen açıklama. 150-160 karakter ideal.
+      Ana sayfanın description'ı ve twitter:description'ı.
+
+  haritaEtiketleri
+      İki satırlık konum etiketi: ['Cadde adı', 'Yakın bilinen nokta']
+      Harita kartının üstünde görünür.
+
+  haritaKoordinat
+      'enlem,boylam' biçiminde, ör: '38.4345,27.1428'
+      Google Haritalar'da binaya sağ tıkla → koordinat kopyala.
+      Boş bırakılırsa adres metni aranır ve harita yanlış binayı gösterebilir.
+      >>> Doldurulması şiddetle önerilir. <<<
+
+  ruhsat
+      'X İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: ____'
+      Altbilgide görünür, yasal zorunluluk.
+      >>> Gerçek numara yoksa uydurma. 'Ruhsat no: —' yaz. Sahte formatta
+          ruhsat numarası göstermek sağlık mevzuatı açısından risklidir. <<<
+
+  editor
+      'Site editörü: Ad Soyad · eposta@...'
+      Altbilgide ve yasal sayfaların altında görünür. Yasal zorunluluk.
+
+  sonGuncelleme
+      'Son güncelleme: GG.AA.YYYY'
+      Altbilgi ve yasal sayfaların altı. İçerik her değiştiğinde elle güncelle.
+
+
+================================================================================
+3. [ZORUNLU] .env.local — randevu formu
+================================================================================
+
+Bu dosya depoya GİRMEZ (.gitignore'da). Şablonu .env.ornek dosyasındadır.
+Kurulumda elle oluşturulur:
+
+  RESEND_API_KEY
+      resend.com → API Keys. "re_" ile başlar.
+      Her müşteri için ayrı anahtar önerilir (biri sızarsa diğerleri etkilenmez).
+
+  RANDEVU_ALICI
+      Randevu taleplerinin düşeceği e-posta. Kliniğin danışma adresi.
+      DİKKAT: Resend'de alan adı doğrulanmadan yalnızca hesabı açtığın adrese
+      gönderim yapılabilir. Müşterinin adresine gitmesi için önce alan adı
+      doğrulanmalı.
+
+  RANDEVU_GONDEREN
+      'Randevu <randevu@alanadiniz.com>'
+      Alan adı doğrulanana kadar Resend'in test adresi kullanılır:
+      'Randevu <onboarding@resend.dev>'
+
+Vercel'e yüklerken aynı üç değer:
+  Settings → Environment Variables
+
+>>> Kurulumdan sonra MUTLAKA kendine bir test randevusu gönder. Form onay
+    ekranı gösterse bile mail gelmiyorsa ekran yalan söylüyordur. <<<
+
+
+================================================================================
+4. [İÇERİK] site.config.ts → kliniğe göre değişen listeler
+================================================================================
+
+--- saatler ---------------------------------------------------------------
+Tek kaynak. Şuraların hepsini birden besler:
+  - hero'daki canlı "şu an açık/kapalı" kartı
+  - ulaşım kartındaki saat listesi
+  - altbilgideki çalışma saatleri sütunu
+  - JSON-LD'deki openingHoursSpecification
+
+Biçim:
+  { ad: 'Pazartesi – Cuma', gunler: [1,2,3,4,5], ac: '09:00', kap: '19:00' }
+  { ad: 'Pazar', gunler: [0], kapali: true }
+
+gunler: 0 = Pazar, 1 = Pazartesi ... 6 = Cumartesi
+Öğle arası varsa iki ayrı kayıt olarak yazılır.
+
+--- hekimler --------------------------------------------------------------
+Her hekim için:
+  ad          'Uzm. Dt. Ayşe Yılmaz' — unvan ön ekiyle birlikte
+  unvan       'Ortodonti uzmanı'
+  mezuniyet   'Ege Üniv. Diş Hek. Fak., 2011'
+  akademik    'Ortodonti uzmanlığı, 2017' — yoksa '—' yaz, boş bırakma
+  gorsel      '/gorseller/hekim-ayse.jpg' — boş bırakılırsa çizim yer tutucusu
+
+Kaç hekim varsa o kadar kayıt. Sıra ekranda görünen sıradır.
+Hekim sayısı ve uzman sayısı /hekimler sayfasının açıklamasında otomatik yazılır.
+
+--- tedaviler -------------------------------------------------------------
+En kritik liste. Türetilmiş bir yapıdır — bir kalemi silmek şunları birden yok
+eder:
+  - /tedaviler/<id> sayfasını
+  - ana sayfadaki kartını
+  - menü ve site haritası girdisini
+  - JSON-LD'deki hizmet kaydını
+  - o dalın OG paylaşım görselini
+
+Klinikte hasta kabul edilmeyen dalın bloğunu KOMPLE SİL. Yarım bırakma.
+
+id  değiştirilemez, altı sabit değerden biri:
+      implantoloji | ortodonti | endodonti | pedodonti | periodontoloji |
+      restoratif
+    Sebebi: sayfa adresini ve kart ikonunu bu belirler
+    (app/_ortak/tedavi-ikonlari.js içindeki anahtarlarla birebir aynı).
+    Yeni bir dal eklemek istersen tip tanımına (Tedavi.id) ve ikon dosyasına
+    da eklemen gerekir — bu artık kod işidir, config işi değil.
+
+ad            Ekranda görünen ad, serbest
+ton           'emerald' veya 'amber' — kartın rengi
+ozet          Ana sayfadaki kartın metni
+metaAciklama  Google sonucundaki açıklama, 150-160 karakter
+giris         Tedavi sayfasının açılış paragrafı
+asamalar      Süreç adımları: { baslik, metin }
+notlar        Hastanın bilmesi gerekenler, düz metin dizisi
+sorular       { soru, cevap } — sayfadaki akordiyon
+
+Metin yazarken: süreç anlatılır, sonuç vaat EDİLMEZ, fiyat YAZILMAZ, kesin gün
+sayısı yerine aralık verilir.
+
+--- ulasimNotlari ---------------------------------------------------------
+Ulaşım kartındaki madde listesi. Metro/otobüs/otopark durumu.
+Kliniğe göre tamamen değişir, şablon metni değildir.
+
+--- gorseller -------------------------------------------------------------
+  hero            Ana sayfadaki büyük kart. Dikeye yakın kadraj iyi durur.
+                  Alt kenarını saat kartı örter — önemli ayrıntıyı üstte bırak.
+  mekanlar.bekleme
+  mekanlar.muayene
+  mekanlar.cocuk  Klinik bölümündeki üç kart.
+
+Her biri { yol, alt } ister.
+  yol  public/ altındaki yol, başında eğik çizgiyle: '/gorseller/hero.jpg'
+       Boş bırakılırsa çizim yer tutucusu kalır — site bozulmaz.
+  alt  Görmeyen ziyaretçiye kareyi anlatan kısa cümle. Boş bırakma.
+
+Dosya kuralları:
+  - JPEG veya WebP, uzun kenar ~1600 piksel, 300 KB altı
+  - Dosya adında BOŞLUK VE TÜRKÇE KARAKTER OLMASIN
+    kotu:  'Klinik Bekleme Alanı.jpg'
+    iyi:   'klinik-bekleme-alani.jpg'
+    Sebebi: bazı sunucularda URL kodlaması sorun çıkarır.
+  - Çocuk bölümü kartı yoksa mekanlar.cocuk yolunu boş bırak
+
+Mevcut demoda fotoğraflar 2,5-3 MB'lık ham dosyalar. Yeni müşteride küçültülmüş
+hâli konur.
+
+
+================================================================================
+5. [İSTEĞE BAĞLI] site.config.ts → şablon metinleri
+================================================================================
+
+Bunlar "ORTAK METİNLER" başlığı altındadır ve kliniğe göre değişmesi GEREKMEZ.
+Genel diş hekimliği bilgisidir, her klinikte aynı kalabilir.
+
+  sterilizasyon      Sterilizasyon süreci maddeleri
+  koruyucuBilgiler   Fırçalama / çocukta ilk ziyaret / diş eti sağlığı
+  sorular            Ana sayfadaki sık sorulan sorular
+
+Ne zaman dokunulur:
+  - Klinik farklı bir sterilizasyon süreci uyguluyorsa
+  - Müşteri kendi metnini istiyorsa
+  - İkinci bir demo çıkarıyorsan ve metinlerin birebir aynı olmasını
+    istemiyorsan (Google kopya içerik sayar)
+
+Not: `sorular` listesindeki bazı sorular tedavi dallarına atıf yapıyor
+(implant, ortodonti, kanal tedavisi). O dalı sildiysen ilgili soruyu da sil.
+
+
+================================================================================
+6. [İSTEĞE BAĞLI] yasal.config.ts
+================================================================================
+
+Üç metin var: kvkkMetni, gizlilikMetni, cerezMetni.
+
+İyi haber: klinik adı, adresi, telefonu ve e-postası bu metinlere
+site.config.ts'ten OTOMATİK gelir. Elle yazman gereken bir iletişim bilgisi yok.
+
+Ne zaman elle değiştirilir:
+  >>> Randevu ucunun veri işleyişi değişirse. <<<
+  Şu an app/api/randevu/route.ts gelen talebi HİÇBİR YERE KAYDETMİYOR:
+  veri tabanı yok, günlüğe kişisel veri yazılmıyor, talep e-postaya çevrilip
+  bellekten düşüyor. KVKK metni bunu anlatıyor.
+
+  Eğer ileride kayıt tutan bir yapı eklersen (veri tabanı, CRM, günlük),
+  KVKK metnindeki "Toplama yöntemi ve saklama" bölümü yalan olur ve
+  güncellenmesi ZORUNLUDUR.
+
+Diğer değişiklik gerektiren durumlar:
+  - Siteye analitik/çerez eklenirse → cerezMetni güncellenir
+  - Üçüncü tarafa veri aktarımı başlarsa → kvkkMetni "Aktarım" bölümü
+  - Gömülü harita kaldırılırsa → cerezMetni "Gömülü harita" bölümü
+
+Yasal sayfalar bilerek noindex ve sitemap dışıdır. Böyle kalsın.
+
+
+================================================================================
+7. [İSTEĞE BAĞLI] MARKA VE TASARIM
+================================================================================
+
+Renk değiştirmek istersen tek yer:
+
+  ds/tokens/colors.css
+      Emerald (ana marka) ve amber (vurgu) tonları burada.
+      Bu dosya `ds/` altında ama tokens/ klasörü elle düzenlenebilir —
+      üretilen dosyalar bundle.js ve styles.css'tir, onlara dokunma.
+
+  app/layout.tsx → themeColor: '#06301f'
+      >>> BU SABİT YAZILMIŞ. Marka rengini değiştirirsen burayı da elle
+          güncelle, yoksa mobil tarayıcının üst çubuğu eski renkte kalır. <<<
+      Değeri --emerald-900 ile aynı olmalı.
+
+  OG paylaşım görselinin renkleri
+      app/_ortak/og-duzen.tsx renkleri colors.css'ten okur, elle dokunma
+      gerekmez. Token değişince görsel de değişir.
+
+Font değiştirmek istersen:
+  app/layout.tsx içinde next/font ile yükleniyor (Plus Jakarta Sans + IBM Plex
+  Mono). Google Fonts'tan başka bir font seçip değişken adlarını koru.
+  Not: OG görseli next/og'un varsayılan fontunu kullanır, marka fontunu değil.
+  Marka fontuyla üretmek istersen depoya .ttf dosyası eklemek gerekir.
+
+FAVICON — ŞU AN HİÇ YOK:
+  app/icon.png (veya icon.svg) diye bir dosya koyarsan Next otomatik bağlar.
+  Her müşteride ayrı olmalı. Şu an tarayıcı sekmesinde boş kağıt ikonu çıkıyor.
+
+
+================================================================================
+8. DOKUNULMAYACAKLAR
+================================================================================
+
+Bu dosyalar müşteriden müşteriye DEĞİŞMEZ. Değiştiriyorsan bir şey ters gidiyor
+demektir:
+
+  ds/bundle.js, ds/styles.css   ÜRETİLMİŞ dosyalar. Elle düzenlenmez.
+                                _ds/ paketi değişirse: npm run gen:ds
+  app/_ortak/*.js               Ortak bileşenler (çerçeve, temel, yasal sayfa)
+  app/klinik-app.js             Ana sayfa bölümleri
+  app/**/page.tsx               Rota dosyaları, yalnız metadata üretir
+  app/api/randevu/route.ts      Randevu ucu
+  app/robots.ts, app/sitemap.ts site.config'ten besleniyor
+  app/globals.css               :hover, medya sorgusu, yazdırma kuralları
+  index.html, assets/, support.js, tools/serve.js, "Klinik Sitesi.dc.html"
+                                Next.js öncesi eski statik sürüm. Derlemeye
+                                girmez, karşılaştırma için duruyor.
+
+Kod düzeni kuralları (yeni sayfa açarken):
+  - Rota dosyaları .tsx ve sunucu bileşenidir, neredeyse yalnız metadata üretir
+  - Görünüm aynı klasördeki *-icerik.js istemci bileşenine devredilir
+  - .js bileşenlerinde JSX YOK; h() yani React.createElement kullanılır
+  - Stiller satır içi style nesnesiyle, değerler token'dan: var(--emerald-700)
+  - Sabit renk kodu yazılmaz
+  - HER SAYFADA TEK h1 OLACAK. BolumBasligi'ne seviye: 'h1' geçilir.
+    Ayrıntı: CLAUDE.md → "Her sayfada tek h1"
+
+
+================================================================================
+9. YAYIN ÖNCESİ KONTROL LİSTESİ
+================================================================================
+
+Sırayla:
+
+  [ ] site.adres gerçek alan adı mı? (.example kalmadı mı)
+  [ ] site.demoModu = false yapıldı mı?          <<< EN ÇOK UNUTULAN <<<
+  [ ] telefon ve telHref aynı numara mı?
+  [ ] whatsapp numarası doğru mu, deneyip bak
+  [ ] haritaKoordinat dolduruldu mu, harita doğru binayı gösteriyor mu
+  [ ] ruhsat numarası gerçek mi, değilse '—' mi
+  [ ] editor alanı gerçek bir kişi mi
+  [ ] sonGuncelleme bugünün tarihi mi
+  [ ] tanitim ile adresTam çelişiyor mu (kat bilgisi!)
+  [ ] Kabul edilmeyen tedavi dalları silindi mi
+  [ ] Silinen dala atıf yapan `sorular` kaydı kaldı mı
+  [ ] Fotoğraflar küçültüldü mü, dosya adlarında boşluk/Türkçe karakter var mı
+  [ ] Her fotoğrafın `alt` metni yazıldı mı
+  [ ] .env.local üç değeri de dolu mu
+  [ ] Vercel'e üç değişken girildi mi
+  [ ] TEST RANDEVUSU GÖNDERİLDİ Mİ, MAİL GELDİ Mİ
+  [ ] npm run build hatasız geçiyor mu
+  [ ] app/icon.png konuldu mu
+  [ ] Linki WhatsApp'a atıp önizleme görselini gördün mü
+  [ ] Telefonda aç: mobil alt çubuk, harita, form çalışıyor mu
+
+Yayından sonra:
+  [ ] Google Search Console'a alan adını ekle
+  [ ] sitemap.xml'i Search Console'a bildir
+  [ ] robots.txt'i tarayıcıda aç, "Disallow: /" GİTMİŞ olmalı
+  [ ] Bir sayfanın kaynağına bak: "noindex" KALMAMIŞ olmalı
+
+
+================================================================================
+10. BİLİNEN EKSİKLER (şablonun kendisinde)
+================================================================================
+
+Bunlar her müşteride tekrar eden açıklar. Şablonda çözülürse bir daha
+uğraşılmaz:
+
+  - Turnstile (bot koruması) yok. Randevu ucunda honeypot, dakikada 5 istek
+    sınırı ve alan uzunluk sınırları var ama captcha yok. Sunucu yeniden
+    başlayınca istek sayacı sıfırlanır.
+  - Favicon yok.
+  - /tedaviler indeks sayfası yok. Menüdeki "Tedaviler" ana sayfa çapasına
+    gidiyor (/#tedaviler) — çalışıyor ama ayrı sayfa daha iyi olur.
+  - Hekim detay sayfaları yok (/hekimler/ad-soyad). Hasta hekim adıyla arıyor.
+  - OG görseli marka fontunu değil, next/og'un varsayılan fontunu kullanıyor.
+  - Fotoğraflar ham boyutta (2,5-3 MB) ve dosya adlarında boşluk var.
+
+================================================================================
