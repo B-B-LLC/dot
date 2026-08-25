@@ -166,6 +166,10 @@ var useEffect = React.useEffect;
     }
   };
 
+  /* `seviye`: başlığın etiketi. Ana sayfada bölüm başlıkları h2'dir; bir bölüm
+     kendi sayfasında tek başına durduğunda (tedavi, hekimler, iletişim, yasal
+     metinler, 404) o sayfanın h1'i olur. Görünüm iki durumda da aynıdır:
+     etiket değişir, stil değişmez. */
   function BolumBasligi(props) {
     return h('div', null,
       h('div', { style: S.baslikSatiri },
@@ -173,7 +177,7 @@ var useEffect = React.useEffect;
         h('span', { style: S.kas }, props.kas),
         h('span', { style: S.cizgi })
       ),
-      h('h2', { style: Object.assign({}, S.h2, props.baslikStil) }, props.baslik),
+      h(props.seviye || 'h2', { style: Object.assign({}, S.h2, props.baslikStil) }, props.baslik),
       props.giris
         ? h('p', {
             style: { fontSize: 16, lineHeight: 1.62, color: 'var(--text-muted)', margin: '14px 0 0', maxWidth: '56ch' }

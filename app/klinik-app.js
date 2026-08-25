@@ -743,9 +743,12 @@ var useCallback = React.useCallback;
   /* 03 — Hekimler                                                       */
   /* ------------------------------------------------------------------ */
 
-  function Hekimler() {
+  /* Ana sayfada bir bölüm, /hekimler adresinde ise sayfanın tamamı. Kendi
+     sayfasındayken başlığı h1 olsun diye `seviye` dışarıdan verilir. */
+  function Hekimler(props) {
     return h('section', { id: 'hekimler', style: S.bolum },
       h(BolumBasligi, {
+        seviye: props && props.seviye,
         numara: '03',
         kas: 'HEKİM KADROSU',
         baslik: 'Poliklinikte çalışan hekimler',
@@ -1169,9 +1172,11 @@ var useCallback = React.useCallback;
     );
   }
 
-  function Ulasim() {
+  /* Hekimler gibi: ana sayfada bölüm, /iletisim adresinde sayfanın tamamı. */
+  function Ulasim(props) {
     return h('section', { id: 'ulasim', style: S.bolum },
       h(BolumBasligi, {
+        seviye: props && props.seviye,
         numara: '06',
         kas: 'ULAŞIM VE RANDEVU',
         baslik: 'Nasıl gelinir, nasıl randevu alınır'

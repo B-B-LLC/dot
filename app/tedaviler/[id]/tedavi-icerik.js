@@ -127,6 +127,7 @@ export default function TedaviIcerik(props) {
           }
         }, tedaviSimgesi(tedavi.id)),
         h(BolumBasligi, {
+          seviye: 'h1',
           numara: '',
           kas: 'TEDAVİ ALANI',
           baslik: tedavi.ad,

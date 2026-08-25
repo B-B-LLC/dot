@@ -76,6 +76,17 @@ geniş düzenle çizilir.
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
 
+#### Her sayfada tek `h1`
+
+Bölüm başlıklarını `BolumBasligi` basar ve varsayılan etiketi `h2`'dir; ana
+sayfanın `h1`'i hero'daki tanıtım cümlesidir. Bir bölüm kendi sayfasında tek
+başına durduğunda o sayfanın `h1`'i olmalıdır — bunun için `seviye: 'h1'`
+geçilir. Paylaşılan bölümlerde seçim çağıran tarafındadır: `HekimlerBolumu` ve
+`UlasimBolumu` `seviye`'yi dışarıdan alır, ana sayfada `h2` kalır,
+`/hekimler` ile `/iletisim` sayfalarında `h1` olur. Stil iki durumda da
+`S.h2`'dir: değişen yalnız etikettir. Yeni bir sayfa açarken `h1`'ini
+vermeyi unutmayın.
+
 ### Tasarım sistemi: `ds/` üretilmiştir
 
 `ds/bundle.js`, `ds/styles.css` ve `ds/tokens/` elle düzenlenmez.

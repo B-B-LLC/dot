@@ -24,6 +24,7 @@ export default function YasalSayfa(props) {
       ),
 
       h(BolumBasligi, {
+        seviye: 'h1',
         numara: '',
         kas: 'YASAL',
         baslik: metin.baslik,

@@ -9,6 +9,7 @@ export default function BulunamadiIcerik() {
   return h(SayfaCercevesi, null,
     h('section', { style: S.bolum },
       h(BolumBasligi, {
+        seviye: 'h1',
         numara: '404',
         kas: 'SAYFA BULUNAMADI',
         baslik: 'Aradığınız sayfaya ulaşılamadı',
