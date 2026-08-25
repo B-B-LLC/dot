@@ -253,6 +253,261 @@ var useCallback = React.useCallback;
   /* 01 — Tedaviler                                                      */
   /* ------------------------------------------------------------------ */
 
+  /* Tedavi kartları bir silindirin yüzeyine dizilir: her kart kendi açısına
+     döndürülüp yarıçap kadar öne itilir, dönüş ise tek bir transform ile
+     halkaya uygulanır. Telefonda ucuz olmasının sebebi bu — dönerken tarayıcı
+     altı kartı ayrı ayrı değil, tek katmanı taşır ve düzen (layout) yeniden
+     hesaplanmaz. Ölçüler de CSS'ten gelir, JS ile ölçüm yapılmaz.
+
+     Otomatik dönüş yalnızca bölüm ekrandayken, sekme öndeyken ve kullanıcı
+     henüz devralmamışken çalışır; `prefers-reduced-motion` açıksa hiç
+     çalışmaz. Kullanıcı sürüklediği ya da bir kart seçtiği anda susar. */
+
+  var CARK_BEKLEME = 5200;                                    /* kartlar arası duraklama */
+  var CARK_GECIS = 'transform .78s cubic-bezier(.22,.61,.36,1)';
+  var CARK_KART_G = 'clamp(232px,74vw,340px)';                /* kart genişliği */
+  var CARK_KART_Y = 'clamp(268px,84vw,292px)';                /* kart yüksekliği */
+
+  function carkOku(yon) {
+    return h('svg', {
+      width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true'
+    }, h('path', { d: yon < 0 ? 'M15 6l-6 6 6 6' : 'M9 6l6 6-6 6' }));
+  }
+
+  function TedaviCarki() {
+    var n = TEDAVILER.length;
+    var adim = 360 / n;
+
+    var aciPair = useState(0);                 /* sürekli açı: sarmalamak yerine büyür/küçülür */
+    var aci = aciPair[0], setAci = aciPair[1];
+    var surukPair = useState(false);
+    var surukleniyor = surukPair[0], setSurukleniyor = surukPair[1];
+    var otoPair = useState(true);
+    var otoDonsun = otoPair[0], setOtoDonsun = otoPair[1];
+    var gorunurPair = useState(false);
+    var gorunur = gorunurPair[0], setGorunur = gorunurPair[1];
+    var azPair = useState(false);
+    var azHareket = azPair[0], setAzHareket = azPair[1];
+
+    var sahneRef = useRef(null);
+    var halkaRef = useRef(null);
+    var surukRef = useRef(null);               /* sürükleme sırasında React'e uğramayan durum */
+    var tasindiRef = useRef(false);            /* sürükleme bittiyse tıklama bağlantıyı açmasın */
+
+    var aktif = ((Math.round(-aci / adim) % n) + n) % n;
+
+    var halkaDonusumu = useCallback(function (a) {
+      return 'translateZ(calc(-1 * var(--cark-r))) rotateY(' + a + 'deg)';
+    }, []);
+
+    useEffect(function () {
+      var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var uygula = function () { setAzHareket(mq.matches); };
+      uygula();
+      mq.addEventListener('change', uygula);
+      return function () { mq.removeEventListener('change', uygula); };
+    }, []);
+
+    /* Ekranda değilken ya da sekme arkadayken dönmek boşa pil harcar. */
+    useEffect(function () {
+      var el = sahneRef.current;
+      if (!el) return;
+
+      var ekranda = false;
+      var sekmeAcik = !document.hidden;
+      var yaz = function () { setGorunur(ekranda && sekmeAcik); };
+
+      var gozlemci = new IntersectionObserver(function (girdiler) {
+        ekranda = girdiler[0].isIntersecting;
+        yaz();
+      }, { threshold: 0.3 });
+      gozlemci.observe(el);
+
+      var sekme = function () { sekmeAcik = !document.hidden; yaz(); };
+      document.addEventListener('visibilitychange', sekme);
+
+      return function () {
+        gozlemci.disconnect();
+        document.removeEventListener('visibilitychange', sekme);
+      };
+    }, []);
+
+    /* Zamanlayıcı her adımdan sonra yeniden kurulur: arka planda çalışan
+       aralık (setInterval) kalmaz. */
+    useEffect(function () {
+      if (!otoDonsun || !gorunur || azHareket || surukleniyor) return;
+      var t = setTimeout(function () {
+        setAci(function (a) { return a - adim; });
+      }, CARK_BEKLEME);
+      return function () { clearTimeout(t); };
+    }, [otoDonsun, gorunur, azHareket, surukleniyor, aci, adim]);
+
+    function devral() { setOtoDonsun(false); }
+
+    function git(yon) {
+      devral();
+      setAci(function (a) { return a - yon * adim; });
+    }
+
+    function kartaGit(i) {
+      devral();
+      setAci(function (a) {
+        var suanki = ((Math.round(-a / adim) % n) + n) % n;
+        var fark = (i - suanki + n) % n;
+        if (fark > n / 2) fark -= n;           /* kısa yoldan dön */
+        return a - fark * adim;
+      });
+    }
+
+    function tutBasla(e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      surukRef.current = { x: e.clientX, aci: aci, son: aci };
+      tasindiRef.current = false;
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (hata) { /* eski tarayıcı */ }
+      setSurukleniyor(true);
+      devral();
+    }
+
+    /* Sürükleme sırasında transform doğrudan yazılır; her piksel için React
+       yeniden çizmez. */
+    function tutHareket(e) {
+      var s = surukRef.current;
+      if (!s) return;
+      var dx = e.clientX - s.x;
+      if (Math.abs(dx) > 4) tasindiRef.current = true;
+      var genislik = sahneRef.current ? sahneRef.current.clientWidth : 320;
+      s.son = s.aci + (dx / genislik) * adim * 1.5;
+      if (halkaRef.current) halkaRef.current.style.transform = halkaDonusumu(s.son);
+    }
+
+    function tutBitir() {
+      var s = surukRef.current;
+      if (!s) return;
+      surukRef.current = null;
+      var hedef = Math.round(s.son / adim) * adim;
+      /* Açı değişmediyse React aynı transform'u yeniden yazmaz ve DOM
+         sürükleme sırasındaki değerde kalırdı; bu yüzden elle de yazılıyor. */
+      if (halkaRef.current) halkaRef.current.style.transform = halkaDonusumu(hedef);
+      setSurukleniyor(false);
+      setAci(hedef);
+    }
+
+    function kartTiklandi(e, i) {
+      if (tasindiRef.current) { tasindiRef.current = false; e.preventDefault(); return; }
+      if (i !== aktif) { e.preventDefault(); kartaGit(i); }
+    }
+
+    return h('div', {
+      style: {
+        marginTop: 36,
+        '--cark-g': CARK_KART_G,
+        '--cark-y': CARK_KART_Y,
+        /* Yarıçap = (genişlik/2) / tan(180°/n); altı kart için ≈ genişlik × .866,
+           yani kartlar tam yan yana gelir. Aralarında ince bir boşluk kalsın
+           diye biraz açılıyor. */
+        '--cark-r': 'calc(' + CARK_KART_G + ' * .95)'
+      }
+    },
+      h('div', {
+        ref: sahneRef,
+        role: 'group',
+        'aria-roledescription': 'çark',
+        'aria-label': 'Tedavi alanları',
+        onPointerDown: tutBasla,
+        onPointerMove: tutHareket,
+        onPointerUp: tutBitir,
+        onPointerCancel: tutBitir,
+        style: {
+          position: 'relative',
+          height: 'calc(var(--cark-y) + 44px)',
+          overflow: 'hidden',
+          /* Dikey kaydırma tarayıcıda kalsın, yatay hareketi çark alsın. */
+          touchAction: 'pan-y',
+          cursor: surukleniyor ? 'grabbing' : 'grab',
+          userSelect: 'none'
+        }
+      },
+        h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(820px,150vw,1300px)' } },
+          h('div', {
+            ref: halkaRef,
+            style: {
+              position: 'absolute', top: 22, left: '50%',
+              width: 'var(--cark-g)', height: 'var(--cark-y)',
+              marginLeft: 'calc(var(--cark-g) / -2)',
+              transformStyle: 'preserve-3d',
+              transform: halkaDonusumu(aci),
+              transition: (surukleniyor || azHareket) ? 'none' : CARK_GECIS,
+              willChange: 'transform'
+            }
+          },
+            TEDAVILER.map(function (t, i) {
+              /* Merkezden kaç kart uzakta: arkaya düşenler çizilmez. */
+              var uzak = Math.abs(((i - aktif + n + n / 2) % n) - n / 2);
+              return h('a', {
+                key: t.id,
+                href: '/tedaviler/' + t.id,
+                onClick: function (e) { kartTiklandi(e, i); },
+                onFocus: function () { if (i !== aktif) kartaGit(i); },
+                'aria-current': i === aktif ? 'true' : undefined,
+                style: {
+                  position: 'absolute', inset: 0, display: 'block', color: 'inherit',
+                  transform: 'rotateY(' + (i * adim) + 'deg) translateZ(var(--cark-r))',
+                  backfaceVisibility: 'hidden',
+                  opacity: uzak === 0 ? 1 : (uzak <= 1 ? 0.5 : 0),
+                  pointerEvents: uzak <= 1 ? 'auto' : 'none',
+                  transition: azHareket ? 'none' : 'opacity .5s ease'
+                }
+              },
+                h(Card, { tone: 'cream', padding: 'md', interactive: i === aktif, style: { height: '100%', boxSizing: 'border-box' } },
+                  h('div', {
+                    style: {
+                      width: 46, height: 46, borderRadius: 13,
+                      background: t.ton === 'amber' ? 'var(--amber-100)' : 'var(--emerald-100)',
+                      color: t.ton === 'amber' ? 'var(--amber-700)' : 'var(--emerald-700)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }
+                  }, tedaviSimgesi(t.id)),
+                  h('h3', { style: Object.assign({}, S.h3, { margin: '18px 0 0' }) }, t.ad),
+                  h('p', {
+                    style: Object.assign({}, S.kartMetin, {
+                      display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'
+                    })
+                  }, t.ozet),
+                  h('span', {
+                    style: {
+                      display: 'inline-block', marginTop: 14, fontSize: 14,
+                      fontWeight: 'var(--fw-semibold)', color: 'var(--emerald-700)'
+                    }
+                  }, 'Süreci oku →')
+                )
+              );
+            })
+          )
+        )
+      ),
+
+      h('div', {
+        style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginTop: 18 }
+      },
+        h('button', { type: 'button', className: 'cark-ok', onClick: function () { git(-1); }, 'aria-label': 'Önceki dal' }, carkOku(-1)),
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: 4 } },
+          TEDAVILER.map(function (t, i) {
+            return h('button', {
+              key: t.id,
+              type: 'button',
+              className: 'cark-nokta' + (i === aktif ? ' cark-nokta--etkin' : ''),
+              onClick: function () { kartaGit(i); },
+              'aria-label': t.ad,
+              'aria-current': i === aktif ? 'true' : undefined
+            });
+          })
+        ),
+        h('button', { type: 'button', className: 'cark-ok', onClick: function () { git(1); }, 'aria-label': 'Sonraki dal' }, carkOku(1))
+      )
+    );
+  }
+
   function Tedaviler() {
     return h('section', { id: 'tedaviler', style: S.bolum },
       h(BolumBasligi, {
@@ -262,36 +517,9 @@ var useCallback = React.useCallback;
         baslikStil: { maxWidth: '20ch' },
         giris: 'Aşağıdaki başlıklar, poliklinikte hasta kabul edilen alanları ve her birinde izlenen genel süreci anlatır.'
       }),
-      h('div', { style: Object.assign({}, S.izgara(268), { marginTop: 36 }) },
-        TEDAVILER.map(function (t) {
-          /* Kart, tedavinin kendi sayfasına açılır. Card sabit bir div ürettiği
-             için bağlantı dışarıdan sarılıyor. */
-          return h('a', {
-            key: t.id,
-            href: '/tedaviler/' + t.id,
-            style: { display: 'block', color: 'inherit' }
-          },
-            h(Card, { tone: 'cream', padding: 'md', interactive: true },
-              h('div', {
-                style: {
-                  width: 46, height: 46, borderRadius: 13,
-                  background: t.ton === 'amber' ? 'var(--amber-100)' : 'var(--emerald-100)',
-                  color: t.ton === 'amber' ? 'var(--amber-700)' : 'var(--emerald-700)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center'
-                }
-              }, tedaviSimgesi(t.id)),
-              h('h3', { style: Object.assign({}, S.h3, { margin: '18px 0 0' }) }, t.ad),
-              h('p', { style: S.kartMetin }, t.ozet),
-              h('span', {
-                style: {
-                  display: 'inline-block', marginTop: 14, fontSize: 14,
-                  fontWeight: 'var(--fw-semibold)', color: 'var(--emerald-700)'
-                }
-              }, 'Süreci oku →')
-            )
-          );
-        })
-      )
+      /* Kartlar tedavinin kendi sayfasına açılır; çark yalnız sunumu değiştirir,
+         altı bağlantı da her zaman DOM'da durur. */
+      h(TedaviCarki)
     );
   }
 

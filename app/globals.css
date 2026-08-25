@@ -84,6 +84,47 @@ a:hover { color: var(--text-link-hover); }
 .mobil-bar-link--ara { color: var(--emerald-700); background: var(--emerald-100); }
 .mobil-bar-link--ara:hover { color: var(--emerald-700); background: var(--emerald-200); }
 
+/* --- Tedavi çarkı denetimleri --- */
+.cark-ok {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .72);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-glass), color var(--dur-fast) var(--ease-glass);
+}
+.cark-ok:hover { background: var(--emerald-100); color: var(--emerald-700); }
+
+/* Görünen nokta 8 px, dokunma alanı 22 px. */
+.cark-nokta {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  position: relative;
+  cursor: pointer;
+}
+.cark-nokta::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--sand-300);
+  transition: width var(--dur-fast) var(--ease-glass), background var(--dur-fast) var(--ease-glass);
+}
+.cark-nokta:hover::after { background: var(--emerald-300); }
+.cark-nokta--etkin::after { width: 20px; background: var(--emerald-600); }
+
 /* --- Altbilgi bağlantıları koyu zümrüt panelin üstünde durur --- */
 .footer-link { color: var(--text-on-dark-muted); }
 .footer-link:hover { color: #fff; }
