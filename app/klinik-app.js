@@ -269,14 +269,17 @@ var useCallback = React.useCallback;
      Kare döngüsü React durumuna dokunmaz: transform ve saydamlıklar doğrudan
      DOM'a yazılır, yalnızca öndeki kart değiştiğinde (noktaları güncellemek
      için) bir kez setState çağrılır. Döngü de ancak bölüm ekrandayken, sekme
-     öndeyken ve `prefers-reduced-motion` kapalıyken çalışır; hedefe varıp
-     sürüklenme de kapalıysa kendini durdurur. */
+     öndeyken ve `prefers-reduced-motion` kapalıyken çalışır. */
 
   var CARK_KART_G = 'clamp(232px,74vw,320px)';                /* kart genişliği */
   var CARK_KART_Y = 'clamp(268px,84vw,296px)';                /* kart yüksekliği */
-  var CARK_YARICAP = 'clamp(330px,60vw,600px)';               /* halkanın yarıçapı */
-  var CARK_KAYDIRMA_ACI = 190;    /* bölüm ekrandan geçerken toplam dönüş (derece) */
+  /* Yarıçap kart genişliğine bağlı: altı kart için en dar kapanış genişlik ×
+     .866'dır, biraz üstü kartları yan yana ama boşluklu tutar. Ekran genişliğine
+     bağlanırsa masaüstünde kartlar birbirinden kopuyordu. */
+  var CARK_YARICAP = 'calc(' + CARK_KART_G + ' * 1.05)';
+  var CARK_KAYDIRMA_ACI = 420;    /* bölüm ekrandan geçerken toplam dönüş: altı kart da görünür */
   var CARK_SURUKLENME = 2;        /* boştayken saniyede derece */
+  var CARK_DURAKLAMA = 2600;      /* etkileşimden sonra yavaş dönüşün geri gelmesi (ms) */
   var CARK_YUMUSAMA = 0.1;        /* 60 Hz'de kare başına hedefe yaklaşma oranı */
   var CARK_SOLMA = 108;           /* bu açıdan sonra kart tamamen soluk */
 
@@ -319,7 +322,7 @@ var useCallback = React.useCallback;
     var kaydirmaRef = useRef(0);     /* kaydırmadan gelen pay */
     var kullaniciRef = useRef(0);    /* sürükleme + düğmeler + boştaki sürüklenme */
     var aktifRef = useRef(0);
-    var otoRef = useRef(true);       /* kullanıcı devraldıysa sürüklenme durur */
+    var sonEtkilesimRef = useRef(0); /* son dokunuşun zamanı: yavaş dönüş bunu bekler */
     var azRef = useRef(false);
     var ekrandaRef = useRef(false);
     var kareRef = useRef(0);
@@ -370,7 +373,9 @@ var useCallback = React.useCallback;
       sonKareRef.current = zaman;
       var gecen = onceki ? Math.min(zaman - onceki, 100) : 16.7;
 
-      if (otoRef.current && !surukRef.current) {
+      /* Yavaş dönüş, kullanıcı bıraktıktan kısa süre sonra kendiliğinden
+         geri gelir; bir sürükleme onu temelli susturmaz. */
+      if (!surukRef.current && zaman - sonEtkilesimRef.current > CARK_DURAKLAMA) {
         kullaniciRef.current -= CARK_SURUKLENME * (gecen / 1000);
       }
 
@@ -380,9 +385,6 @@ var useCallback = React.useCallback;
       else aciRef.current += fark * (1 - Math.pow(1 - CARK_YUMUSAMA, gecen / 16.7));
 
       yaz();
-
-      /* Sürüklenme kapalı ve hedefe varıldıysa döngüyü boşuna döndürme. */
-      if (!otoRef.current && Math.abs(hedef - aciRef.current) < 0.02) return;
       kareRef.current = requestAnimationFrame(kare);
     }, [yaz]);
 
@@ -472,7 +474,8 @@ var useCallback = React.useCallback;
 
     /* --- kullanıcı ---------------------------------------------------- */
 
-    function devral() { otoRef.current = false; }
+    /* Kullanıcı dokundu: yavaş dönüş CARK_DURAKLAMA kadar bekler. */
+    function devral() { sonEtkilesimRef.current = performance.now(); }
 
     function git(yon) {
       devral();
@@ -552,7 +555,7 @@ var useCallback = React.useCallback;
           userSelect: 'none'
         }
       },
-        h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(1200px,180vw,2200px)' } },
+        h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(1000px,160vw,1600px)' } },
           h('div', {
             ref: halkaRef,
             style: {
