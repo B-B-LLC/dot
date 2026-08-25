@@ -199,7 +199,10 @@ var useCallback = React.useCallback;
               ? h(Fragment, null,
                   KapakGorseli(GORSELLER.hero.yol, GORSELLER.hero.alt, {
                     oncelikli: true,
-                    olcu: '(max-width: 760px) 100vw, 560px'
+                    /* Kart 380 px yüksekliğinde ve fotoğraflar yatay; kırpma
+                       yükseklikten hesaplandığı için kutu genişliğinin
+                       (~520 px) değil, ~700 px'in indirilmesi gerekiyor. */
+                    olcu: '(max-width: 760px) 190vw, 760px'
                   }),
                   /* Kartın alt kenarına binen saat kartı, açık renkli bir
                      fotoğrafın üzerinde perdesiz okunmuyor. */
@@ -300,7 +303,7 @@ var useCallback = React.useCallback;
             },
               foto.yol
                 ? h(Fragment, null,
-                    KapakGorseli(foto.yol, foto.alt, { olcu: '(max-width: 760px) 100vw, 400px' }),
+                    KapakGorseli(foto.yol, foto.alt, { olcu: '(max-width: 760px) 180vw, 460px' }),
                     YaziPerdesi()
                   )
                 : h('div', {

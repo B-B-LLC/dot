@@ -203,7 +203,10 @@ export const gorseller = {
   /** Ana sayfada başlığın yanındaki büyük kart. Dikeye yakın kadraj iyi durur;
       alt kenarın bir bölümü saat kartıyla örtüldüğü için önemli ayrıntıyı
       üstte bırakın. */
-  hero: { yol: '', alt: '' } as Gorsel,
+  hero: {
+    yol: '/gorseller/Hero.jpg',
+    alt: 'Kliniğin girişi: karşılama bankosu ve bekleme koltukları'
+  } as Gorsel,
 
   /** Klinik bölümündeki üç mekân kartı. Kart etiketlerini temel.js'teki
       MEKANLAR listesi belirler; buradaki anahtarlar onlarla eşleşir. */
