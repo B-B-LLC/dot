@@ -253,36 +253,44 @@ var useCallback = React.useCallback;
   /* 01 — Tedaviler                                                      */
   /* ------------------------------------------------------------------ */
 
-  /* Tedavi kartları bir halkanın çevresine dizilir: her kart kendi açısına
-     döndürülüp yarıçap kadar öne itilir, dönüş ise tek bir transform ile
-     halkaya uygulanır. Telefonda ucuz olmasının sebebi bu — dönerken tarayıcı
-     altı kartı ayrı ayrı değil tek katmanı taşır, düzen (layout) yeniden
-     hesaplanmaz. Ölçüler de CSS'ten gelir, JS ölçüm yapmaz.
+  /* Tedavi kartları yatayda geniş, derinlikte sığ bir yayın üzerinde döner —
+     kesit olarak çemberden çok oval. Bunun sebebi pratik: dairede yatay açıklık
+     ile kartlar arası boşluk aynı yarıçapa bağlıdır, yani yayı genişletmek
+     kartları da birbirinden koparır. Burada üç ölçü ayrı:
+       • --cark-adim     — komşu kartlar arasındaki yatay mesafe (sıkışıklık),
+       • --cark-derinlik — merkezden uzaklaştıkça geriye kaçma (yayın basıklığı),
+       • CARK_EGIM       — kart başına dönüş açısı (kavis hissi).
+     Kartın yeri merkeze olan uzaklığına (d) göre hesaplanır: x = d × adım,
+     z = -derinlik × d², dönüş = d × eğim. d ±n/2'de sarmalanır; orada kart çoktan
+     saydamlıkla silinmiş olduğu için sıçrama görünmez.
 
-     Halkayı üç şey çevirir ve üçü tek bir hedef açıda toplanır:
-       • sayfa kaydırma — bölüm ekrandan geçerken halka CARK_KAYDIRMA_ACI kadar
-         döner, kaydırmaya bağlı asıl etki budur;
+     Konumu üç şey sürer ve üçü tek bir hedef açıda toplanır:
+       • sayfa kaydırma — bölüm ekrandan geçerken CARK_KAYDIRMA_ACI kadar döner,
+         kaydırmaya bağlı asıl etki budur;
        • boştaki sürüklenme — kimse dokunmazken çok yavaş dönmeye devam eder;
        • kullanıcı — parmakla sürükleme, oklar, noktalar.
      Çizilen açı hedefe yumuşayarak yaklaşır; akıcılık buradan gelir.
 
-     Kare döngüsü React durumuna dokunmaz: transform ve saydamlıklar doğrudan
-     DOM'a yazılır, yalnızca öndeki kart değiştiğinde (noktaları güncellemek
-     için) bir kez setState çağrılır. Döngü de ancak bölüm ekrandayken, sekme
-     öndeyken ve `prefers-reduced-motion` kapalıyken çalışır. */
+     Kare döngüsü React durumuna dokunmaz: kartların transform ve saydamlıkları
+     doğrudan DOM'a yazılır (altı eleman, hepsi bileşikleştirilmiş katman; düzen
+     yeniden hesaplanmaz), yalnızca öndeki kart değiştiğinde noktaları
+     güncellemek için bir kez setState çağrılır. Ölçüler CSS değişkenlerinden
+     gelir, JS yalnız birimsiz çarpanları verir. Döngü de ancak bölüm
+     ekrandayken, sekme öndeyken ve `prefers-reduced-motion` kapalıyken çalışır. */
 
   var CARK_KART_G = 'clamp(232px,74vw,320px)';                /* kart genişliği */
   var CARK_KART_Y = 'clamp(268px,84vw,296px)';                /* kart yüksekliği */
-  /* Yarıçapın alt sınırı kart genişliğine bağlı: altı kart için en dar kapanış
-     genişlik × .866'dır, biraz üstü kartları yan yana ama boşluklu tutar. Dar
-     ekranda bu sınır geçerlidir; ~800 px'ten sonra çember büyüyerek kavisi
-     yayvanlaştırır ve kartları yana açar. */
-  var CARK_YARICAP = 'clamp(calc(' + CARK_KART_G + ' * 1.05),42vw,480px)';
+  /* Komşu kartlar arası yatay mesafe: kart genişliği + ince boşluk. Masaüstünde
+     yay ekranı baştan başa doldurur (±2 kart ≈ ±690 px) ama kartlar sıkışık
+     kalır. */
+  var CARK_ADIM_PX = 'calc(' + CARK_KART_G + ' + clamp(10px,1.4vw,24px))';
+  var CARK_DERINLIK = 'clamp(60px,7vw,104px)';   /* kart uzaklığının karesiyle geriye kaçış */
+  var CARK_EGIM = 17;             /* kart başına dönüş (derece) */
   var CARK_KAYDIRMA_ACI = 420;    /* bölüm ekrandan geçerken toplam dönüş: altı kart da görünür */
   var CARK_SURUKLENME = 2;        /* boştayken saniyede derece */
   var CARK_DURAKLAMA = 2600;      /* etkileşimden sonra yavaş dönüşün geri gelmesi (ms) */
   var CARK_YUMUSAMA = 0.1;        /* 60 Hz'de kare başına hedefe yaklaşma oranı */
-  var CARK_SOLMA = 108;           /* bu açıdan sonra kart tamamen soluk */
+  var CARK_SOLMA = 2.4;           /* bu kadar kart uzaklıkta tamamen silinir */
 
   function carkOku(yon) {
     return h('svg', {
@@ -297,14 +305,20 @@ var useCallback = React.useCallback;
     return d;
   }
 
-  /* Kartın öne göre sapması: 0 tam önde, 180 tam arkada. */
-  function carkOnSapmasi(a) {
-    var b = ((a % 360) + 360) % 360;
-    return b > 180 ? 360 - b : b;
+  /* Kartın merkeze uzaklığı, kart cinsinden: 0 tam önde, ±n/2 en arkada. */
+  function carkUzaklik(i, konum, n) {
+    return ((i - konum + n / 2) % n + n) % n - n / 2;
   }
 
-  function carkSaydamlik(sapma) {
-    return Math.max(0.14, 1 - sapma / CARK_SOLMA);
+  function carkYerlesim(d) {
+    return 'translate3d(calc(var(--cark-adim) * ' + d.toFixed(4) + '),0,' +
+      'calc(var(--cark-derinlik) * ' + (-d * d).toFixed(4) + ')) ' +
+      'rotateY(' + (d * CARK_EGIM).toFixed(2) + 'deg)';
+  }
+
+  function carkSaydamlik(d) {
+    var u = Math.abs(d) / CARK_SOLMA;
+    return u >= 1 ? 0 : 1 - u * u;
   }
 
   function TedaviCarki() {
@@ -316,7 +330,6 @@ var useCallback = React.useCallback;
     var aktif = aktifPair[0], setAktif = aktifPair[1];
 
     var sahneRef = useRef(null);
-    var halkaRef = useRef(null);
     var kartlarRef = useRef([]);
 
     var aciRef = useRef(0);          /* o an çizilen açı */
@@ -335,27 +348,25 @@ var useCallback = React.useCallback;
     /* --- çizim ------------------------------------------------------- */
 
     var yaz = useCallback(function () {
-      var a = aciRef.current;
-      if (halkaRef.current) {
-        halkaRef.current.style.transform =
-          'translateZ(calc(-1 * var(--cark-r))) rotateY(' + a.toFixed(2) + 'deg)';
-      }
+      /* Açıyı kart cinsine çevir: 0 = ilk kart önde. */
+      var konum = -aciRef.current / adim;
 
       var yeniAktif = 0;
       var enYakin = 999;
       for (var i = 0; i < n; i++) {
         var el = kartlarRef.current[i];
         if (!el) continue;
-        var sapma = carkOnSapmasi(i * adim + a);
-        el.style.opacity = carkSaydamlik(sapma).toFixed(3);
-        /* Arkaya dönen kart tıklamayı yutmasın. Değer her karede değil,
-           yalnız durum değişince yazılır. */
-        var onde = sapma < 62 ? '1' : '0';
+        var d = carkUzaklik(i, konum, n);
+        el.style.transform = carkYerlesim(d);
+        el.style.opacity = carkSaydamlik(d).toFixed(3);
+        /* Silinmiş kart tıklamayı yutmasın. Değer her karede değil, yalnız
+           durum değişince yazılır. */
+        var onde = Math.abs(d) < 1.4 ? '1' : '0';
         if (el.dataset.onde !== onde) {
           el.dataset.onde = onde;
           el.style.pointerEvents = onde === '1' ? 'auto' : 'none';
         }
-        if (sapma < enYakin) { enYakin = sapma; yeniAktif = i; }
+        if (Math.abs(d) < enYakin) { enYakin = Math.abs(d); yeniAktif = i; }
       }
 
       if (yeniAktif !== aktifRef.current) {
@@ -530,7 +541,8 @@ var useCallback = React.useCallback;
         marginTop: 36,
         '--cark-g': CARK_KART_G,
         '--cark-y': CARK_KART_Y,
-        '--cark-r': CARK_YARICAP
+        '--cark-adim': CARK_ADIM_PX,
+        '--cark-derinlik': CARK_DERINLIK
       }
     },
       h('div', {
@@ -558,14 +570,11 @@ var useCallback = React.useCallback;
       },
         h('div', { style: { position: 'absolute', inset: 0, perspective: 'clamp(1000px,160vw,1600px)' } },
           h('div', {
-            ref: halkaRef,
             style: {
               position: 'absolute', top: 32, left: '50%',
               width: 'var(--cark-g)', height: 'var(--cark-y)',
               marginLeft: 'calc(var(--cark-g) / -2)',
-              transformStyle: 'preserve-3d',
-              transform: 'translateZ(calc(-1 * var(--cark-r))) rotateY(0deg)',
-              willChange: 'transform'
+              transformStyle: 'preserve-3d'
             }
           },
             TEDAVILER.map(function (t, i) {
@@ -580,12 +589,13 @@ var useCallback = React.useCallback;
                 draggable: false,
                 onDragStart: function (e) { e.preventDefault(); },
                 'aria-current': i === aktif ? 'true' : undefined,
+                /* İlk çizimdeki (ilk kart önde) değerler; sonrasını kare
+                   döngüsü yazar. */
                 style: {
                   position: 'absolute', inset: 0, display: 'block', color: 'inherit',
-                  transform: 'rotateY(' + (i * adim) + 'deg) translateZ(var(--cark-r))',
-                  backfaceVisibility: 'hidden',
-                  /* İlk çizimdeki değer; sonrasını kare döngüsü yazar. */
-                  opacity: carkSaydamlik(carkOnSapmasi(i * adim))
+                  transform: carkYerlesim(carkUzaklik(i, 0, n)),
+                  opacity: carkSaydamlik(carkUzaklik(i, 0, n)),
+                  willChange: 'transform,opacity'
                 }
               },
                 h(Card, { tone: 'cream', padding: 'md', interactive: i === aktif, style: { height: '100%', boxSizing: 'border-box' } },
