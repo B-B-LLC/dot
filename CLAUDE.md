@@ -110,6 +110,20 @@ olduğu için renk kanalı sabit tutulup yalnızca alfa ölçeklenir (küçültm
 halkası oluşmasın diye) ve ince çizgiler solmasın diye alfaya gama 0.85 kazancı
 uygulanır. Uzun kenar 40/48 oranında kareye ortalanır.
 
+### Paylaşım görselleri üretilir
+
+`app/opengraph-image.tsx` ile `app/tedaviler/[id]/opengraph-image.tsx`, ortak
+düzeni `app/_ortak/og-duzen.tsx`ten alıp derleme sırasında 1200×630 PNG üretir.
+Bu dosyaların varlığı yeter: Next hem `og:image` hem `twitter:image`
+etiketlerini kendisi basar, alt sayfalar kökteki görseli devralır. Metinler
+`site.config.ts`ten geldiği için klinik değişince görsel de değişir.
+
+Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
+çözülmez. Sabit renk kodu yazmamak için `app/_ortak/token-renk.ts`,
+`ds/tokens/colors.css` dosyasını derleme anında okuyup `var()` zincirini çözer;
+`renk('--surface-inverse')` biçiminde kullanılır. Yazı tipi marka fontu değil,
+`next/og`un varsayılanıdır.
+
 ### Randevu ucu
 
 `app/api/randevu/route.ts` gelen talebi doğrular, Resend ile e-posta olarak
