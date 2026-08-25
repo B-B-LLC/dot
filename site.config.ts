@@ -12,7 +12,7 @@
 
 export const site = {
   /** Sitenin yayınlandığı adres. canonical, sitemap ve OG etiketleri bunu kullanır. */
-  adres: 'https://www.mesepoliklinik.example',
+  adres: 'https://www.zenithras.online',
 
   /* Demo sürümlerinde true bırakın.
 
