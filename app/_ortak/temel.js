@@ -249,16 +249,20 @@ var useEffect = React.useEffect;
 
   var DAR_ESIK = 860;
 
-  /** 860 px altını "dar" sayar: mobil eylem çubuğu ve sadeleşen NavBar bunu kullanır.
+  /** Pencere verilen eşikten darsa true döner; eşik verilmezse 860 px kullanılır
+      (mobil eylem çubuğu ve sadeleşen NavBar bunu kullanır). Kendi eşiği olan
+      parçalar sayı geçirir: saat kartı iki sütunu 560 px altında alt alta alır.
       Genişliği ResizeObserver ile izler — pencere `resize` olayı üretmeden boyut
       değiştiren gömülü çerçevelerde de doğru sonuç verir. */
-  function useDar() {
+  function useDar(esik) {
+    var sinir = esik || DAR_ESIK;
+
     /* Sunucuda pencere genişliği bilinmez; aşağıdaki effect mount anında düzeltir. */
     var pair = useState(false);
     var dar = pair[0], setDar = pair[1];
 
     useEffect(function () {
-      var uygula = function () { setDar(document.documentElement.clientWidth < DAR_ESIK); };
+      var uygula = function () { setDar(document.documentElement.clientWidth < sinir); };
       uygula();
 
       var gozlemci = new ResizeObserver(uygula);
@@ -269,7 +273,7 @@ var useEffect = React.useEffect;
         gozlemci.disconnect();
         window.removeEventListener('orientationchange', uygula);
       };
-    }, []);
+    }, [sinir]);
 
     return dar;
   }

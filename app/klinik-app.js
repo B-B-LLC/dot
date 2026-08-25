@@ -22,7 +22,7 @@ import {
 import SayfaCercevesi from './_ortak/cerceve';
 import {
   h, BOLUMLER, MEKANLAR, KapakGorseli, YaziPerdesi, tedaviSimgesi, S, BolumBasligi,
-  iki, durum, hafta, CALISMA_SAATLERI, bolumeGit
+  iki, durum, hafta, CALISMA_SAATLERI, bolumeGit, useDar
 } from './_ortak/temel';
 
 var Fragment = React.Fragment;
@@ -47,6 +47,11 @@ var useCallback = React.useCallback;
     var d = durum(now);
     var gunler = hafta(now);
 
+    /* Saat + durum yazısı ile yedi günlük şerit yan yana ~430 px ister; telefonda
+       bu genişlik yok, şerit taşıyor ve durum yazısı üç satıra kırılıyordu. Dar
+       ekranda yazı bloğu sola üste, şerit ortalanmış olarak altına alınıyor. */
+    var dar = useDar(560);
+
     return h('div', { style: { position: 'relative', margin: '-46px 20px 0', zIndex: 3 } },
       h('div', {
         style: {
@@ -59,7 +64,11 @@ var useCallback = React.useCallback;
           boxShadow: 'var(--shadow-3),var(--inner-glass)'
         }
       },
-        h('div', { style: { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 } },
+        h('div', {
+          style: dar
+            ? { display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 16 }
+            : { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }
+        },
           h('div', null,
             h('time', {
               dateTime: iki(now.getHours()) + ':' + iki(now.getMinutes()),
@@ -83,7 +92,12 @@ var useCallback = React.useCallback;
             ),
             d.alt ? h('div', { style: { fontSize: 12.5, color: 'var(--text-muted)', marginTop: 3 } }, d.alt) : null
           ),
-          h('div', { style: { display: 'flex', gap: 5 }, 'aria-hidden': 'true' },
+          h('div', {
+            style: dar
+              ? { display: 'flex', gap: 5, justifyContent: 'center' }
+              : { display: 'flex', gap: 5 },
+            'aria-hidden': 'true'
+          },
             gunler.map(function (g) {
               return h('div', {
                 key: g.kisa,
