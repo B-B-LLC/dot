@@ -273,10 +273,11 @@ var useCallback = React.useCallback;
 
   var CARK_KART_G = 'clamp(232px,74vw,320px)';                /* kart genişliği */
   var CARK_KART_Y = 'clamp(268px,84vw,296px)';                /* kart yüksekliği */
-  /* Yarıçap kart genişliğine bağlı: altı kart için en dar kapanış genişlik ×
-     .866'dır, biraz üstü kartları yan yana ama boşluklu tutar. Ekran genişliğine
-     bağlanırsa masaüstünde kartlar birbirinden kopuyordu. */
-  var CARK_YARICAP = 'calc(' + CARK_KART_G + ' * 1.05)';
+  /* Yarıçapın alt sınırı kart genişliğine bağlı: altı kart için en dar kapanış
+     genişlik × .866'dır, biraz üstü kartları yan yana ama boşluklu tutar. Dar
+     ekranda bu sınır geçerlidir; ~800 px'ten sonra çember büyüyerek kavisi
+     yayvanlaştırır ve kartları yana açar. */
+  var CARK_YARICAP = 'clamp(calc(' + CARK_KART_G + ' * 1.05),42vw,480px)';
   var CARK_KAYDIRMA_ACI = 420;    /* bölüm ekrandan geçerken toplam dönüş: altı kart da görünür */
   var CARK_SURUKLENME = 2;        /* boştayken saniyede derece */
   var CARK_DURAKLAMA = 2600;      /* etkileşimden sonra yavaş dönüşün geri gelmesi (ms) */
