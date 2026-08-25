@@ -77,6 +77,7 @@ eşiği olanlar sayı geçirir (saat kartı 560 px altında iki sütunu alt alta
 Kanca sunucuda `false` döner ve mount anında düzeltir, yani dar ekranda ilk kare
 geniş düzenle çizilir.
 - `app/_ortak/cerceve.js` — `SayfaCercevesi`: üst gezinme, altbilgi, mobil çubuk
+- `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
 
@@ -90,6 +91,30 @@ geçilir. Paylaşılan bölümlerde seçim çağıran tarafındadır: `HekimlerB
 `/hekimler` ile `/iletisim` sayfalarında `h1` olur. Stil iki durumda da
 `S.h2`'dir: değişen yalnız etikettir. Yeni bir sayfa açarken `h1`'ini
 vermeyi unutmayın.
+
+### Tedaviler açılır menüsü (`app/_ortak/tedavi-menusu.js`)
+
+`site.config.ts`teki `tedaviMenusu`, `tedaviler[]`ten ayrı bir listedir: orada
+altı dalın kendi sayfası vardır, menüde kliniğin işlemleri dal dal sayılır.
+Paneldeki "42 Tedavi / 9 Kategori" o listeden hesaplanır. Kalem düz metinse
+bağlantı değil `span` basılır; `{ ad, adres }` biçimine çevrildiğinde `a` olur —
+sayfalar açıldıkça config'e adres yazmak yeter.
+
+Menü geniş ekranda fareyle, dar ekranda dokunuşla açılır ve tek durumdan
+sürülür (`useTedaviMenusu`). İki nokta kolay bozulur:
+
+- DS'in `NavBar`ı bağlantı düğmesine tutamak vermez, yalnız `label` düğümüne.
+  Fare olayları bu yüzden etikettedir ve etiket negatif kenar boşluğuyla
+  düğmenin iç boşluğuna kadar genişletilir; yoksa imleç kenardan girince menü
+  açılmaz. Panelin üstündeki saydam `paddingTop` de fare yolunun parçasıdır ve
+  kapanma `KAPANMA_GECIKMESI` kadar ertelenir.
+- Dar ekranda çubuk yalnız "Tedaviler" bağlantısını taşır (açılır menünün tek
+  tutamağı odur) ve `NavBar`a daraltılmış `style` geçilir; kendi ölçüleriyle
+  marka + başlık + randevu düğmesi 375 px'e sığmaz.
+
+Panel opaktır (`--grad-cream`), çünkü arkasından sayfa metni geçince kırk iki
+kalemlik liste okunmaz oluyor. Perde yalnız dar ekranda çizilir; negatif
+z-index'i onu çubuğun altına, sayfa içeriğinin üstüne koyar.
 
 ### Tasarım sistemi: `ds/` üretilmiştir
 

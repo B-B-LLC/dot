@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { NavBar, Button } from '@/ds/bundle';
 import { klinik as KLINIK, haritaYolTarifi } from '@/site.config';
 import { h, BOLUMLER, CALISMA_SAATLERI, bolumeGit, useDar } from './temel';
+import { useTedaviMenusu, TedaviTetigi, TedaviPaneli } from './tedavi-menusu';
 
 var Fragment = React.Fragment;
 var useRef = React.useRef;
@@ -21,15 +22,30 @@ var useEffect = React.useEffect;
     var navRef = useRef(null);
     var yol = usePathname();
     var yonlendirici = useRouter();
+    var menu = useTedaviMenusu(props.dar);
 
     /* Ana sayfadaki bölümlere kaydırarak, diğerlerine adres üzerinden gidilir. */
     function git(hedefId, adres) {
+      menu.kapat();
       if (yol === '/' && document.getElementById(hedefId)) {
         bolumeGit(hedefId);
         return;
       }
       yonlendirici.push(adres);
     }
+
+    /* Tedaviler başlığı hem bölüme gider hem açılır menüyü taşır. Geniş ekranda
+       menü fareyle açıldığı için tıklama eskisi gibi bölüme kaydırır; dar
+       ekranda fare yok, dokunuş menüyü açıp kapatır. */
+    function bolumBaglantisi(b) {
+      if (b.id !== 'tedaviler') return b.etiket;
+      return {
+        value: b.etiket,
+        label: h(TedaviTetigi, { etiket: b.etiket, dar: props.dar, menu: menu })
+      };
+    }
+
+    var tedavilerBolumu = BOLUMLER.find(function (b) { return b.id === 'tedaviler'; });
 
     useEffect(function () {
       var uygula = function () {
@@ -55,16 +71,25 @@ var useEffect = React.useEffect;
         transition: 'padding var(--dur-base) var(--ease-glass),transform var(--dur-base) var(--ease-glass)'
       }
     },
-      h('div', { style: { maxWidth: 1180, margin: '0 auto' } },
+      /* Açılır tedavi menüsü çubuğun altına asılır; konumu buradan alır. */
+      h('div', { style: { position: 'relative', maxWidth: 1180, margin: '0 auto' } },
         h(NavBar, {
           brand: KLINIK.marka,
+          /* Dar ekranda çubuğun kendi ölçüleri (28 px aralık, 28 px sol boşluk)
+             marka + Tedaviler + randevu düğmesini 375 px'e sığdırmıyor. */
+          style: props.dar ? { gap: 10, padding: '0 8px 0 16px' } : undefined,
           /* Dar ekranda bağlantı listesi 68 px’lik çubuğa sığmıyor; gezinme
-             alttaki sabit eylem çubuğuna ve altbilgiye bırakılıyor. */
-          links: props.dar ? [] : BOLUMLER.map(function (b) { return b.etiket; }),
+             alttaki sabit eylem çubuğuna ve altbilgiye bırakılıyor. Tedaviler
+             orada da durur: açılır menünün tek tutamağı odur. */
+          links: props.dar
+            ? [bolumBaglantisi(tedavilerBolumu)]
+            : BOLUMLER.map(bolumBaglantisi),
           active: props.aktif,
           onNavigate: function (etiket) {
             var b = BOLUMLER.find(function (x) { return x.etiket === etiket; });
-            if (b) git(b.id, b.adres);
+            if (!b) return;
+            if (b.id === 'tedaviler' && props.dar) { menu.degistir(); return; }
+            git(b.id, b.adres);
           },
           actions: h(Fragment, null,
             props.dar ? null : h('a', {
@@ -81,8 +106,14 @@ var useEffect = React.useEffect;
             h(Button, {
               size: 'sm',
               onClick: function () { git('randevu', '/iletisim#randevu'); }
-            }, 'Randevu talebi')
+            }, props.dar ? 'Randevu' : 'Randevu talebi')
           )
+        }),
+        h(TedaviPaneli, {
+          dar: props.dar,
+          menu: menu,
+          randevu: function () { git('randevu', '/iletisim#randevu'); },
+          tumTedaviler: function () { git('tedaviler', '/#tedaviler'); }
         })
       )
     );
@@ -212,20 +243,30 @@ var useEffect = React.useEffect;
 /** `bolumleriIzle`: ana sayfada gezinmede etkin bölümü kaydırmaya göre işaretler. */
 export default function SayfaCercevesi(props) {
   var dar = useDar();
-  var a = useState(BOLUMLER[0].etiket);
+  var a = useState('');
   var aktif = a[0], setAktif = a[1];
 
   useEffect(function () {
     if (!props.bolumleriIzle) return;
 
-    /* Üstten 220 px'in üzerine çıkan son bölüm etkin sayılır. */
+    /* Üstten 220 px'in üzerine çıkmış bölümlerden ekranda en aşağıda olanı
+       etkin sayılır; hiçbiri çıkmamışsa (sayfanın en üstü) sayfadaki ilk
+       bölüm işaretlenir.
+
+       Karşılaştırma konuma göre yapılır, dizi sırasına göre değil: BOLUMLER
+       çubuktaki sırayı taşır ve o sıra sayfadaki sırayla aynı olmak zorunda
+       değildir — Tedaviler menüsü çubukta Hekimler'in sağında durur. */
     var uygula = function () {
-      var bulunan = BOLUMLER[0].etiket;
+      var gecmis = '', gecmisUst = -Infinity;
+      var ilk = '', ilkUst = Infinity;
       BOLUMLER.forEach(function (b) {
         var n = document.getElementById(b.id);
-        if (n && n.getBoundingClientRect().top < 220) bulunan = b.etiket;
+        if (!n) return;
+        var ust = n.getBoundingClientRect().top;
+        if (ust < 220 && ust > gecmisUst) { gecmisUst = ust; gecmis = b.etiket; }
+        if (ust < ilkUst) { ilkUst = ust; ilk = b.etiket; }
       });
-      setAktif(bulunan);
+      setAktif(gecmis || ilk);
     };
     uygula();
     window.addEventListener('scroll', uygula, { passive: true });

@@ -652,6 +652,82 @@ export const tedaviler: Tedavi[] = [
   }
 ];
 
+/* --- Üst gezinmedeki "Tedaviler" açılır menüsü -----------------------------
+   Bu liste yukarıdaki tedaviler[] dizisinden ayrıdır ve onu etkilemez: orada
+   her kalemin kendi sayfası vardır, burada kliniğin sunduğu işlemler dal dal
+   sayılır. Menüdeki "kategori" ve "tedavi" sayıları buradan hesaplanır, elle
+   yazılmaz — kalem ekleyip çıkarmak yeter.
+
+   Kalem düz metin yazıldığında bağlantıya dönüşmez, listede durur. İşlemin
+   açıklama sayfası açıldığında o kalem { ad, adres } biçimine çevrilir:
+     'Fiber Dolgu'  ->  { ad: 'Fiber Dolgu', adres: '/tedaviler/fiber-dolgu' }
+
+   Kategoriler menüde yazıldıkları sırayla, satır satır dört sütuna dizilir. */
+export type TedaviMenuKalemi = string | { ad: string; adres: string };
+export type TedaviMenuKategorisi = { baslik: string; kalemler: TedaviMenuKalemi[] };
+
+export const tedaviMenusu: {
+  ustBaslik: string;
+  panel: { baslik: string; aciklama: string; eylem: string; tumu: string };
+  kategoriler: TedaviMenuKategorisi[];
+} = {
+  ustBaslik: 'Tedavi kategorileri',
+  panel: {
+    baslik: 'Tedavilerimiz',
+    /* Başına kategori sayısı eklenir: "9 kategori · kişiye özel tedavi planı." */
+    aciklama: 'kişiye özel tedavi planı.',
+    eylem: 'Randevu talebi',
+    tumu: 'Tüm tedaviler'
+  },
+  kategoriler: [
+    {
+      baslik: 'Tedavi ve endodonti',
+      kalemler: ['Fiber Dolgu', 'Kanal Tedavisi', 'Kanal Yenileme', 'Kompozit Dolgu', 'İnley / Onley Dolgu']
+    },
+    {
+      baslik: 'Pedodonti',
+      kalemler: ['Çocuk Diş Tedavisi', 'Flor Uygulaması', 'Fissür Örtücü', 'Yer Tutucu']
+    },
+    {
+      baslik: 'Protez',
+      kalemler: [
+        'Zirkonyum Kaplama', 'Porselen Kaplama', 'E-Max Kaplama', 'Lamina Kaplama',
+        'Köprü Protezi', 'Hareketli Protez', 'Hassas Tutuculu Protez'
+      ]
+    },
+    {
+      baslik: 'Ağız-diş ve çene cerrahisi',
+      kalemler: [
+        'Diş Çekimi', 'Gömülü 20 Yaş Dişi', 'Apikal Rezeksiyon', 'Sinüs Lifting',
+        'Kemik Grefti', 'Açık Sinüs Lifting', 'Kapalı Sinüs Lifting'
+      ]
+    },
+    {
+      baslik: 'İmplant tedavisi',
+      kalemler: ['All-On-Four', 'All-On-Six', 'Tek İmplant Tedavisi', 'Bir Günde İmplant']
+    },
+    {
+      baslik: 'Periodontoloji',
+      kalemler: ['Diş Eti Tedavisi', 'Diş Taşı Temizliği', 'Küretaj', 'Diş Eti Çekilmesi Tedavisi']
+    },
+    {
+      baslik: 'Ortodonti',
+      kalemler: ['Şeffaf Plak', 'Metal Diş Teli', 'Seramik Diş Teli', 'Pekiştirme Tedavisi']
+    },
+    {
+      baslik: 'Estetik diş hekimliği',
+      kalemler: [
+        'Gülüş Tasarımı', 'Diş Beyazlatma', 'Bonding', 'Pembe Estetik',
+        'Dijital Gülüş Tasarımı', 'Pembe Diş Eti Estetiği'
+      ]
+    },
+    {
+      baslik: 'Diğer',
+      kalemler: ['3D Tomografi']
+    }
+  ]
+};
+
 export const ulasimNotlari: string[] = [
   'İZBAN ve metro Alsancak durağına 400 m yürüme mesafesinde.',
   'Caddedeki otobüs durağı bina önündedir.',

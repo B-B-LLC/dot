@@ -129,6 +129,56 @@ a:hover { color: var(--text-link-hover); }
 .cark-nokta:hover::after { background: var(--emerald-300); }
 .cark-nokta--etkin::after { width: 20px; background: var(--emerald-600); }
 
+/* --- Tedaviler açılır menüsü --- */
+.tedavi-menu-kalem {
+  display: flex;
+  /* Uzun ad iki satıra sarabilir; nokta ilk satırla hizalı kalsın diye
+     ortalanmaz, yukarı sabitlenir. */
+  align-items: flex-start;
+  gap: 9px;
+  /* Sol boşluk negatif kenarla geri alınır: vurgu şeridi kategori başlığının
+     çizgisinden dışarı taşar, metin ise sütunla hizalı kalır. */
+  margin-left: -10px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: var(--fw-medium);
+  letter-spacing: -.008em;
+  line-height: 1.35;
+  color: var(--text-body);
+  transition: background var(--dur-fast) var(--ease-glass), color var(--dur-fast) var(--ease-glass);
+}
+.tedavi-menu-kalem:hover { background: var(--emerald-100); color: var(--emerald-700); }
+
+/* Sayfası henüz açılmamış kalem bağlantı değildir; imleç de öyle göstersin. */
+.tedavi-menu-kalem--pasif { cursor: default; }
+
+.tedavi-menu-nokta {
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  margin-top: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--emerald-300);
+  transition: background var(--dur-fast) var(--ease-glass), transform var(--dur-fast) var(--ease-glass);
+}
+.tedavi-menu-kalem:hover .tedavi-menu-nokta { background: var(--emerald-600); transform: scale(1.3); }
+
+.tedavi-menu-tumu {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -.005em;
+  color: var(--text-on-dark-muted);
+  transition: color var(--dur-fast) var(--ease-glass);
+}
+.tedavi-menu-tumu:hover { color: #fff; }
+
 /* --- Altbilgi bağlantıları koyu zümrüt panelin üstünde durur --- */
 .footer-link { color: var(--text-on-dark-muted); }
 .footer-link:hover { color: #fff; }

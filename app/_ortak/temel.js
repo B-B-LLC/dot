@@ -17,11 +17,16 @@ var useEffect = React.useEffect;
   /* ------------------------------------------------------------------ */
 
   /* Gezinme başlıkları. `id` ana sayfadaki bölüme, `adres` ayrı sayfaya karşılık
-     gelir: ana sayfadayken kaydırılır, başka sayfadayken adrese gidilir. */
+     gelir: ana sayfadayken kaydırılır, başka sayfadayken adrese gidilir.
+
+     Buradaki sıra çubukta görünen sıradır ve sayfadaki bölüm sırasıyla aynı
+     değildir: Tedaviler bölümü sayfada en üstte durur ama açılır menüsü
+     çubukta Hekimler'in sağındadır. Etkin bölüm işaretlemesi bu yüzden diziyi
+     baştan sona taramaz, bölümlerin ekrandaki konumuna bakar (cerceve.js). */
   var BOLUMLER = [
-    { id: 'tedaviler', etiket: 'Tedaviler', adres: '/#tedaviler' },
     { id: 'klinik', etiket: 'Klinik', adres: '/#klinik' },
     { id: 'hekimler', etiket: 'Hekimler', adres: '/hekimler' },
+    { id: 'tedaviler', etiket: 'Tedaviler', adres: '/#tedaviler' },
     { id: 'bilgi', etiket: 'Bilgi', adres: '/#bilgi' },
     { id: 'ulasim', etiket: 'Ulaşım', adres: '/iletisim' }
   ];

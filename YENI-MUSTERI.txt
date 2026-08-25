@@ -258,6 +258,27 @@ sorular       { soru, cevap } — sayfadaki akordiyon
 Metin yazarken: süreç anlatılır, sonuç vaat EDİLMEZ, fiyat YAZILMAZ, kesin gün
 sayısı yerine aralık verilir.
 
+--- tedaviMenusu ----------------------------------------------------------
+Üst gezinmedeki "Tedaviler" başlığına bağlı açılır menü. Yukarıdaki tedaviler[]
+listesinden AYRIDIR ve onu etkilemez: orada altı dalın kendi sayfası vardır,
+burada kliniğin sunduğu işlemler dal dal sayılır.
+
+  ustBaslik   Panelin sol üstündeki küçük başlık
+  panel       Sağdaki yeşil kutu: { baslik, aciklama, eylem, tumu }
+              aciklama'nın başına kategori sayısı otomatik eklenir:
+              "9 kategori · kişiye özel tedavi planı."
+  kategoriler { baslik, kalemler } kayıtları
+
+Kategoriler yazıldıkları sırayla, satır satır dört sütuna dizilir — sıra
+ekranda görünen sıradır. Paneldeki "42 Tedavi / 9 Kategori" sayıları bu
+listeden hesaplanır, elle yazılmaz.
+
+Klinikte yapılmayan işlemi SİL, yapılan işlemi ekle. Kalem düz metin yazılır:
+  kalemler: ['Fiber Dolgu', 'Kanal Tedavisi']
+Bu hâliyle kalem bağlantı değildir, listede durur. İşlemin açıklama sayfası
+açıldığında o kalem şu biçime çevrilir:
+  { ad: 'Fiber Dolgu', adres: '/tedaviler/fiber-dolgu' }
+
 --- ulasimNotlari ---------------------------------------------------------
 Ulaşım kartındaki madde listesi. Metro/otobüs/otopark durumu.
 Kliniğe göre tamamen değişir, şablon metni değildir.
