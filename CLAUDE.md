@@ -139,6 +139,41 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 `renk('--surface-inverse')` biçiminde kullanılır. Yazı tipi marka fontu değil,
 `next/og`un varsayılanıdır.
 
+### Tedavi çarkı (`TedaviCarki`, `app/klinik-app.js`)
+
+01 numaralı bölüm ızgara değil, kaydırmaya bağlı dönen bir yaydır. Kartların
+yeri merkeze uzaklıklarından (`d`, kart cinsinden) hesaplanır: `x = d × adım`,
+`z = -derinlik × d²`, dönüş `= d × eğim`. Daire kullanılmamasının sebebi
+pratiktir: dairede yatay açıklık ile kartlar arası boşluk aynı yarıçapa bağlıdır,
+yayı genişletmek kartları da koparır. Üç ölçü ayrıdır — `--cark-adim`,
+`--cark-derinlik` ve `CARK_EGIM`; aralık ya da kavis değişecekse bunlar
+oynatılır. `d` ±n/2'de sarmalanır, orada kart zaten saydamlıkla silinmiştir.
+
+Konumu üç şey sürer ve tek bir hedef açıda toplanır: sayfa kaydırma (bölüm
+ekrandan geçerken `CARK_KAYDIRMA_ACI` = 420°, yani altı kart da görünür), boşta
+yavaş dönüş ve kullanıcı (sürükleme, oklar, noktalar). Çizilen açı hedefe
+yumuşayarak yaklaşır.
+
+Buradaki başarım kuralları korunmalıdır, çünkü telefonda fark ederler:
+
+- Kare döngüsü React durumuna dokunmaz; transform ve saydamlık doğrudan DOM'a
+  yazılır, yalnız öndeki kart değişince bir kez `setState` çağrılır.
+- Hareket kare sayısına değil geçen süreye bağlıdır (60 Hz ile 144 Hz aynı hız).
+- Döngü yalnız bölüm ekrandayken (IntersectionObserver) ve sekme öndeyken
+  çalışır; `prefers-reduced-motion` açıksa hiç çalışmaz.
+- Kaydırma dinleyicisi pasiftir ve yalnız `scrollY` okur; bölümün kutusu
+  önbellektedir, düzen yeniden hesaplanmaz.
+- Ölçüler CSS değişkenlerinden gelir, JS yalnız birimsiz çarpanları verir.
+
+Sahne `100vw` genişliğinde ve negatif kenar boşluğuyla bölümün dışına taşar; bu
+yüzden `globals.css` içinde gövdeye `overflow-x: clip` konmuştur (`hidden`in
+aksine kaydırma kutusu açmaz, yapışkan yerleşimi bozmaz). Ok ve nokta
+düğmelerinin görünümü aynı dosyadaki `.cark-ok` / `.cark-nokta` sınıflarındadır.
+
+Altı bağlantı her zaman DOM'dadır (sayfa haritası ve klavye erişimi için); bir
+karta odaklanınca yay o karta döner ve kart bağlantılarında `draggable`
+kapalıdır — açık kalırsa tarayıcının bağlantı sürükleme davranışı çarkı keser.
+
 ### Randevu ucu
 
 `app/api/randevu/route.ts` gelen talebi doğrular, Resend ile e-posta olarak
