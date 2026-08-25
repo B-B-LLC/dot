@@ -30,6 +30,7 @@ düzenlemek. Uygulama koduna dokunulmaz.
 | Hekim listesi | `hekimler` |
 | Hasta kabul edilen dallar ve metinleri | `tedaviler` |
 | Ulaşım notları | `ulasimNotlari` |
+| Fotoğraflar | `gorseller` + hekimlerdeki `gorsel` |
 
 Aynı dosyanın **ORTAK METİNLER** bölümü (sterilizasyon adımları, koruyucu
 bilgiler, sık sorulan sorular) şablon metnidir; kliniğe göre değişmesi gerekmez.
@@ -49,6 +50,38 @@ hem adresi (`/tedaviler/<id>`) hem de kart ikonunu belirler.
 | `/kvkk`, `/gizlilik`, `/cerez` | Yasal metinler (arama motorlarına kapalı) |
 | `/api/randevu` | Randevu formunun gönderim ucu |
 | `/sitemap.xml`, `/robots.txt` | Config'ten üretilir |
+
+## Fotoğraflar
+
+Görsel dosyaları `public/gorseller/` klasörüne konur, `site.config.ts` içinde
+yolu yazılır. Yol her zaman eğik çizgiyle başlar:
+
+```
+public/gorseller/bekleme-alani.jpg   →   '/gorseller/bekleme-alani.jpg'
+```
+
+| Nerede görünür | Alan |
+| --- | --- |
+| Ana sayfada başlığın yanındaki büyük kart | `gorseller.hero` |
+| Klinik bölümündeki üç mekân kartı | `gorseller.mekanlar.bekleme` / `.muayene` / `.cocuk` |
+| Hekim kartlarındaki portreler | `hekimler[].gorsel` |
+
+Her alan boş bırakılabilir: yol yazılmayan yerde tasarımın çizim yer tutucusu
+görünmeye devam eder, yani görsellerin hepsi hazır olmadan da site bozulmaz.
+
+`alt` metni görmeyen ziyaretçiye ve arama motoruna karenin içeriğini anlatır;
+kısa ve düz yazılır. Hekim portrelerinde ayrıca yazılmaz, hekimin adı ve
+unvanından üretilir.
+
+Fotoğraflar kart oranına göre ortadan kırpılır (`object-fit: cover`), esnetilmez.
+Önemli ayrıntıyı karenin ortasında bırakın; hero kartının alt kenarına saat
+kartı biner. Portrelerde kırpma merkezi yüz hizası için yukarı çekilidir.
+
+Görseller `next/image` üzerinden servis edilir: kaynak dosya kaç megabayt
+olursa olsun ziyaretçiye kartın ölçüsünde ve WebP/AVIF olarak iner. Yine de
+kaynağı gereksiz büyük tutmayın; 2500 pikselden geniş dosya kazanç getirmez.
+
+Hasta fotoğrafı ve tedavi öncesi-sonrası görseli mevzuat gereği kullanılamaz.
 
 ## Demo modu
 
@@ -95,6 +128,7 @@ sıfırlanır. Kalıcı koruma için CAPTCHA (örneğin Cloudflare Turnstile) ek
 | Yol | İçerik |
 | --- | --- |
 | `site.config.ts` | Klinik bilgileri ve tüm site metinleri |
+| `public/gorseller/` | Kliniğin fotoğrafları |
 | `yasal.config.ts` | KVKK aydınlatma metni ve çerez politikası |
 | `app/layout.tsx` | Ortak iskelet, meta etiketleri, JSON-LD, yazı tipleri |
 | `app/klinik-app.js` | Ana sayfa bölümleri |
@@ -150,8 +184,12 @@ bölümüne ayrıca girilmelidir.
 - **Örnek veriler gerçek değil:** telefon `0232 000 00 00`, ruhsat numarası
   `0000/000`, e-posta ve `site.adres` yer tutucudur. Demo için bilinçli tercih;
   gerçek klinikte hepsi değiştirilmelidir.
-- **Fotoğraflar yer tutucu.** Hero kartı, mekân kartları ve hekim portreleri
-  soyut şekillerle temsil ediliyor.
+- **Demodaki fotoğraflar başka kliniklere ait.** Mekân ve hekim kartlarındaki
+  görsellerde başka klinik markaları (duvar logoları) ve hekim formalarında
+  başka adlar okunuyor; hekim kadrosu bu adlara göre yazıldı. Yalnızca demo
+  içindir, gerçek bir klinik sitesinde kliniğin kendi fotoğraflarıyla
+  değiştirilmelidir. Hero kartının fotoğrafı henüz eklenmedi, orada yer tutucu
+  duruyor (bkz. *Fotoğraflar*).
 - **CAPTCHA yok.** Bot tuzağı ve hız sınırı var; hız sınırı sunucu belleğinde
   tutulduğu için birden çok sunucu örneğinde zayıflar. Site herkese açık
   yayına girmeden önce Cloudflare Turnstile eklenmelidir.

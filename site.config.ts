@@ -77,6 +77,19 @@ export type Hekim = {
   mezuniyet: string;
   /** Uzmanlık/doktora yoksa '—' yazılır. */
   akademik: string;
+  /** Portre görselinin yolu (ör. '/gorseller/hekim-selin.jpg'). Boş
+      bırakılırsa kartta çizim yer tutucusu kalır. */
+  gorsel?: string;
+};
+
+/** Bir fotoğraf alanı. `yol` boş bırakıldığında o alanda çizim yer tutucusu
+    görünmeye devam eder; görsellerin hepsi hazır olmadan da site bozulmaz. */
+export type Gorsel = {
+  /** `public/` altındaki yol, başında eğik çizgiyle: '/gorseller/ad.jpg' */
+  yol: string;
+  /** Görmeyen ziyaretçiye ve arama motoruna karenin içeriğini anlatır.
+      Kısa ve düz olsun: 'Bekleme alanı, pencere tarafındaki koltuklar'. */
+  alt: string;
 };
 
 export type Soru = { soru: string; cevap: string };
@@ -178,6 +191,38 @@ export function dalSayisiYaziyla(adet: number) {
   return yazi[adet] ?? String(adet);
 }
 
+/* --- Görseller -------------------------------------------------------------
+   Dosyalar `public/gorseller/` klasörüne konur, buraya yolu yazılır. Boş
+   bırakılan her alan mevcut çizim yer tutucusunu korur.
+
+   Öneriler: JPEG veya WebP, uzun kenar 1600 piksel civarı, 300 KB altı.
+   Hasta fotoğrafı ve tedavi öncesi-sonrası görseli mevzuat gereği yer alamaz;
+   yalnızca mekân ve hekim fotoğrafı konur. */
+
+export const gorseller = {
+  /** Ana sayfada başlığın yanındaki büyük kart. Dikeye yakın kadraj iyi durur;
+      alt kenarın bir bölümü saat kartıyla örtüldüğü için önemli ayrıntıyı
+      üstte bırakın. */
+  hero: { yol: '', alt: '' } as Gorsel,
+
+  /** Klinik bölümündeki üç mekân kartı. Kart etiketlerini temel.js'teki
+      MEKANLAR listesi belirler; buradaki anahtarlar onlarla eşleşir. */
+  mekanlar: {
+    bekleme: {
+      yol: '/gorseller/Klinik Bekleme Alanı.jpg',
+      alt: 'Bekleme alanı: pencere tarafında koltuklar ve karşılama bankosu'
+    } as Gorsel,
+    muayene: {
+      yol: '/gorseller/Klinik Muayene Odası.jpg',
+      alt: 'Muayene odası: diş üniti, tepe lambası ve görüntüleme ekranı'
+    } as Gorsel,
+    cocuk: {
+      yol: '/gorseller/Klinik Çocuk Alanı.jpg',
+      alt: 'Çocuk bölümü: oyun alanı ve refakatçiler için ayrı oturma'
+    } as Gorsel
+  }
+};
+
 export const saatler: CalismaSaati[] = [
   { ad: 'Pazartesi – Cuma', gunler: [1, 2, 3, 4, 5], ac: '09:00', kap: '19:00' },
   { ad: 'Cumartesi', gunler: [6], ac: '09:00', kap: '14:00' },
@@ -186,28 +231,32 @@ export const saatler: CalismaSaati[] = [
 
 export const hekimler: Hekim[] = [
   {
-    ad: 'Dt. Selin Aydın',
-    unvan: 'Diş hekimi',
-    mezuniyet: 'Ege Üniv. Diş Hek. Fak., 2011',
-    akademik: '—'
+    ad: 'Prof. Dr. Hüseyin Aksoy',
+    unvan: 'Protetik diş tedavisi uzmanı',
+    mezuniyet: 'İstanbul Üniv. Diş Hek. Fak., 1988',
+    akademik: 'Protetik diş tedavisi doktorası, 1994',
+    gorsel: '/gorseller/Doktor1.jpg'
   },
   {
-    ad: 'Uzm. Dt. Mert Koçak',
+    ad: 'Uzm. Dt. Ayşe Yılmaz',
     unvan: 'Ortodonti uzmanı',
-    mezuniyet: 'İstanbul Üniv. Diş Hek. Fak., 2007',
-    akademik: 'Ortodonti doktorası, 2013'
+    mezuniyet: 'Ege Üniv. Diş Hek. Fak., 2011',
+    akademik: 'Ortodonti uzmanlığı, 2017',
+    gorsel: '/gorseller/Doktor2.jpg'
   },
   {
-    ad: 'Uzm. Dt. Ayşe Doğan',
-    unvan: 'Periodontoloji uzmanı',
-    mezuniyet: 'Hacettepe Üniv. Diş Hek. Fak., 2009',
-    akademik: 'Periodontoloji uzmanlığı, 2015'
+    ad: 'Uzm. Dt. Can Demir',
+    unvan: 'Ağız, diş ve çene cerrahisi uzmanı',
+    mezuniyet: 'Ankara Üniv. Diş Hek. Fak., 2012',
+    akademik: 'Ağız, diş ve çene cerrahisi uzmanlığı, 2018',
+    gorsel: '/gorseller/Doktor3.jpg'
   },
   {
-    ad: 'Dt. Kaan Şahin',
-    unvan: 'Diş hekimi',
-    mezuniyet: 'Ankara Üniv. Diş Hek. Fak., 2014',
-    akademik: '—'
+    ad: 'Uzm. Dt. Elif Yıldız',
+    unvan: 'Restoratif diş tedavisi uzmanı',
+    mezuniyet: 'Hacettepe Üniv. Diş Hek. Fak., 2013',
+    akademik: 'Restoratif diş tedavisi doktorası, 2019',
+    gorsel: '/gorseller/Doktor4.jpg'
   }
 ];
 

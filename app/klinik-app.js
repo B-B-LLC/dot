@@ -12,6 +12,7 @@ import {
   haritaGomme,
   dalSayisiYaziyla,
   hekimler as HEKIMLER,
+  gorseller as GORSELLER,
   tedaviler as TEDAVILER,
   sorular as SORULAR,
   sterilizasyon as STERILIZASYON,
@@ -20,7 +21,7 @@ import {
 } from '@/site.config';
 import SayfaCercevesi from './_ortak/cerceve';
 import {
-  h, BOLUMLER, MEKANLAR, tedaviSimgesi, S, BolumBasligi,
+  h, BOLUMLER, MEKANLAR, KapakGorseli, YaziPerdesi, tedaviSimgesi, S, BolumBasligi,
   iki, durum, hafta, CALISMA_SAATLERI, bolumeGit
 } from './_ortak/temel';
 
@@ -191,24 +192,39 @@ var useCallback = React.useCallback;
           h('div', {
             style: { position: 'relative', height: 380, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }
           },
-            h('div', {
-              'aria-hidden': 'true',
-              style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }
-            },
-              h('div', {
-                style: {
-                  width: '56%', aspectRatio: '1/1.05', borderRadius: 'var(--radius-blob)',
-                  background: 'linear-gradient(155deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.05) 100%)',
-                  border: '1px solid rgba(255,255,255,.18)'
-                }
-              })
-            ),
-            h('div', { style: { position: 'relative', padding: '28px 28px 78px' } },
-              h('div', { style: { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: 'var(--emerald-300)' } }, 'FOTOĞRAF ALANI'),
-              h('p', {
-                style: { color: 'var(--text-on-dark-muted)', fontSize: 14, lineHeight: 1.55, margin: '8px 0 0', maxWidth: '34ch' }
-              }, 'Kliniğin kendi çekilmiş bekleme alanı fotoğrafı bu kartın tamamını kaplayacak.')
-            )
+            /* Fotoğraf konulduğunda kartın tamamını kaplar ve "fotoğraf alanı"
+               notu kalkar; konulmadığında tasarımın çizim yer tutucusu durur.
+               Sayfanın en üstündeki görsel olduğu için gecikmeli yüklenmez. */
+            GORSELLER.hero.yol
+              ? h(Fragment, null,
+                  KapakGorseli(GORSELLER.hero.yol, GORSELLER.hero.alt, {
+                    oncelikli: true,
+                    olcu: '(max-width: 760px) 100vw, 560px'
+                  }),
+                  /* Kartın alt kenarına binen saat kartı, açık renkli bir
+                     fotoğrafın üzerinde perdesiz okunmuyor. */
+                  YaziPerdesi()
+                )
+              : h(Fragment, null,
+                  h('div', {
+                    'aria-hidden': 'true',
+                    style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }
+                  },
+                    h('div', {
+                      style: {
+                        width: '56%', aspectRatio: '1/1.05', borderRadius: 'var(--radius-blob)',
+                        background: 'linear-gradient(155deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.05) 100%)',
+                        border: '1px solid rgba(255,255,255,.18)'
+                      }
+                    })
+                  ),
+                  h('div', { style: { position: 'relative', padding: '28px 28px 78px' } },
+                    h('div', { style: { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: 'var(--emerald-300)' } }, 'FOTOĞRAF ALANI'),
+                    h('p', {
+                      style: { color: 'var(--text-on-dark-muted)', fontSize: 14, lineHeight: 1.55, margin: '8px 0 0', maxWidth: '34ch' }
+                    }, 'Kliniğin kendi çekilmiş bekleme alanı fotoğrafı bu kartın tamamını kaplayacak.')
+                  )
+                )
           )
         ),
         h(SaatKarti)
@@ -277,20 +293,28 @@ var useCallback = React.useCallback;
 
       h('div', { style: Object.assign({}, S.izgara(280), { marginTop: 32 }) },
         MEKANLAR.map(function (m) {
+          var foto = GORSELLER.mekanlar[m.anahtar] || { yol: '', alt: '' };
           return h(Card, { key: m.etiket, tone: 'plain', padding: 'none' },
             h('div', {
               style: { position: 'relative', height: 240, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }
             },
-              h('div', {
-                'aria-hidden': 'true',
-                style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--grad-cream)' }
-              },
-                h('div', {
-                  style: Object.assign({ width: m.genislik, aspectRatio: m.oran, borderRadius: m.yuvarlak }, S.blob)
-                })
-              ),
+              foto.yol
+                ? h(Fragment, null,
+                    KapakGorseli(foto.yol, foto.alt, { olcu: '(max-width: 760px) 100vw, 400px' }),
+                    YaziPerdesi()
+                  )
+                : h('div', {
+                    'aria-hidden': 'true',
+                    style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--grad-cream)' }
+                  },
+                    h('div', {
+                      style: Object.assign({ width: m.genislik, aspectRatio: m.oran, borderRadius: m.yuvarlak }, S.blob)
+                    })
+                  ),
               h('div', { style: { position: 'relative', padding: 20 } },
-                h('span', { style: S.kas }, m.etiket)
+                /* Etiket fotoğrafın üstüne bindiğinde krem zeminin rengiyle
+                   değil, perdenin üstünde beyazla okunur. */
+                h('span', { style: foto.yol ? Object.assign({}, S.kas, { color: '#fff' }) : S.kas }, m.etiket)
               )
             )
           );
@@ -347,20 +371,30 @@ var useCallback = React.useCallback;
         HEKIMLER.map(function (hk) {
           return h(Card, { key: hk.ad, tone: 'cream', padding: 'none' },
             h('div', {
-              'aria-hidden': 'true',
+              /* Yer tutucu süstür, ekran okuyucudan gizlenir; gerçek portre
+                 hekimi tanıttığı için gizlenmez. */
+              'aria-hidden': hk.gorsel ? undefined : 'true',
               style: {
+                position: 'relative',
                 height: 170, background: 'var(--grad-cream)', display: 'flex',
                 alignItems: 'center', justifyContent: 'center',
                 borderBottom: '1px solid var(--line-hairline)'
               }
             },
-              h('div', {
-                style: {
-                  width: 96, height: 110, borderRadius: 'var(--radius-blob)',
-                  background: 'linear-gradient(150deg,#fff 0%,var(--sand-150) 100%)',
-                  boxShadow: 'inset -6px -8px 20px rgba(58,45,32,.07),inset 6px 8px 20px #fff'
-                }
-              })
+              hk.gorsel
+                /* Portrede yüz karenin üst yarısında kaldığı için kırpma
+                   merkezi yukarı çekilir. */
+                ? KapakGorseli(hk.gorsel, hk.ad + ' — ' + hk.unvan, {
+                    konum: 'center 28%',
+                    olcu: '(max-width: 760px) 50vw, 300px'
+                  })
+                : h('div', {
+                    style: {
+                      width: 96, height: 110, borderRadius: 'var(--radius-blob)',
+                      background: 'linear-gradient(150deg,#fff 0%,var(--sand-150) 100%)',
+                      boxShadow: 'inset -6px -8px 20px rgba(58,45,32,.07),inset 6px 8px 20px #fff'
+                    }
+                  })
             ),
             h('div', { style: { padding: '20px 22px 24px' } },
               h('h3', { style: Object.assign({}, S.h3, { fontSize: 18 }) }, hk.ad),

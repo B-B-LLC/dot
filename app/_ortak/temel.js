@@ -4,6 +4,7 @@
    İçerik burada tutulmaz; metinler site.config.ts'ten gelir. */
 
 import * as React from 'react';
+import Image from 'next/image';
 import { saatler as SAATLER } from '@/site.config';
 import { TEDAVI_IKONLARI } from './tedavi-ikonlari';
 
@@ -72,10 +73,51 @@ var useEffect = React.useEffect;
   }
 
   var MEKANLAR = [
-    { etiket: 'BEKLEME ALANI', genislik: '52%', oran: '1.2/1', yuvarlak: 'var(--radius-blob)' },
-    { etiket: 'MUAYENE ODASI', genislik: '46%', oran: '1/1.3', yuvarlak: '999px' },
-    { etiket: 'ÇOCUK BÖLÜMÜ', genislik: '58%', oran: '1.4/1', yuvarlak: 'var(--radius-blob)' }
+    { anahtar: 'bekleme', etiket: 'BEKLEME ALANI', genislik: '52%', oran: '1.2/1', yuvarlak: 'var(--radius-blob)' },
+    { anahtar: 'muayene', etiket: 'MUAYENE ODASI', genislik: '46%', oran: '1/1.3', yuvarlak: '999px' },
+    { anahtar: 'cocuk', etiket: 'ÇOCUK BÖLÜMÜ', genislik: '58%', oran: '1.4/1', yuvarlak: 'var(--radius-blob)' }
   ];
+
+  /* ------------------------------------------------------------------ */
+  /* Fotoğraflar                                                         */
+  /* ------------------------------------------------------------------ */
+
+  /* Kartın kapağını dolduran fotoğraf. site.config.ts'te yol yazılmamışsa null
+     döner; çağıran yer o zaman kendi çizim yer tutucusunu gösterir.
+
+     Fotoğrafın en-boy oranı kart oranıyla tutmadığında görsel esnetilmez,
+     ortadan kırpılır (objectFit: cover). Portrelerde yüz karenin üst yarısında
+     kaldığı için kırpma merkezi yukarı çekilebilir — konum bunun içindir. */
+  function KapakGorseli(yol, alt, secenek) {
+    if (!yol) return null;
+    var s = secenek || {};
+    /* next/image kullanılıyor: kaynak dosyalar birkaç megabayt, kartlar ise
+       birkaç yüz piksel. Bu bileşen görseli istenen ölçüde ve WebP/AVIF olarak
+       yeniden üretip önbelleğe alır, böylece ziyaretçiye kırpılmış hâli iner.
+       olcu alanı, tarayıcıya hangi genişliği indireceğini söyler; yanlış verilirse
+       gereğinden büyük dosya seçilir. */
+    return h(Image, {
+      src: yol,
+      alt: alt || '',
+      fill: true,
+      sizes: s.olcu || '100vw',
+      priority: !!s.oncelikli,
+      draggable: false,
+      style: { objectFit: 'cover', objectPosition: s.konum || 'center' }
+    });
+  }
+
+  /* Fotoğrafın alt kenarına inen koyulaştırma. Üzerine gelen etiket yazısının
+     açık renkli bir fotoğrafta da okunmasını sağlar. */
+  function YaziPerdesi() {
+    return h('div', {
+      'aria-hidden': 'true',
+      style: {
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to top,rgba(24,18,10,.68) 0%,rgba(24,18,10,.22) 38%,rgba(24,18,10,0) 66%)'
+      }
+    });
+  }
 
   /* ------------------------------------------------------------------ */
   /* Ortak stiller                                                       */
@@ -236,6 +278,8 @@ export {
   h,
   BOLUMLER,
   MEKANLAR,
+  KapakGorseli,
+  YaziPerdesi,
   tedaviSimgesi,
   S,
   BolumBasligi,
