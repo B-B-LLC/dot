@@ -672,6 +672,34 @@ export const tedaviler: Tedavi[] = [
 /** İşlem sayfasının gövdesindeki başlıklı bir parça. */
 export type IslemBolumu = { baslik: string; metin: string };
 
+/** Tedavinin aşamaları ve her aşamanın ne kadar sürdüğü.
+
+    Hastanın en çok sorduğu şey "ne kadar sürer" olduğu için, bu bilgi metnin
+    içinde kaybolmasın diye ayrı bir şerit olarak çizilir. `sure` her zaman
+    aralık ya da niteleyici cümledir; kesin gün sayısı yazılmaz. */
+export type IslemAsama = { asama: string; sure: string; aciklama: string };
+
+/** İki seçeneği ölçüt ölçüt karşılaştıran tablo.
+
+    Yalnız gerçek bir seçimin olduğu sayfalarda kullanılır (metal/seramik
+    braket, açık/kapalı sinüs lifting, köprü/implant …). Birbirine yakın
+    başlıkların tekrara düşmemesini de bu tablo sağlar: sayfa, komşusundan
+    farkını iddia etmek yerine ölçütle gösterir. */
+export type IslemKarsilastirma = {
+  baslik: string;
+  /** Tablonun iki sütun başlığı. */
+  sutunlar: [string, string];
+  satirlar: {
+    olcut: string;
+    /** Ölçütün altına düşen küçük açıklama; neden bakıldığını söyler. */
+    olcutAciklama?: string;
+    a: string;
+    b: string;
+  }[];
+  /** Tablonun altındaki tek cümlelik uyarı ya da bağlam. */
+  dipnot?: string;
+};
+
 /** Kendi sayfası olan bir işlem.
 
     `slug` sayfanın adresidir (/tedaviler/<slug>) ve ana dalların id'leriyle
@@ -687,6 +715,11 @@ export type Islem = {
   /** Sayfanın açılış paragrafı. */
   giris: string;
   bolumler: IslemBolumu[];
+  /** Aşama şeridi. Süreci birden çok randevuya yayılan işlemlerde anlamlıdır;
+      tek seansta biten işlemde çizilmez. */
+  zamanCizelgesi?: IslemAsama[];
+  /** Karşılaştırma tablosu. Sayfada gerçek bir seçim varsa eklenir. */
+  karsilastirma?: IslemKarsilastirma;
   /** Hastanın süreç boyunca bilmesi gerekenler. */
   notlar?: string[];
   sorular?: Soru[];
@@ -866,6 +899,26 @@ export const tedaviMenusu: {
                 'olarak temizlenmesidir (apikal rezeksiyon). Bu, yenileme denenmeden gündeme gelmez.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Eski dolgunun sökülmesi',
+              sure: 'Tek seans',
+              aciklama:
+                'Önceki kanal tedavisinin materyalleri çıkarılır ve enfekte doku temizlenir.'
+            },
+            {
+              asama: 'Kanalların temizlenmesi',
+              sure: '1-2 randevu',
+              aciklama:
+                'Kanallar aletler ve solüsyonlarla temizlenir; gerekirse ilaç konup beklenir.'
+            },
+            {
+              asama: 'Doldurma ve kapatma',
+              sure: 'Tek seans',
+              aciklama:
+                'İltihap gerilediğinde kanallar kalıcı olarak doldurulur ve diş üstten kapatılır.'
+            }
+          ],
           notlar: [
             'Seanslar arasında ve tedaviden sonraki birkaç gün hafif hassasiyet olağandır.',
             'Tedavi sürerken o bölgeyle sert gıda çiğnenmemelidir.',
@@ -977,6 +1030,60 @@ export const tedaviMenusu: {
                 'edilir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Dişin hazırlanması',
+              sure: 'Tek seans',
+              aciklama:
+                'Çürük temizlenir, ölçü alınır ve geçici dolgu yapılır.'
+            },
+            {
+              asama: 'Laboratuvar üretimi',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'Parça alınan ölçüye göre porselen ya da kompozitten kişiye özel üretilir.'
+            },
+            {
+              asama: 'Yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Gelen parçanın uyumu kontrol edilir ve dişe kalıcı olarak yapıştırılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'İnley ile onley arasındaki fark',
+            sutunlar: ['İnley', 'Onley'],
+            satirlar: [
+              {
+                olcut: 'Kapsadığı alan',
+                a: 'Dişin tepesindeki çiğneme çukurunu doldurur.',
+                b: 'Çukurla birlikte bir ya da daha çok tümseği örter.'
+              },
+              {
+                olcut: 'Hasarın boyutu',
+                a: 'Orta boyutlu madde kayıpları.',
+                b: 'Daha geniş kayıplar; henüz tam kaplama gerekmiyor.'
+              },
+              {
+                olcut: 'Tümsek koruması',
+                olcutAciklama: 'Kırılma riskini belirleyen ölçüt',
+                a: 'Tümsekler açıkta kalır.',
+                b: 'Zayıflamış tümsekler örtülerek desteklenir.'
+              },
+              {
+                olcut: 'Sağlam dokuya müdahale',
+                a: 'Yalnız çürük bölge hazırlanır.',
+                b: 'Örtülecek tümsekler hafifçe şekillendirilir.'
+              },
+              {
+                olcut: 'Yapısal destek',
+                a: 'Standart dolguya göre daha fazla destek.',
+                b: 'Dişin büyük bölümünü taşıyacak destek.'
+              }
+            ],
+            dipnot:
+              'Hangisinin uygulanacağı çürüğün genişliğine ve sağlam kalan tümsek sayısına bakılarak belirlenir.'
+          },
           notlar: [
             'Yapıştırma sonrası birkaç saat o bölgeyle çiğneme yapılmaz.',
             'İlk günlerde sıcak ve soğuğa karşı geçici hassasiyet görülebilir.',
@@ -1195,6 +1302,32 @@ export const tedaviMenusu: {
                 'sürmeyi engelleyebilir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Çekim ve ölçü',
+              sure: 'Tek seans',
+              aciklama:
+                'Süt dişi çekilir; bölge iyileştikten sonra ölçü alınır.'
+            },
+            {
+              asama: 'Apareyin hazırlanması',
+              sure: 'Birkaç gün',
+              aciklama:
+                'Çocuğun çene yapısına uygun yer tutucu laboratuvarda üretilir.'
+            },
+            {
+              asama: 'Uygulama',
+              sure: 'Tek seans',
+              aciklama:
+                'Aparey yapıştırılır ya da hareketliyse kullanımı anlatılır.'
+            },
+            {
+              asama: 'Kontroller',
+              sure: 'Birkaç ayda bir',
+              aciklama:
+                'Alttan gelen kalıcı dişin sürme durumu izlenir; sürünce aparey çıkarılır.'
+            }
+          ],
           notlar: [
             'Aparey gevşer ya da kırılırsa beklenmeden klinik aranmalıdır.',
             'Yer tutucu dişleri hareket ettirmez; ortodontik tedavi değildir.',
@@ -1310,6 +1443,71 @@ export const tedaviMenusu: {
                 'metalsiz seçenekler konuşulmalıdır.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Kesim ve ölçü',
+              sure: 'Tek seans',
+              aciklama:
+                'Diş kaplama kalınlığı kadar küçültülür, ölçü alınır ve geçici kaplama takılır.'
+            },
+            {
+              asama: 'Altyapı provası',
+              sure: '1-2 randevu',
+              aciklama:
+                'Porselene destek olacak metal altyapının dişe oturması denenir.'
+            },
+            {
+              asama: 'Porselen provası',
+              sure: '1-2 randevu',
+              aciklama:
+                'Porselenin rengi ve biçimi ağızda değerlendirilir, gerekirse düzeltilir.'
+            },
+            {
+              asama: 'Kalıcı yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Uyum onaylandıktan sonra kaplama dişe yapıştırılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Metal destekli porselen ile zirkonyum arasındaki fark',
+            sutunlar: ['Metal destekli porselen', 'Zirkonyum'],
+            satirlar: [
+              {
+                olcut: 'Altyapı',
+                a: 'Porselenin altında gri metal alaşım.',
+                b: 'Porselenin altında beyaz zirkonyum.'
+              },
+              {
+                olcut: 'Işık geçirgenliği',
+                a: 'Metal ışığı engeller, görünüm daha mat.',
+                b: 'Işığı daha iyi geçirir, doğal dişe yakın durur.'
+              },
+              {
+                olcut: 'Diş eti sınırı',
+                olcutAciklama: 'Yıllar içinde fark edilen ölçüt',
+                a: 'Diş eti çekilirse ince gri çizgi belirebilir.',
+                b: 'Gri yansıma sorunu görülmez.'
+              },
+              {
+                olcut: 'Ağırlık',
+                a: 'Metal nedeniyle daha ağır.',
+                b: 'Belirgin biçimde daha hafif.'
+              },
+              {
+                olcut: 'Doku uyumu',
+                a: 'Alaşıma duyarlılık bildirilmişse dikkate alınır.',
+                b: 'Doku uyumu yüksektir.'
+              },
+              {
+                olcut: 'Öne çıktığı yer',
+                a: 'Çiğneme yükü yüksek arka dişler.',
+                b: 'Görünen ön bölge ve estetik beklentinin yüksek olduğu dişler.'
+              }
+            ],
+            dipnot:
+              'Seçim, dişin ağızdaki konumuna ve görünüm ile dayanıklılık arasındaki önceliğe göre yapılır.'
+          },
           notlar: [
             'İlk günlerde sıcak ve soğuğa karşı geçici hassasiyet görülebilir.',
             'Sert kabuklu gıdaları kaplamayla kırmaktan kaçınılmalıdır.',
@@ -1364,6 +1562,26 @@ export const tedaviMenusu: {
               metin:
                 'Arka bölgedeki çiğneme kuvvetleri daha yüksektir. Bu bölge için zirkonyum gibi başka ' +
                 'seçenekler de değerlendirilir; karar dişin konumuna ve kapanışa bakılarak verilir.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Hazırlık ve ölçü',
+              sure: 'Tek seans',
+              aciklama:
+                'Diş yüzeyi kaplama için hazırlanır, ölçü alınır ve geçici kaplama takılır.'
+            },
+            {
+              asama: 'Estetik prova',
+              sure: '1-2 randevu',
+              aciklama:
+                'Seramiğin rengi, saydamlığı ve biçimi ağızda kontrol edilir.'
+            },
+            {
+              asama: 'Kalıcı yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Onaylanan kaplama özel yapıştırıcıyla dişe sabitlenir.'
             }
           ],
           notlar: [
@@ -1429,6 +1647,71 @@ export const tedaviMenusu: {
                 'yeterli desteği bulamaz.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Planlama',
+              sure: 'Tek seans',
+              aciklama:
+                'Gülüş tasarımı yapılır ve dişlere ne kadar dokunulacağı belirlenir.'
+            },
+            {
+              asama: 'Yüzey hazırlığı',
+              sure: 'Tek seans',
+              aciklama:
+                'Ön yüzeyden ince bir tabaka kaldırılır ve ölçü alınır.'
+            },
+            {
+              asama: 'Prova',
+              sure: '1-2 randevu',
+              aciklama:
+                'Yaprak porselenlerin ağızdaki duruşu ve uyumu denenir.'
+            },
+            {
+              asama: 'Kalıcı yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Laminalar dişlerin ön yüzeyine tek tek yapıştırılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Lamina ile bonding arasındaki fark',
+            sutunlar: ['Lamina', 'Bonding'],
+            satirlar: [
+              {
+                olcut: 'Malzeme',
+                a: 'Laboratuvarda üretilen ince porselen.',
+                b: 'Hekimin ağızda işlediği kompozit.'
+              },
+              {
+                olcut: 'Diş dokusundan kaldırılan',
+                olcutAciklama: 'Geri dönüşü belirleyen ölçüt',
+                a: 'Ön yüzeyden milimetrenin altında bir tabaka.',
+                b: 'Çoğu durumda aşındırma yapılmaz.'
+              },
+              {
+                olcut: 'Seans',
+                a: 'Ölçü ve laboratuvar için 2-3 seans.',
+                b: 'Çoğunlukla tek seans.'
+              },
+              {
+                olcut: 'Renklenme',
+                a: 'Renklenmeye belirgin biçimde daha dirençlidir.',
+                b: 'Zamanla yüzeysel renklenebilir; cilayla tazelenir.'
+              },
+              {
+                olcut: 'Aşınma',
+                a: 'Aşınma ve çizilmeye daha dayanıklı.',
+                b: 'Zamanla aşınabilir, kenarları kırılabilir.'
+              },
+              {
+                olcut: 'Onarım',
+                a: 'Kırılan parça genellikle yenilenir.',
+                b: 'Çoğu zaman yerinde onarılabilir.'
+              }
+            ],
+            dipnot:
+              'Seçim, dişteki değişimin boyutuna ve dokudan ne kadar ödün verilmek istendiğine göre yapılır.'
+          },
           notlar: [
             'Elma, havuç gibi sert gıdalar ön dişlerle koparılmamalı, dilimlenerek yenmelidir.',
             'Tırnak yeme ve kalem ısırma alışkanlıkları laminanın ömrünü kısaltır.',
@@ -1486,6 +1769,65 @@ export const tedaviMenusu: {
                 'dişlerde çürük riski artar. Temizlik yöntemi teslimde gösterilir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Destek dişlerin hazırlanması',
+              sure: 'Tek seans',
+              aciklama:
+                'Komşu dişler küçültülür, ölçü alınır ve geçici köprü takılır.'
+            },
+            {
+              asama: 'Altyapı ve estetik prova',
+              sure: '2-3 randevu',
+              aciklama:
+                'Köprünün oturması, çiğneme dengesi ve rengi kontrol edilir.'
+            },
+            {
+              asama: 'Kalıcı yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Köprü destek dişlerin üzerine sabitlenir ve temizliği anlatılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Köprü ile tek implant arasındaki fark',
+            sutunlar: ['Köprü protezi', 'Tek implant'],
+            satirlar: [
+              {
+                olcut: 'Komşu dişlere etki',
+                olcutAciklama: 'Kararın en belirleyici yanı',
+                a: 'Boşluğun iki yanındaki dişler küçültülür.',
+                b: 'Komşu dişlere dokunulmaz.'
+              },
+              {
+                olcut: 'Cerrahi',
+                a: 'Cerrahi işlem gerekmez.',
+                b: 'İmplantın yerleştirilmesi cerrahi bir işlemdir.'
+              },
+              {
+                olcut: 'Süre',
+                a: 'Ölçü ve provalarla birkaç hafta içinde tamamlanır.',
+                b: 'Kemikle kaynaşma için birkaç ay beklenir.'
+              },
+              {
+                olcut: 'Çene kemiği',
+                a: 'Boşluktaki kemik zamanla erimeye devam edebilir.',
+                b: 'Yapay kök kemiğin uyarılmasını sürdürür.'
+              },
+              {
+                olcut: 'Temizlik',
+                a: 'Gövde altı özel diş ipi ya da ara yüz fırçası ister.',
+                b: 'Doğal diş gibi fırçalanır, diş ipi kullanılır.'
+              },
+              {
+                olcut: 'Onarım',
+                a: 'Sorun çıkarsa köprü blok hâlinde sökülür.',
+                b: 'Genellikle yalnız üstteki kaplama değiştirilir.'
+              }
+            ],
+            dipnot:
+              'Seçim komşu dişlerin sağlığına, bölgedeki kemik hacmine ve cerrahi istenip istenmediğine göre yapılır.'
+          },
           notlar: [
             'Destek dişlerin sağlığı köprünün ömrünü doğrudan belirler.',
             'Kontroller aksatılmamalı, kenar uyumu düzenli olarak değerlendirilmelidir.',
@@ -1549,6 +1891,77 @@ export const tedaviMenusu: {
                 'Gece çıkarılıp dokuların dinlenmesi önerilir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'İlk ölçü',
+              sure: 'Tek seans',
+              aciklama:
+                'Çenenin genel yapısını kaydetmek için başlangıç ölçüsü alınır.'
+            },
+            {
+              asama: 'Hassas ölçü ve kapanış',
+              sure: '2-3 randevu',
+              aciklama:
+                'Kişiye özel kaşıkla hassas ölçü alınır, alt-üst çene ilişkisi belirlenir.'
+            },
+            {
+              asama: 'Dişli prova',
+              sure: '1-2 randevu',
+              aciklama:
+                'Mum model üzerine dizilen dişlerle görünüm ve kapanış denenir.'
+            },
+            {
+              asama: 'Teslim',
+              sure: 'Tek seans',
+              aciklama:
+                'Bitirilen protez takılır, kullanımı ve bakımı anlatılır.'
+            },
+            {
+              asama: 'Uyum kontrolleri',
+              sure: 'Birkaç randevu',
+              aciklama:
+                'Vuran noktalar düzeltilir; ağrıyan protezle beklenmez.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Kancalı hareketli protez ile hassas tutuculu protez',
+            sutunlar: ['Hareketli protez', 'Hassas tutuculu protez'],
+            satirlar: [
+              {
+                olcut: 'Tutunma',
+                a: 'Kalan dişlere metal kancayla tutunur.',
+                b: 'Kaplamaların içine gizlenmiş kilitlerle tutunur.'
+              },
+              {
+                olcut: 'Görünüm',
+                a: 'Kancalar gülerken görünebilir.',
+                b: 'Görünür metal parça bulunmaz.'
+              },
+              {
+                olcut: 'Destek dişlere müdahale',
+                olcutAciklama: 'Karşılığı olan ölçüt',
+                a: 'Sağlam dişlere dokunulmadan uygulanabilir.',
+                b: 'Destek dişlerin küçültülüp kaplanması gerekir.'
+              },
+              {
+                olcut: 'Ağızdaki oturma',
+                a: 'Çiğnerken bir miktar hareket olabilir.',
+                b: 'Kilitler sayesinde daha az hareket eder.'
+              },
+              {
+                olcut: 'Takıp çıkarma',
+                a: 'Kancalar esnediği için görece kolay.',
+                b: 'Kilidin yönüne dikkat etmek gerekir; alışkanlıkla kolaylaşır.'
+              },
+              {
+                olcut: 'Bakım',
+                a: 'Kancaların çevresi özenle temizlenir.',
+                b: 'Kilit parçaları zamanla aşınabilir, kontrolde yenilenir.'
+              }
+            ],
+            dipnot:
+              'Seçim, ağızda kalan dişlerin konumuna ve destek dişlerin kaplanmasının kabul edilip edilmediğine göre yapılır.'
+          },
           notlar: [
             'Protez kendiliğinden gevşerse ya da vurmaya başlarsa evde düzeltilmeye çalışılmamalıdır.',
             'Çene kemiği yıllar içinde değişir; protezin astarlanması gerekebilir.',
@@ -1603,6 +2016,32 @@ export const tedaviMenusu: {
                 'Standart hareketli protez dişe metal kancayla tutunur ve bu kancalar gülerken ' +
                 'görünebilir. Burada tutuculuk kaplamanın içindedir; hem görünüm hem de ağızdaki ' +
                 'oturma açısından fark yaratır. Karşılığında destek dişlerin kaplanması gerekir.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Sabit parçaların hazırlığı',
+              sure: '2-3 randevu',
+              aciklama:
+                'Destek dişlere, kilit yuvasını taşıyan kaplamalar yapılır.'
+            },
+            {
+              asama: 'Hareketli parça ölçüsü',
+              sure: 'Tek seans',
+              aciklama:
+                'Sabitlenen kaplamalar üzerinden hassas ölçü alınır.'
+            },
+            {
+              asama: 'Prova ve uyum',
+              sure: '1-2 randevu',
+              aciklama:
+                'Hareketli bölümün kilitlere tam oturup oturmadığı denenir.'
+            },
+            {
+              asama: 'Teslim',
+              sure: 'Tek seans',
+              aciklama:
+                'Protez takılır ve takıp çıkarma yönü birlikte çalışılır.'
             }
           ],
           notlar: [
@@ -1766,6 +2205,26 @@ export const tedaviMenusu: {
                 'aylar sürer ve kontrol röntgenleriyle izlenir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Cerrahi',
+              sure: 'Tek seans',
+              aciklama:
+                'Kök ucundaki iltihaplı doku temizlenir ve kesilen uç dolguyla kapatılır.'
+            },
+            {
+              asama: 'Dikişlerin alınması',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'İlk iyileşme değerlendirilir ve dikişler alınır.'
+            },
+            {
+              asama: 'İyileşme takibi',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Kök ucundaki kemiğin dolup dolmadığı röntgenle izlenir.'
+            }
+          ],
           notlar: [
             'İşlem sonrası ilk günlerde sert gıdalardan ve o bölgeyle çiğnemekten kaçınılmalıdır.',
             'Sigara iyileşmeyi belirgin biçimde yavaşlatır.',
@@ -1825,6 +2284,46 @@ export const tedaviMenusu: {
                 'Bekleme genellikle birkaç aydır.'
             }
           ],
+          karsilastirma: {
+            baslik: 'İki teknik hangi ölçütlerle ayrılır',
+            sutunlar: ['Kapalı teknik', 'Açık teknik'],
+            satirlar: [
+              {
+                olcut: 'Kalan kemik yüksekliği',
+                olcutAciklama: 'Kararı belirleyen ana ölçüt',
+                a: 'İmplantı ilk anda tutabilecek düzeyde',
+                b: 'Belirgin biçimde yetersiz'
+              },
+              {
+                olcut: 'Nereden çalışılır',
+                a: 'İmplant yuvasının içinden',
+                b: 'Yanakta açılan küçük pencereden'
+              },
+              {
+                olcut: 'Eklenebilen kemik',
+                a: 'Birkaç milimetreyle sınırlı',
+                b: 'Çok daha fazla hacim'
+              },
+              {
+                olcut: 'Çalışılan alanın görünürlüğü',
+                a: 'Görülmez, aletle hissedilerek ilerlenir',
+                b: 'Doğrudan gözle görülür'
+              },
+              {
+                olcut: 'İyileşme dönemi',
+                a: 'Doku az zedelendiği için genellikle daha rahat',
+                b: 'Şişlik ve morluk daha belirgin olabilir'
+              },
+              {
+                olcut: 'İmplantın aynı seansta konması',
+                a: 'Koşullar uygunsa sık',
+                b: 'Çoğunlukla greft olgunlaştıktan sonra'
+              }
+            ],
+            dipnot:
+              'Biri diğerinin üstünü değildir. Hangisinin uygulanacağı tomografideki kemik ölçümüne ' +
+              'bakılarak belirlenir; karar hastanın tercihine değil anatomiye bağlıdır.'
+          },
           notlar: [
             'İşlem sonrası birkaç hafta sert sümkürmekten kaçınılmalıdır.',
             'Hapşırırken ağız açık tutulmalı, sinüste basınç oluşturulmamalıdır.',
@@ -1888,6 +2387,26 @@ export const tedaviMenusu: {
                 've kontrol görüntülemesiyle kemikleşmenin yeterli olup olmadığına bakılır.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Cerrahi yerleştirme',
+              sure: 'Tek seans',
+              aciklama:
+                'Eksik alana greft konur, üzeri zarla örtülür ve diş eti dikilir.'
+            },
+            {
+              asama: 'Dikiş alımı',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'Bölgenin ilk iyileşmesi değerlendirilir ve dikişler alınır.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Greftin kendi kemiğinize dönüşmesi beklenir, görüntülemeyle izlenir.'
+            }
+          ],
           notlar: [
             'İlk günlerde bölgeye baskı yapılmamalı, o tarafla çiğnenmemelidir.',
             'Sigara greftin tutunmasını belirgin biçimde olumsuz etkiler.',
@@ -1945,6 +2464,26 @@ export const tedaviMenusu: {
                 'altı ay civarında bir süre alır ve görüntülemeyle izlenir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Cerrahi',
+              sure: 'Tek seans',
+              aciklama:
+                'Yanaktan açılan pencereden sinüs zarı yukarı sıyrılır ve greft yerleştirilir.'
+            },
+            {
+              asama: 'Dikiş alımı',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'Yara yerinin kapanması kontrol edilir, dikişler alınır.'
+            },
+            {
+              asama: 'Kemik oluşumu',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Bölgenin implant taşıyacak hacim ve sertliğe ulaşması beklenir.'
+            }
+          ],
           notlar: [
             'İlk haftalarda sert sümkürmek ve burnu tıkayarak hapşırmak kesinlikle önlenmelidir.',
             'Uçak yolculuğu ve dalış için hekimin izni beklenmelidir.',
@@ -1999,6 +2538,38 @@ export const tedaviMenusu: {
                 'Açık teknikte yanaktan pencere açılır ve çalışılan alan gözle görülür. Kapalı teknikte ' +
                 'ise dar yuvanın içinden, aletle hissederek ilerlenir. Bu yüzden eklenebilecek kemik ' +
                 'miktarı sınırlıdır ama doku daha az zedelenir.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Değerlendirme',
+              sure: '1 randevu',
+              aciklama:
+                'Tomografiyle kalan kemik yüksekliği ölçülür ve kapalı tekniğin yeterli olup olmayacağına karar verilir.'
+            },
+            {
+              asama: 'Cerrahi',
+              sure: 'Tek seans',
+              aciklama:
+                'İmplant yuvası hazırlanır, sinüs zarı yukarı esnetilir ve greft yerleştirilir. Uygunsa implant aynı seansta konur.'
+            },
+            {
+              asama: 'İlk iyileşme',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'Şişlik ve hassasiyetin gerilediği dönem. Basınç yaratan hareketlerden kaçınılır, kontrol randevusu yapılır.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Greft ve implantın kemikle bütünleşmesi beklenir. Süre görüntülemeyle izlenir.'
+            },
+            {
+              asama: 'Protez',
+              sure: '2-3 randevu',
+              aciklama:
+                'Kaynaşma tamamlandığında ölçü alınır ve üst yapı hazırlanıp takılır.'
             }
           ],
           notlar: [
@@ -2063,6 +2634,71 @@ export const tedaviMenusu: {
                 'kalıcı protez yapılır; bu bekleme genellikle birkaç aydır.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'İmplantların yerleştirilmesi',
+              sure: 'Tek seans',
+              aciklama:
+                'Gereken çekimler yapılır, dört implant belirlenen açılarla yerleştirilir.'
+            },
+            {
+              asama: 'Geçici protez',
+              sure: 'Tek seans',
+              aciklama:
+                'Tutuculuk uygunsa implantlara sabit geçici protez takılır.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'İmplantların kemikle bütünleşmesi beklenir; bu dönemde yumuşak gıda önerilir.'
+            },
+            {
+              asama: 'Kalıcı protez',
+              sure: '2-3 randevu',
+              aciklama:
+                'Ölçü alınır ve kalıcı üst yapı hazırlanıp takılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Dört implantlı düzen ile altı implantlı düzen',
+            sutunlar: ['All-on-four', 'All-on-six'],
+            satirlar: [
+              {
+                olcut: 'İmplant sayısı',
+                a: 'Çene başına dört implant.',
+                b: 'Çene başına altı implant.'
+              },
+              {
+                olcut: 'Gereken kemik',
+                olcutAciklama: 'Kararı belirleyen ana ölçüt',
+                a: 'Arka bölgede daha az kemikle uygulanabilir.',
+                b: 'Arka bölgede de yeterli kemik hacmi gerekir.'
+              },
+              {
+                olcut: 'Yerleşim',
+                a: 'Arkadaki iki implant açılı yerleştirilir.',
+                b: 'İmplantlar çeneye dengeli biçimde dağıtılır.'
+              },
+              {
+                olcut: 'Yük dağılımı',
+                a: 'Yük dört noktaya dağılır.',
+                b: 'Yük altı noktaya dağılır, taban genişler.'
+              },
+              {
+                olcut: 'Ek cerrahi',
+                a: 'Çoğu durumda kemik ekleme gerekmeden planlanabilir.',
+                b: 'Kemik yetersizse önce greft gündeme gelebilir.'
+              },
+              {
+                olcut: 'Cerrahi süre',
+                a: 'Daha az implant, daha kısa işlem.',
+                b: 'İki ek implant nedeniyle daha uzun.'
+              }
+            ],
+            dipnot:
+              'Hangisinin uygulanacağı tomografideki kemik ölçümüne bağlıdır; daha çok implant her durumda daha iyi anlamına gelmez.'
+          },
           notlar: [
             'Geçici protez dönemi boyunca yumuşak gıda önerisine uyulmalıdır.',
             'İmplant çevresinin temizliği protezin ömrünü doğrudan etkiler; ara yüz fırçası ve ağız duşu gösterilir.',
@@ -2227,6 +2863,71 @@ export const tedaviMenusu: {
                 'kaynaşma tamamlandıktan sonra yapılır.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Çekim ve implant',
+              sure: 'Tek seans',
+              aciklama:
+                'Varsa kurtarılamayan diş çekilir, aynı seansta implant yerleştirilir.'
+            },
+            {
+              asama: 'Geçici diş',
+              sure: 'Tek seans',
+              aciklama:
+                'Tutuculuk yeterliyse implanta o gün geçici bir diş vidalanır.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'İmplantın kemikle bütünleşmesi beklenir, geçici diş kullanılmaya devam edilir.'
+            },
+            {
+              asama: 'Kalıcı üst yapı',
+              sure: '1-2 randevu',
+              aciklama:
+                'Kaynaşma tamamlandığında kalıcı kaplama hazırlanıp takılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Geleneksel akış ile hemen yükleme',
+            sutunlar: ['Geleneksel implant', 'Bir günde implant'],
+            satirlar: [
+              {
+                olcut: 'İlk tutuculuk',
+                olcutAciklama: 'Yöntemi mümkün kılan koşul',
+                a: 'Standart tutuculuk yeterlidir.',
+                b: 'İmplantın ilk anda çok sıkı durması şarttır.'
+              },
+              {
+                olcut: 'Diş ne zaman takılır',
+                a: 'Kaynaşma sonrası, birkaç ay içinde.',
+                b: 'İmplantın konduğu gün geçici diş takılır.'
+              },
+              {
+                olcut: 'Ara dönem',
+                a: 'Genellikle hareketli geçici protez kullanılır.',
+                b: 'İmplanta vidalanmış sabit geçici diş kullanılır.'
+              },
+              {
+                olcut: 'Aşama sayısı',
+                a: 'İmplant ve üst yapı ayrı aşamalarda.',
+                b: 'İmplant ve geçici diş tek aşamada.'
+              },
+              {
+                olcut: 'Çiğneme',
+                a: 'Kaynaşma bitene kadar o bölge yüklenmez.',
+                b: 'Yumuşak gıdayla sınırlı çiğnemeye izin verilir.'
+              },
+              {
+                olcut: 'Kimde uygulanabilir',
+                a: 'Geniş bir hasta aralığı.',
+                b: 'Kemik kalitesi ve hacmi uygun olanlar.'
+              }
+            ],
+            dipnot:
+              'Hemen yükleme bir tercih değil, koşula bağlıdır; implant ilk anda yeterince sıkı durmuyorsa geleneksel akış izlenir.'
+          },
           notlar: [
             'Geçici dönemde hekimin verdiği yumuşak gıda listesine uyulmalıdır.',
             'O bölgeyle ısırma ve koparma hareketlerinden kaçınılmalıdır.',
@@ -2381,6 +3082,60 @@ export const tedaviMenusu: {
                 'olabilir. İyileşme kontrol randevusunda değerlendirilir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve ölçüm',
+              sure: 'Tek seans',
+              aciklama:
+                'Diş eti ceplerinin derinliği ölçülür ve tedavi bölgelere ayrılır.'
+            },
+            {
+              asama: 'Temizlik seansları',
+              sure: '1-2 randevu',
+              aciklama:
+                'Uyuşturma altında cep içindeki taş ve iltihaplı doku temizlenir.'
+            },
+            {
+              asama: 'İyileşme kontrolü',
+              sure: 'Yaklaşık 1 ay',
+              aciklama:
+                'Cep derinliklerindeki azalma ve diş eti iyileşmesi yeniden değerlendirilir.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Diş taşı temizliği ile küretaj arasındaki fark',
+            sutunlar: ['Diş taşı temizliği', 'Küretaj'],
+            satirlar: [
+              {
+                olcut: 'Temizlenen bölge',
+                olcutAciklama: 'İki işlemi ayıran ana ölçüt',
+                a: 'Diş eti sınırının üstündeki görünen yüzeyler.',
+                b: 'Diş eti altındaki kök yüzeyi ve cep içi.'
+              },
+              {
+                olcut: 'Amaç',
+                a: 'Yüzeydeki plak, taş ve lekeleri almak.',
+                b: 'Cepteki iltihaplı dokuyu temizleyip hastalığı durdurmak.'
+              },
+              {
+                olcut: 'Uyuşturma',
+                a: 'Genellikle gerekmez.',
+                b: 'Kök yüzeyine inildiği için uygulanır.'
+              },
+              {
+                olcut: 'Seans',
+                a: 'Çoğunlukla tek seans.',
+                b: 'Ağız bölgelere ayrılır, birkaç seans sürer.'
+              },
+              {
+                olcut: 'Kime uygulanır',
+                a: 'Rutin kontrol ve yüzeysel diş eti şikâyeti.',
+                b: 'Cep oluşmuş, ilerlemiş diş eti hastalığı.'
+              }
+            ],
+            dipnot:
+              'Hangisinin gerektiği cep derinliği ölçülerek belirlenir; küretaj, taş temizliğinin daha kapsamlısı değil, farklı bir işlemdir.'
+          },
           notlar: [
             'Uyuşturmanın etkisi geçene kadar yiyip içilmemelidir.',
             'İlk günlerde nazik fırçalamaya devam edilmeli, bölge atlanmamalıdır.',
@@ -2441,6 +3196,26 @@ export const tedaviMenusu: {
               metin:
                 'Pembe estetikte fazla diş eti alınarak diş daha uzun gösterilir. Burada ise tam tersi ' +
                 'yapılır: eksilen diş eti yerine konur ve açıkta kalan kök örtülür.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Cerrahi',
+              sure: 'Tek seans',
+              aciklama:
+                'Greft dokusu alınıp çekilme olan bölgeye ince dikişlerle yerleştirilir.'
+            },
+            {
+              asama: 'Dikiş alımı',
+              sure: 'Yaklaşık 1 hafta',
+              aciklama:
+                'İki bölgenin de ilk iyileşmesi izlenir ve dikişler alınır.'
+            },
+            {
+              asama: 'Doku olgunlaşması',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Eklenen dokunun kanlanıp yerleşmesi beklenir; sonuç bu sürede belirginleşir.'
             }
           ],
           notlar: [
@@ -2555,6 +3330,66 @@ export const tedaviMenusu: {
                 'zorluğuna ve beklentiye göre birlikte belirlenir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Braketlerin takılması',
+              sure: 'Tek seans',
+              aciklama:
+                'Braketler dişlere yapıştırılır ve aralarından tel geçirilir.'
+            },
+            {
+              asama: 'Aktif hareket dönemi',
+              sure: 'Her 1-2 ayda bir',
+              aciklama:
+                'Randevularda tel ayarlanır ya da değiştirilir; dişler kademeli hareket eder.'
+            },
+            {
+              asama: 'Braketlerin sökülmesi',
+              sure: 'Tek seans',
+              aciklama:
+                'Hedeflenen dizilime ulaşıldığında braketler ve tel sökülür.'
+            },
+            {
+              asama: 'Pekiştirme',
+              sure: 'Yıllarca',
+              aciklama:
+                'Dişlerin yeni yerinde kalması için pekiştirme aşamasına geçilir.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Metal braket ile seramik braket arasındaki fark',
+            sutunlar: ['Metal braket', 'Seramik braket'],
+            satirlar: [
+              {
+                olcut: 'Görünürlük',
+                a: 'Metalik renktedir, dışarıdan belirgindir.',
+                b: 'Diş rengine yakındır, uzaktan daha az fark edilir.'
+              },
+              {
+                olcut: 'Dayanıklılık',
+                a: 'Kırılma ve esnemeye karşı yüksek direnç.',
+                b: 'Metale kıyasla daha kırılgandır.'
+              },
+              {
+                olcut: 'Renklenme',
+                olcutAciklama: 'Braketin kendisi mi, lastikler mi',
+                a: 'Braket renk değiştirmez.',
+                b: 'Braket direnclidir; çevresindeki lastikler boyanabilir, her kontrolde yenilenir.'
+              },
+              {
+                olcut: 'Vaka aralığı',
+                a: 'Zorlu kapanış bozuklukları dâhil geniş aralıkta kullanılır.',
+                b: 'Aşırı kuvvet gerektirmeyen çoğu vakada kullanılır.'
+              },
+              {
+                olcut: 'Tedavi süresi',
+                a: 'Sürtünme düşük olduğu için hareket bir miktar hızlı olabilir.',
+                b: 'Bazı vakalarda küçük bir süre farkı doğabilir.'
+              }
+            ],
+            dipnot:
+              'Seçim, ortodontik sorunun zorluk derecesi ile görünüm beklentisinin birlikte değerlendirilmesiyle yapılır.'
+          },
           notlar: [
             'Kuruyemiş, cips gibi sert ve sakız, karamel gibi yapışkan gıdalardan kaçınılmalıdır.',
             'Ara yüz fırçası tedavinin ayrılmaz parçasıdır; braket çevresi temizlenmezse mine lekelenir.',
@@ -2672,6 +3507,26 @@ export const tedaviMenusu: {
               metin:
                 'Şeffaf plak tedavisinde plak dişi hareket ettirmek için kuvvet uygular. Pekiştirme ' +
                 'plağı ise kuvvet uygulamaz; dişlerin mevcut hâlini kalıp gibi sarar ve yerinde tutar.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Sabit tel',
+              sure: 'Tek seans',
+              aciklama:
+                'Braketler söküldüğü seansta dişlerin arka yüzeyine ince tel yapıştırılır.'
+            },
+            {
+              asama: 'Şeffaf plak teslimi',
+              sure: 'Tek seans',
+              aciklama:
+                'Laboratuvarda hazırlanan pekiştirme plağı teslim edilir ve kullanımı anlatılır.'
+            },
+            {
+              asama: 'Takip',
+              sure: 'Yılda 1-2 randevu',
+              aciklama:
+                'Dişlerin konumunu koruyup korumadığı ve telin sağlamlığı kontrol edilir.'
             }
           ],
           notlar: [
@@ -2900,6 +3755,39 @@ export const tedaviMenusu: {
                 'belirlendikten sonra seçilir.'
             }
           ],
+          karsilastirma: {
+            baslik: 'Planlama ile uygulama arasındaki fark',
+            sutunlar: ['Pembe estetik', 'Pembe diş eti estetiği'],
+            satirlar: [
+              {
+                olcut: 'Ne olduğu',
+                a: 'Diş eti, diş ve dudak uyumunu belirleyen planlama.',
+                b: 'Bu plana ulaşmak için yapılan fiziksel işlemler.'
+              },
+              {
+                olcut: 'Yapılan iş',
+                a: 'Fotoğraf, ölçü ve gülüş hattı analizi.',
+                b: 'Diş etinin lazer ya da cerrahi aletle şekillendirilmesi.'
+              },
+              {
+                olcut: 'Çıktısı',
+                a: 'Diş etinin nerede durması gerektiğine karar.',
+                b: 'Ağızda o seviyenin oluşturulması.'
+              },
+              {
+                olcut: 'Uyuşturma',
+                a: 'Gerekmez.',
+                b: 'Uygulanır.'
+              },
+              {
+                olcut: 'İyileşme',
+                a: 'İyileşme dönemi yoktur.',
+                b: 'Birkaç günlük kısa bir iyileşme beklenir.'
+              }
+            ],
+            dipnot:
+              'İkisi rakip değil, birbirinin devamıdır: planlama yapılmadan uygulanan bir diş eti kesimi dengeyi bozabilir.'
+          },
           notlar: [
             'Diş eti iltihabı varken estetik planlama yapılmaz; önce sağlık sağlanır.',
             'Planlama beyaz (diş) ve pembe (diş eti) estetiğin birlikte ele alınmasını gerektirir.',
@@ -2956,6 +3844,60 @@ export const tedaviMenusu: {
                 'prototip denemesi sürecin merkezindedir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Kayıtların alınması',
+              sure: 'Tek seans',
+              aciklama:
+                'Ağız içi tarama, fotoğraf ve video kayıtları alınır.'
+            },
+            {
+              asama: 'Dijital planlama',
+              sure: 'Birkaç gün',
+              aciklama:
+                'Veriler yazılımda işlenir ve yüz hatlarına göre tasarım hazırlanır.'
+            },
+            {
+              asama: 'Mock-up provası',
+              sure: 'Tek seans',
+              aciklama:
+                'Tasarım geçici şablonla ağızda denenir; dişlere henüz dokunulmaz.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Klasik planlama ile dijital planlama',
+            sutunlar: ['Klasik gülüş tasarımı', 'Dijital gülüş tasarımı'],
+            satirlar: [
+              {
+                olcut: 'Ölçü',
+                a: 'Ölçü maddesiyle fiziksel kalıp alınır.',
+                b: 'Ağız içi tarayıcıyla dijital tarama yapılır.'
+              },
+              {
+                olcut: 'Planlama',
+                a: 'Fiziksel model üzerinde yürütülür.',
+                b: 'Yazılımda, fotoğraf ve tarama verisiyle yürütülür.'
+              },
+              {
+                olcut: 'Önizleme',
+                olcutAciklama: 'Yöntemin asıl farkı',
+                a: 'Sonuç genellikle laboratuvar aşamasından sonra provada görülür.',
+                b: 'Dişlere dokunulmadan şablonla ağızda denenir.'
+              },
+              {
+                olcut: 'Değişiklik',
+                a: 'Yeni ölçü ya da yeni model gerekebilir.',
+                b: 'Tasarım üzerinde düzeltme yapılıp yeniden basılabilir.'
+              },
+              {
+                olcut: 'Süreç',
+                a: 'Fiziksel taşıma ve el işçiliği süreyi uzatabilir.',
+                b: 'Veri doğrudan aktarıldığı için akış daha kısadır.'
+              }
+            ],
+            dipnot:
+              'İki yol da aynı hedefe çalışır; dijital olan, sonucu önceden görmek isteyen hastada öne çıkar.'
+          },
           notlar: [
             'Önizleme geçicidir; kalıcı sonucun kendisi değil, ona hazırlıktır.',
             'Şablon takılıyken sert gıda ısırılmaz.',

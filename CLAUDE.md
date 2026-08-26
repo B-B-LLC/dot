@@ -147,6 +147,29 @@ Notlar, sık sorulanlar ve randevu kartı iki sayfada da aynı görünür:
 ilk ikisi `tedavi-icerik.js`ten adla dışa aktarılır, randevu kartı
 `app/_ortak/randevu-karti.js` dosyasındadır (dizin sayfası da onu kullanır).
 
+#### İşlem sayfasındaki iki isteğe bağlı blok
+
+`Islem` nesnesine iki alan daha verilebilir; ikisi de veriyle sürülür, yani
+yeni bir sayfa için `islem-icerik.js`e dokunmak gerekmez.
+
+`zamanCizelgesi[]` aşama şeridini çizer (`asama`, `sure`, `aciklama`).
+Hastanın en çok sorduğu şey "ne kadar sürer" olduğu için bu bilgi metnin
+içinde bırakılmaz. `sure` her zaman aralık ya da niteleyicidir ("Tek seans",
+"Birkaç ay"); kesin gün sayısı yazılmaz. Tek seansta biten işlemde şerit
+çizilmez — üç kutuluk bir şerit orada bilgi değil süs olur.
+
+`karsilastirma` iki seçeneği ölçüt ölçüt karşılaştıran tabloyu çizer.
+Yalnız **gerçek bir seçimin olduğu** sayfaya konur ve o seçimin yapıldığı
+sayfaya konur: açık/kapalı sinüs lifting tablosu üç teknik sayfasında
+tekrarlanmaz, karar sayfası olan genel `sinus-lifting`tedir. Tablo aynı
+zamanda birbirine yakın başlıkların tekrara düşmesini engeller — sayfa
+komşusundan farklı olduğunu iddia etmek yerine ölçütle gösterir.
+
+Görünüm `globals.css`teki `.islem-cizelge` ve `.islem-tablo` kurallarındadır.
+Tablo dar ekranda sütunlara bölünmez, kendi kutusunda yatay kaydırılır
+(`.islem-tablo-kutu`): ölçütü iki değerinden ayırmak karşılaştırmayı okunmaz
+hâle getiriyordu. Şerit ise dar ekranda alt alta iner.
+
 ### Tasarım sistemi: `ds/` üretilmiştir
 
 `ds/bundle.js`, `ds/styles.css` ve `ds/tokens/` elle düzenlenmez.

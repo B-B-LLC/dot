@@ -276,6 +276,119 @@ a:hover { color: var(--text-link-hover); }
 .footer-link { color: var(--text-on-dark-muted); }
 .footer-link:hover { color: #fff; }
 
+/* --- İşlem sayfasındaki aşama şeridi --- */
+
+/* Geniş ekranda aşamalar yan yana akar, dar ekranda alt alta iner. Sütun
+   sayısı içeriğe göre değiştiği için satır içiyle yazılamaz. */
+.islem-cizelge {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 4px;
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  counter-reset: asama;
+}
+
+.islem-cizelge-adim {
+  position: relative;
+  padding: 20px 18px 18px;
+  background: var(--emerald-50);
+  border-radius: var(--radius-md, 14px);
+}
+
+/* Aşamalar arasındaki bağlantı çizgisi: son adımda ve alt alta dizildiğinde
+   çizilmez. Süsleme olduğu için DOM'a düğüm eklemiyoruz. */
+.islem-cizelge-adim::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  right: -4px;
+  width: 4px;
+  height: 2px;
+  background: var(--emerald-200);
+}
+.islem-cizelge-adim:last-child::after { display: none; }
+
+.islem-cizelge-no {
+  display: inline-block;
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--emerald-600);
+  margin-bottom: 8px;
+}
+
+.islem-cizelge-sure {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--emerald-700);
+  margin: 6px 0 0;
+}
+
+/* --- İşlem sayfasındaki karşılaştırma tablosu --- */
+
+/* Dar ekranda sütunlar alt alta kırılmaz, tablo kendi içinde yatay kaydırılır:
+   ölçütü iki değerinden ayırmak karşılaştırmayı okunmaz hâle getiriyordu.
+   Kaydırma kutusu tabloya ait; sayfa gövdesi yatay kaymaz. */
+.islem-tablo-kutu {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md, 14px);
+}
+
+.islem-tablo {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.islem-tablo th,
+.islem-tablo td {
+  padding: 13px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.islem-tablo tbody tr:last-child th,
+.islem-tablo tbody tr:last-child td { border-bottom: 0; }
+
+.islem-tablo thead th {
+  background: var(--emerald-50);
+  font-family: var(--font-display, ui-sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--emerald-800);
+  white-space: nowrap;
+}
+
+/* İlk sütun ölçütün adıdır; satırın başlığı olduğu için ayrı ağırlıkta. */
+.islem-tablo tbody th {
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--surface-sunken);
+  white-space: nowrap;
+}
+
+.islem-tablo td { color: var(--text-muted); }
+
+/* Ölçütün altındaki küçük açıklama: neden bu ölçüte bakıldığını söyler.
+   Satır başlığının parçası olduğu için ayrı hücreye alınmaz. */
+.islem-tablo-olcut-not {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-faint);
+  white-space: normal;
+  max-width: 20ch;
+}
+
 /* --- Hero'daki dönen küre (app/_ortak/kure.js) --- */
 
 /* Konik degradelerin açısı ancak tipi bilinen bir özel değişkenle
