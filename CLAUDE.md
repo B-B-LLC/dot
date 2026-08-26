@@ -90,6 +90,7 @@ geniş düzenle çizilir.
 - `app/_ortak/cerceve.js` — `SayfaCercevesi`: üst gezinme, altbilgi, mobil çubuk
 - `app/_ortak/kure.js` — hero'daki dönen küre (bkz. *Hero'daki dönen küre*)
 - `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
+- `app/_ortak/olcum.js` — ziyaretçi ölçümü: sağlayıcı betiği ve `olay()`
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
 
@@ -366,6 +367,37 @@ sınırları ve e-posta başlığı enjeksiyon koruması vardır.
 
 Bu davranış `yasal.config.ts` içindeki KVKK metninde anlatılır: uçun veri
 işleyişi değişirse o metin de güncellenmelidir.
+
+### Ölçüm (`app/_ortak/olcum.js`)
+
+Sağlayıcı `site.config.ts` içindeki `olcum.saglayici` ile seçilir: `'vercel'`,
+`'plausible'` veya `'yok'`. Kütüphane kullanılmaz — iki sağlayıcının da tek bir
+yükleyici betiği ve `window` üzerinde bir kuyruğu vardır (`vaq`, `plausible.q`);
+betik yüklenmeden gönderilen olay kuyruğa yazılır, yüklenince boşaltılır. Bu
+yüzden `olay()` kuyruğu gerektiğinde kendisi kurar ve satır içi "shim" betiğine
+gerek kalmaz.
+
+`OlcumBetigi` `layout.tsx`ten çağrılır; betiği `next/script` ile koyar ve
+belgeye tıklama dinleyicisi asar. Betik yalnız üretim derlemesinde yüklenir
+(Vercel'in betiği localhost'ta 404 döner); geliştirmede olaylar konsola yazılır.
+`global-error.tsx` kök düzenin yerine geçtiği için orada ölçüm yoktur; o ekrandaki
+telefon tıklaması sayılmaz.
+
+Telefon, WhatsApp ve harita bağlantılarına tek tek dinleyici asılmaz: tıklama
+belgeden **yakalama aşamasında** yakalanır ve `href`'ine bakılarak sınıflanır
+(`tel:` → telefon, `wa.me`/`whatsapp.com` → whatsapp, `google.com/maps`/
+`maps.apple.com` → yol-tarifi). Aynı bağlantı on ayrı yerde geçtiği ve yenisi
+eklendiğinde de sayılması gerektiği için böyledir. Bağlantıdaki
+`data-olcum-yer` özniteliği olayın kırılımı olur; verilmezse `'sayfa'` yazılır.
+
+Dördüncü olay elle gönderilir: randevu formunda **yalnız sunucu başarılı yanıt
+verdiğinde** (`klinik-app.js`, `gonder()`). Doğrulama hatası ve bağlantı kopması
+sayılmaz.
+
+Ölçüm çerezsizdir, bu yüzden çerez onay bandı yoktur. `yasal.config.ts`
+ölçüm maddelerini `olcum.saglayici` değerine göre metne katar ya da düşürür
+(`olcumluysa()`); ölçüm davranışı değişirse o maddeler de güncellenmelidir.
+`olcum.googleDogrulama` dolduğunda `layout.tsx` Search Console etiketini basar.
 
 ### Demo modu ve SEO
 

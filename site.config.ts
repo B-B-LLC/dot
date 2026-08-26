@@ -25,6 +25,45 @@ export const site = {
   demoModu: true
 };
 
+/* ---------- Ziyaretçi ölçümü ---------- */
+
+export type Olcum = {
+  /** 'yok' → hiçbir betik yüklenmez, hiçbir olay gönderilmez.
+      'vercel' → Vercel Web Analytics (Vercel panelinde Analytics açılmalıdır).
+      'plausible' → Plausible Analytics. */
+  saglayici: 'yok' | 'vercel' | 'plausible';
+
+  /** Yalnızca Plausible: paneldeki site adı (ör. 'meseklinik.com').
+      Vercel'de gerekmez, betik alan adını kendisi bilir. */
+  alan?: string;
+
+  /** Yalnızca Plausible: betiğin adresi. Kendi sunucunuzda barındırıyorsanız
+      ya da engelleyicilere takılmamak için kendi alan adınızdan sunuyorsanız
+      değiştirin. Boş bırakılırsa plausible.io kullanılır. */
+  betik?: string;
+
+  /** Google Search Console'un "HTML etiketi" yönteminde verdiği doğrulama
+      kodu (yalnız `content` değeri, etiketin tamamı değil). Yazıldığında
+      layout.tsx her sayfaya `google-site-verification` etiketini basar.
+      Alan adının DNS'ine erişiminiz varsa TXT kaydı daha kalıcıdır. */
+  googleDogrulama?: string;
+};
+
+/* Ölçüm çerezsizdir: iki sağlayıcı da ziyaretçiye çerez yazmaz ve parmak izi
+   çıkarmaz, bu yüzden çerez onay bandı gerekmez. Kapatmak için 'yok' yazmak
+   yeterlidir; yasal metinlerdeki ölçüm maddeleri de kendiliğinden düşer
+   (bkz. yasal.config.ts).
+
+   Vercel'de özel olaylar (telefon, WhatsApp, randevu) Pro planla gelir;
+   Hobby planında yalnız sayfa görüntülenmesi sayılır. Plausible'da olaylar
+   her planda çalışır. */
+export const olcum: Olcum = {
+  saglayici: 'vercel',
+  alan: '',
+  betik: '',
+  googleDogrulama: ''
+};
+
 /* ---------- Tipler ---------- */
 
 export type Klinik = {

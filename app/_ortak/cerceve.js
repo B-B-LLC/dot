@@ -94,6 +94,7 @@ var useEffect = React.useEffect;
           actions: h(Fragment, null,
             props.dar ? null : h('a', {
               href: KLINIK.telHref,
+              'data-olcum-yer': 'gezinme',
               style: {
                 fontFamily: 'var(--font-mono)',
                 fontSize: 14,
@@ -147,7 +148,11 @@ var useEffect = React.useEffect;
           h('div', null,
             h('div', { style: sutunBasligi }, 'İLETİŞİM'),
             h('div', { style: sutunGovde },
-              h('a', { href: KLINIK.telHref, style: { fontFamily: 'var(--font-mono)', color: '#fff' } }, KLINIK.telefon),
+              h('a', {
+                href: KLINIK.telHref,
+                'data-olcum-yer': 'altbilgi',
+                style: { fontFamily: 'var(--font-mono)', color: '#fff' }
+              }, KLINIK.telefon),
               h('a', { className: 'footer-link', href: 'mailto:' + KLINIK.eposta }, KLINIK.eposta),
               h('span', null, adresSatirlari[0], adresSatirlari[1] ? h('br') : null, adresSatirlari[1])
             )
@@ -215,18 +220,28 @@ var useEffect = React.useEffect;
         boxShadow: 'var(--shadow-3),var(--inner-glass)'
       }
     },
-      h('a', { className: 'mobil-bar-link mobil-bar-link--ara', href: KLINIK.telHref },
+      h('a', {
+        className: 'mobil-bar-link mobil-bar-link--ara',
+        href: KLINIK.telHref,
+        'data-olcum-yer': 'mobil-cubuk'
+      },
         ikon(['M6.2 3.6h3l1.5 3.7-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 3.7 1.5v3a1.8 1.8 0 0 1-2 1.8A16.4 16.4 0 0 1 4.4 5.6a1.8 1.8 0 0 1 1.8-2Z']),
         'Ara'
       ),
-      h('a', { className: 'mobil-bar-link', href: haritaYolTarifi(), target: '_blank', rel: 'noopener' },
+      h('a', {
+        className: 'mobil-bar-link', href: haritaYolTarifi(),
+        target: '_blank', rel: 'noopener', 'data-olcum-yer': 'mobil-cubuk'
+      },
         ikon(
           ['M12 21c4.2-4.4 6.3-7.7 6.3-10.4A6.3 6.3 0 0 0 5.7 10.6C5.7 13.3 7.8 16.6 12 21Z'],
           h('circle', { cx: 12, cy: 10.4, r: 2.3 })
         ),
         'Yol tarifi'
       ),
-      h('a', { className: 'mobil-bar-link', href: KLINIK.whatsapp, target: '_blank', rel: 'noopener' },
+      h('a', {
+        className: 'mobil-bar-link', href: KLINIK.whatsapp,
+        target: '_blank', rel: 'noopener', 'data-olcum-yer': 'mobil-cubuk'
+      },
         ikon([
           'M20.4 11.6a8.4 8.4 0 0 1-12.3 7.5L3.6 20.4l1.3-4.5A8.4 8.4 0 1 1 20.4 11.6Z',
           'M9.3 9.1c.4 2.6 2.3 4.5 4.9 5.2l1-1.4 1.8.8v1.4c-2.9.5-6.4-2.4-7.5-5.3l1.4-.7Z'
