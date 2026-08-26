@@ -170,6 +170,12 @@ resim olarak gösterir: 1200 pikselin yalnız ortadaki 630'u görünür. Sola
 yaslanmış bir başlık orada ikiye bölünür. `puntoAyarla` da bu genişliğe göre
 kısar; satır sonundan bölünemediği için en çok küçülen tek uzun kelimedir.
 
+Aynı sebeple görselde iki satırdan fazlası ve `OKUNUR_PUNTO`'dan (46) küçük yazı
+yoktur: o kare ekranda ~160 piksel çizilir, yani görsel dörtte birine iner ve
+altındaki her şey bulanık şeride döner. Sığmayan bilgi küçültülerek eklenmez,
+çıkarılır — kartın yanında sayfanın başlığı ile açıklaması zaten tam metin
+olarak duruyor, görselin onları tekrar etmesi gereksiz.
+
 `site.adres` yer tutucu kalırsa `metadataBase` yanlış olur ve `og:image`
 çözülmeyen bir alan adına işaret eder — görsel üretilmiş olsa bile önizlemede
 çıkmaz.

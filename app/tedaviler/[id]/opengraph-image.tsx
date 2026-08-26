@@ -1,5 +1,5 @@
 import { klinik, tedaviler } from '@/site.config';
-import { OG_ALT_SATIR, OG_OLCU, OG_TUR, ogGorseli } from '../../_ortak/og-duzen';
+import { OG_OLCU, OG_TUR, ogGorseli } from '../../_ortak/og-duzen';
 
 /* Tedavi sayfalarının paylaşım görseli: ortada dalın adı durur, böylece
    WhatsApp'ta paylaşılan link hangi tedaviyi anlattığını söyler. Adresler gibi
@@ -23,10 +23,11 @@ export default async function OgGorseli({ params }: Props) {
   const { id } = await params;
   const tedavi = tedaviler.find((t) => t.id === id);
 
+  /* Altta markanın kendisi durur: görsel tedaviyi söyler, marka da kimin
+     tedavisi olduğunu. İkisi de iri, çünkü küçük yazı önizlemede okunmuyor. */
   return ogGorseli({
-    ust: `${klinik.marka} · Tedavi alanı`,
     buyuk: tedavi ? tedavi.ad : klinik.marka,
     punto: 116,
-    alt: OG_ALT_SATIR
+    alt: klinik.marka
   });
 }

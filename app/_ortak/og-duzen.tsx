@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-import { klinik } from '@/site.config';
 import { renk } from './token-renk';
 
 /* Paylaşım görselinin ortak düzeni.
@@ -8,9 +7,10 @@ import { renk } from './token-renk';
    (`app/tedaviler/[id]/opengraph-image.tsx`) bu düzeni kullanır; aralarındaki
    tek fark ortadaki büyük yazıdır.
 
-   Tasarım kararları, önizlemenin kırpılarak gösterilmesinden doğar: fotoğraf
-   değil düz zemin, tek büyük satır, ortalanmış kompozisyon. Metinlerin tamamı
-   site.config.ts'ten gelir; klinik değişince görsel de kendiliğinden değişir. */
+   Görselde iki satırdan fazlası yoktur ve ikisi de iridir. Sebebi aşağıdaki
+   OKUNUR_PUNTO notunda: önizleme küçük gösterildiğinde ince yazı okunmaz,
+   yalnızca leke bırakır. Metinler site.config.ts'ten gelir; klinik değişince
+   görsel de kendiliğinden değişir. */
 
 /** Facebook, WhatsApp ve LinkedIn'in beklediği ölçü. */
 export const OG_OLCU = { width: 1200, height: 630 };
@@ -25,20 +25,24 @@ export const OG_TUR = 'image/png';
    Kareden biraz dar tutulur ki yazı tam kesiğe dayanmasın. */
 const GUVENLI_EN = 560;
 
+/* O kare ekranda ~160 piksel çizilir, yani görsel dörtte birine iner. Ekranda
+   okunabilmesi için bir yazının burada en az ~46 punto olması gerekir; altındaki
+   her şey bulanık bir şeride dönüşür. Bu yüzden görselde küçük yazı yoktur:
+   sığmayan bilgi eklenmez, çıkarılır. Zaten kartın yanında sayfanın başlığı ve
+   açıklaması tam metin olarak duruyor — görselin onları tekrar etmesi gereksiz. */
+const OKUNUR_PUNTO = 46;
+
 const ZEMIN = renk('--emerald-950');
 const ZEMIN_UST = renk('--emerald-900');
 const VURGU = renk('--emerald-300');
 const BEYAZ = renk('--text-on-dark');
-const BEYAZ_SOLUK = renk('--text-on-dark-muted');
 
 type Secenek = {
-  /** Üstteki küçük, harf aralığı açılmış satır. */
-  ust: string;
-  /** Ortadaki büyük yazı. */
+  /** Ortadaki büyük yazı: markanın ya da tedavinin adı. */
   buyuk: string;
   /** Büyük yazının punto tabanı — uzun başlıklarda küçültülür. */
   punto: number;
-  /** Alttaki açıklama satırı. */
+  /** Altındaki tek kısa satır. Uzun cümle konmaz, okunmaz. */
   alt: string;
 };
 
@@ -56,7 +60,7 @@ function puntoAyarla(yazi: string, taban: number) {
   return Math.round(taban * 0.44);
 }
 
-export function ogGorseli({ ust, buyuk, punto, alt }: Secenek) {
+export function ogGorseli({ buyuk, punto, alt }: Secenek) {
   return new ImageResponse(
     (
       <div
@@ -75,20 +79,6 @@ export function ogGorseli({ ust, buyuk, punto, alt }: Secenek) {
           style={{
             display: 'flex',
             maxWidth: GUVENLI_EN,
-            fontSize: 26,
-            letterSpacing: '0.16em',
-            fontWeight: 700,
-            color: VURGU
-          }}
-        >
-          {ust.toLocaleUpperCase('tr-TR')}
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            maxWidth: GUVENLI_EN,
-            marginTop: 26,
             fontSize: puntoAyarla(buyuk, punto),
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
@@ -99,16 +89,17 @@ export function ogGorseli({ ust, buyuk, punto, alt }: Secenek) {
           {buyuk}
         </div>
 
-        <div style={{ display: 'flex', width: 132, height: 5, marginTop: 40, background: VURGU }} />
+        <div style={{ display: 'flex', width: 160, height: 6, marginTop: 44, background: VURGU }} />
 
         <div
           style={{
             display: 'flex',
             maxWidth: GUVENLI_EN,
-            marginTop: 34,
-            fontSize: 28,
-            lineHeight: 1.35,
-            color: BEYAZ_SOLUK
+            marginTop: 40,
+            fontSize: OKUNUR_PUNTO,
+            lineHeight: 1.25,
+            fontWeight: 600,
+            color: VURGU
           }}
         >
           {alt}
@@ -118,6 +109,3 @@ export function ogGorseli({ ust, buyuk, punto, alt }: Secenek) {
     OG_OLCU
   );
 }
-
-/** Alt satır her iki görselde de aynı: kliniğin tam adı ve semti. */
-export const OG_ALT_SATIR = `${klinik.ad} · ${klinik.konum}`;
