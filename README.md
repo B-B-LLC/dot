@@ -217,12 +217,17 @@ bölümüne ayrıca girilmelidir.
 
 ## Bilinen eksikler
 
-- **İşlem sayfalarının çoğu yazılmadı.** Menüdeki kırk iki kalemin on üçünün
-  içeriği hazır ve `/tedaviler/<slug>` sayfası oluşuyor; kalan yirmi dokuz
-  kalem düz metin olarak listede duruyor. Bir kalemin içeriği yazılıp
-  `site.config.ts` içinde nesneye çevrildiğinde sayfası, site haritası kaydı ve
-  paylaşım görseli kendiliğinden oluşur. Sayfaların birbirine benzemesi arama
-  motorunda "ince içerik" sayıldığı için her işlemin kendine ait metni olmalıdır.
+- **İşlem metinleri bir diş hekimince okunmadı.** Menüdeki kırk iki kalemin
+  tamamının sayfası yazıldı, ancak metinler yapay zekâ araştırmasından
+  derlendi. Hasta karşısına çıkmadan önce klinik doğruluk açısından bir hekim
+  tarafından gözden geçirilmelidir — `yasal.config.ts` için hukukçu denetimi
+  neyse bunun için de o geçerlidir.
+- **Birbirine yakın işlem sayfaları var.** Sinüs lifting (genel / açık /
+  kapalı), gülüş tasarımı (klasik / dijital) ve pembe estetik ile pembe diş eti
+  estetiği aynı konunun komşu başlıklarıdır. Metinler bilerek farklı açılardan
+  yazıldı (biri karar ölçütünü, diğeri tekniğin kendisini anlatır), ama bu
+  sayfalar birleştirilir ya da yeniden yazılırsa aralarındaki ayrımın
+  korunması gerekir; yoksa arama motorunda "ince içerik" sayılırlar.
 - **Yasal metinler şablondur.** `yasal.config.ts` yayına alınmadan önce bir
   hukukçu tarafından gözden geçirilmelidir; saklama süresi ve kullanılan üçüncü
   taraf hizmetler kliniğe göre değişir.

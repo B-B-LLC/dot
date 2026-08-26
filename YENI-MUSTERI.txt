@@ -506,9 +506,11 @@ uğraşılmaz:
   - Turnstile (bot koruması) yok. Randevu ucunda honeypot, dakikada 5 istek
     sınırı ve alan uzunluk sınırları var ama captcha yok. Sunucu yeniden
     başlayınca istek sayacı sıfırlanır.
-  - Menüdeki kırk iki işlem kaleminin yalnız on üçünün içeriği yazıldı; kalan
-    yirmi dokuzu düz metin olarak listede duruyor, sayfası yok. Her müşteride
-    hangilerinin yazılacağına baştan karar ver.
+  - Kırk iki işlem sayfasının metinleri yapay zekâ araştırmasından derlendi ve
+    HENÜZ BİR DİŞ HEKİMİ OKUMADI. Yayına almadan önce klinik doğruluk
+    denetimi şart. Yeni müşteride ayrıca şu kontrol edilmeli: listedeki her
+    işlem o klinikte gerçekten yapılıyor mu? Yapılmayan işlemin sayfası
+    silinmeli (kalemi tekrar düz metne çevirmek yerine komple kaldır).
   - Hekim detay sayfaları yok (/hekimler/ad-soyad). Hasta hekim adıyla arıyor.
   - OG görseli marka fontunu değil, next/og'un varsayılan fontunu kullanıyor.
   - Fotoğraflar ham boyutta (2,5-3 MB) ve dosya adlarında boşluk var.
