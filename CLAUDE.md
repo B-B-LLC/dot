@@ -217,6 +217,28 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 çözülmeyen bir alan adına işaret eder — görsel üretilmiş olsa bile önizlemede
 çıkmaz.
 
+### Hata ekranları
+
+Üç ayrı ekran vardır ve hangisinin çizileceğini Next belirler:
+
+- `app/not-found.tsx` — adres yok (404).
+- `app/error.tsx` — sayfa çizilirken hata çıktı. İstemci bileşenidir (kural) ve
+  görünümü `_ortak/hata-icerik.js`ten alır: site çerçevesi, telefon düğmesi ve
+  yeniden deneme. Next 16'da yeniden çizme prop'u `reset` değil **`retry`**dir.
+- `app/global-error.tsx` — kök düzenin kendisi çöktü. `layout.tsx`in yerine
+  geçtiği için kendi `<html>`, `<body>` ve stillerini getirir; gezinme, altbilgi
+  ve next/font orada yoktur. Başlık `metadata` ile değil React'in `<title>`
+  bileşeniyle verilir (istemci bileşeni `metadata` dışa aktaramaz).
+
+Diş şeklinin sabiti `_ortak/dis-yolu.ts` içindedir: `amblem.tsx` token dosyası
+okuduğu için yalnız sunucuda çalışır, oysa aynı yol `global-error.tsx`te
+tarayıcıda çizilir.
+
+`globals.css`teki font değişkenlerinde iç `var()`lara yedek verilmesi bu yüzden
+şarttır (`var(--font-jakarta, ui-sans-serif)`): değişken tanımsızsa yalnız o
+parça değil, `font-family` bildiriminin tamamı geçersiz olur ve yazı tarayıcının
+serif varsayılanına düşer.
+
 ### İkonlar ve manifest
 
 `app/icon.tsx`, `app/apple-icon.tsx` ve `app/manifest.ts` dosyalarının varlığı

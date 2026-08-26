@@ -3,11 +3,16 @@
    sözde sınıflar, medya sorguları, yazdırma. */
 
 /* Fontlar next/font ile yerelden yükleniyor; token'lardaki aile adları
-   üretilen değişkenlere bağlanır (bkz. app/layout.tsx). */
+   üretilen değişkenlere bağlanır (bkz. app/layout.tsx).
+
+   İçteki var()'lara yedek verilmesi şart: değişken tanımsızsa (kök düzenin
+   dışında çizilen global-error.tsx ekranı) yalnız o parça değil, font-family
+   bildiriminin tamamı geçersiz olur ve yazı tarayıcının serif varsayılanına
+   düşer. */
 :root {
-  --font-display: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-jakarta, ui-sans-serif), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: var(--font-jakarta, ui-sans-serif), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-plex-mono, ui-monospace), SFMono-Regular, Menlo, monospace;
 }
 
 html { scroll-behavior: smooth; }
