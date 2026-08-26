@@ -201,6 +201,13 @@ ekrandan geçerken `CARK_KAYDIRMA_ACI` = 420°, yani altı kart da görünür), 
 yavaş dönüş ve kullanıcı (sürükleme, oklar, noktalar). Çizilen açı hedefe
 yumuşayarak yaklaşır.
 
+Kaydırma payı yalnız geniş ekranda sürer: `DAR_ESIK` altında sıfırlanır, çünkü
+telefonda dikey kaydırma ile yatay sürükleme aynı açıyı sürüyor ve parmakla öne
+getirilen kart sayfa birkaç piksel kayınca elden kaçıyordu. Orada çark
+kullanıcının ve boştaki yavaş dönüşün elindedir. Eşik `matchMedia` ile izlenir
+(React durumu değil, `darRef`) ve geçişte kaydırma payı kullanıcı payına
+aktarılır, böylece öndeki kart yerinde kalır.
+
 Buradaki başarım kuralları korunmalıdır, çünkü telefonda fark ederler:
 
 - Kare döngüsü React durumuna dokunmaz; transform ve saydamlık doğrudan DOM'a

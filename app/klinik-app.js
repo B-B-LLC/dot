@@ -22,7 +22,7 @@ import {
 import SayfaCercevesi from './_ortak/cerceve';
 import {
   h, BOLUMLER, MEKANLAR, KapakGorseli, YaziPerdesi, tedaviSimgesi, S, BolumBasligi,
-  iki, durum, hafta, CALISMA_SAATLERI, bolumeGit, useDar
+  iki, durum, hafta, CALISMA_SAATLERI, bolumeGit, useDar, DAR_ESIK
 } from './_ortak/temel';
 
 var Fragment = React.Fragment;
@@ -266,10 +266,15 @@ var useCallback = React.useCallback;
 
      Konumu üç şey sürer ve üçü tek bir hedef açıda toplanır:
        • sayfa kaydırma — bölüm ekrandan geçerken CARK_KAYDIRMA_ACI kadar döner,
-         kaydırmaya bağlı asıl etki budur;
+         geniş ekranda kaydırmaya bağlı asıl etki budur;
        • boştaki sürüklenme — kimse dokunmazken çok yavaş dönmeye devam eder;
        • kullanıcı — parmakla sürükleme, oklar, noktalar.
      Çizilen açı hedefe yumuşayarak yaklaşır; akıcılık buradan gelir.
+
+     Kaydırma payı dar ekranda (DAR_ESIK) sıfırlanır: telefonda dikey kaydırma
+     ile yatay sürükleme aynı açıyı sürdüğü için parmakla öne getirilen kart,
+     sayfa birkaç piksel kayınca elden kaçıyordu. Orada çark yalnız kullanıcıya
+     ait olur; bölümün ölü görünmesini boştaki yavaş dönüş zaten engeller.
 
      Kare döngüsü React durumuna dokunmaz: kartların transform ve saydamlıkları
      doğrudan DOM'a yazılır (altı eleman, hepsi bileşikleştirilmiş katman; düzen
@@ -333,11 +338,12 @@ var useCallback = React.useCallback;
     var kartlarRef = useRef([]);
 
     var aciRef = useRef(0);          /* o an çizilen açı */
-    var kaydirmaRef = useRef(0);     /* kaydırmadan gelen pay */
+    var kaydirmaRef = useRef(0);     /* kaydırmadan gelen pay (dar ekranda hep 0) */
     var kullaniciRef = useRef(0);    /* sürükleme + düğmeler + boştaki sürüklenme */
     var aktifRef = useRef(0);
     var sonEtkilesimRef = useRef(0); /* son dokunuşun zamanı: yavaş dönüş bunu bekler */
     var azRef = useRef(false);
+    var darRef = useRef(false);      /* dar ekranda kaydırma çarkı sürmez */
     var ekrandaRef = useRef(false);
     var kareRef = useRef(0);
     var sonKareRef = useRef(0);      /* bir önceki karenin zaman damgası */
@@ -419,6 +425,7 @@ var useCallback = React.useCallback;
     /* Kaydırma sırasında yalnız scrollY okunur; kutu ölçüsü önbellekten gelir,
        böylece tarayıcı düzeni yeniden hesaplamaya zorlanmaz. */
     var kaydirmayiOku = useCallback(function () {
+      if (darRef.current) { kaydirmaRef.current = 0; return; }
       var k = kutuRef.current;
       var pencere = window.innerHeight;
       var yol = k.yukseklik + pencere;
@@ -440,6 +447,21 @@ var useCallback = React.useCallback;
       };
       uygulaMq();
       mq.addEventListener('change', uygulaMq);
+
+      /* Dar ekran eşiği useDar ile aynı kaynaktan (DAR_ESIK) gelsin: çubuk
+         sadeleşen genişlikle çarkın kaydırmayı bıraktığı genişlik ayrışmasın. */
+      var mqDar = window.matchMedia('(max-width: ' + (DAR_ESIK - 1) + 'px)');
+      var uygulaDar = function () {
+        var oncekiPay = kaydirmaRef.current;
+        darRef.current = mqDar.matches;
+        kaydirmayiOku();
+        /* Eşik geçilirken öndeki kart yerinde kalsın: kaydırmadan düşen (ya da
+           geri gelen) pay kullanıcı payına aktarılır. */
+        kullaniciRef.current += oncekiPay - kaydirmaRef.current;
+        dondur();
+      };
+      darRef.current = mqDar.matches;
+      mqDar.addEventListener('change', uygulaDar);
 
       kutuyuOlc();
       kaydirmayiOku();
@@ -476,6 +498,7 @@ var useCallback = React.useCallback;
 
       return function () {
         mq.removeEventListener('change', uygulaMq);
+        mqDar.removeEventListener('change', uygulaDar);
         window.removeEventListener('scroll', kaydir);
         window.removeEventListener('resize', boyut);
         document.removeEventListener('visibilitychange', sekme);
