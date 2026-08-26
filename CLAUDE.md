@@ -164,6 +164,16 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 `renk('--surface-inverse')` biçiminde kullanılır. Yazı tipi marka fontu değil,
 `next/og`un varsayılanıdır.
 
+Düzen ortalanır ve yazılar `GUVENLI_EN` (560 px) genişliğiyle sınırlanır, çünkü
+WhatsApp dar kartta görseli şerit olarak değil ortasından kesilmiş kare küçük
+resim olarak gösterir: 1200 pikselin yalnız ortadaki 630'u görünür. Sola
+yaslanmış bir başlık orada ikiye bölünür. `puntoAyarla` da bu genişliğe göre
+kısar; satır sonundan bölünemediği için en çok küçülen tek uzun kelimedir.
+
+`site.adres` yer tutucu kalırsa `metadataBase` yanlış olur ve `og:image`
+çözülmeyen bir alan adına işaret eder — görsel üretilmiş olsa bile önizlemede
+çıkmaz.
+
 ### Tedavi çarkı (`TedaviCarki`, `app/klinik-app.js`)
 
 01 numaralı bölüm ızgara değil, kaydırmaya bağlı dönen bir yaydır. Kartların
