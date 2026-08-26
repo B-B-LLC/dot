@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 
+import { renk } from './_ortak/token-renk';
 import { klinik, saatler, site, tedaviler } from '@/site.config';
 
 import '@/ds/styles.css';
@@ -44,7 +45,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#06301f'
+  /* Tarayıcı çubuğunun rengi; manifest'teki theme_color ile aynı token. */
+  themeColor: renk('--emerald-900')
 };
 
 /* Yapısal veri: schema.org gün adlarını İngilizce ister. */

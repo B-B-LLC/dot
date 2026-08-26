@@ -188,8 +188,9 @@ Bu dosyaların varlığı yeter: Next hem `og:image` hem `twitter:image`
 etiketlerini kendisi basar, alt sayfalar kökteki görseli devralır.
 
 Görselin ana öğesi yazı değil, krem daire içinde zümrüt bir diş: `Madalyon`.
-Diş `DIS_YOLU` ile tek bir SVG yolu olarak çizilir, yani vektördür ve hangi
-boyda basılırsa basılsın kenarı nettir. Ana sayfa yalnız madalyonu basar;
+Madalyon ve `DIS_YOLU` `app/_ortak/amblem.tsx` içindedir, çünkü aynı diş sekme
+ikonlarında da kullanılır (bkz. *İkonlar ve manifest*). Diş tek bir SVG yolu
+olarak çizilir, yani vektördür ve hangi boyda basılırsa basılsın kenarı nettir. Ana sayfa yalnız madalyonu basar;
 tedavi sayfaları `baslik` geçerek altına dalın adını ekler.
 
 Bütün ölçüler önizlemenin küçük gösterilmesinden doğar:
@@ -215,6 +216,28 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 `site.adres` yer tutucu kalırsa `metadataBase` yanlış olur ve `og:image`
 çözülmeyen bir alan adına işaret eder — görsel üretilmiş olsa bile önizlemede
 çıkmaz.
+
+### İkonlar ve manifest
+
+`app/icon.tsx`, `app/apple-icon.tsx` ve `app/manifest.ts` dosyalarının varlığı
+yeter: Next `<link rel="icon">`, `apple-touch-icon` ve `manifest` etiketlerini
+kendisi basar. Üçü de derleme sırasında PNG üretir, depoda ikon dosyası durmaz.
+
+`icon.tsx` `generateImageMetadata` ile üç ölçü çıkarır — 32 (sekme), 192 ve 512
+(manifest). `id` props'a **promise olarak** geçer, `await` edilmeden sayıya
+çevrilemez. Ölçülerden biri silinirse `manifest.ts` içindeki `/icon/<ölçü>`
+adresi de güncellenmelidir.
+
+İkon, paylaşım görselinin tersini kullanır: orada krem daire içinde koyu diş,
+ikonda koyu zemin üzerinde krem diş. Sebebi okunurluk — 32 pikselde açık zeminli
+bir simge tarayıcının açık sekme şeridinde kayboluyor. `apple-icon` köşe
+yuvarlaması taşımaz, çünkü iOS maskeyi kendisi uygular; yuvarlarsak köşelerde
+saydam üçgenler kalır.
+
+Manifest'te `display: 'browser'` bilerek seçilmiştir: site bir uygulama değil,
+adres çubuğunu gizlemek ziyaretçiyi telefonda kilitlenmiş hissettiriyor.
+Tema rengi hem burada hem `layout.tsx` içindeki `viewport`ta `renk()` ile
+token'dan okunur.
 
 ### Tedavi çarkı (`TedaviCarki`, `app/klinik-app.js`)
 
