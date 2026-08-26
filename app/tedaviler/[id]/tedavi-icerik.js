@@ -7,6 +7,7 @@ import * as React from 'react';
 import { Card, Button } from '@/ds/bundle';
 import { klinik as KLINIK, tedaviler as TEDAVILER } from '@/site.config';
 import SayfaCercevesi from '../../_ortak/cerceve';
+import RandevuKarti from '../../_ortak/randevu-karti';
 import { h, S, BolumBasligi, iki, tedaviSimgesi } from '../../_ortak/temel';
 
 function Asamalar(props) {
@@ -143,20 +144,13 @@ export default function TedaviIcerik(props) {
         'Bu sayfadaki bilgiler genel süreci anlatır ve tıbbi tavsiye yerine geçmez. ' +
         'Sonuçlar kişiden kişiye değişiklik gösterir; uygulanacak yöntem muayene sonrasında belirlenir.'),
 
-      h(Card, { tone: 'glass', padding: 'lg', style: { marginTop: 32 } },
-        h('h2', {
-          style: Object.assign({}, S.h2, { fontSize: 'clamp(20px,2.4vw,26px)' })
-        }, 'Değerlendirme için randevu'),
-        h('p', {
-          style: { fontSize: 15, lineHeight: 1.62, color: 'var(--text-muted)', margin: '10px 0 0', maxWidth: '52ch' }
-        }, 'İlk randevuda muayene yapılır, bulgular anlatılır ve seçenekler konuşulur. Danışma çalışma saatleri içinde size dönüş yapar.'),
-        h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 22 } },
-          h(Button, { size: 'lg', as: 'a', href: '/iletisim#randevu' }, 'Randevu talebi'),
-          h(Button, { size: 'lg', variant: 'cream', as: 'a', href: KLINIK.telHref }, KLINIK.telefon)
-        )
-      ),
+      h(RandevuKarti),
 
       h(DigerTedaviler, { simdiki: tedavi.id })
     )
   );
 }
+
+/* İşlem sayfası (islem-icerik.js) bu iki parçayı olduğu gibi kullanır; görünüm
+   iki sayfada da aynı kalsın diye kopyalanmaz. */
+export { Notlar, Sorular };

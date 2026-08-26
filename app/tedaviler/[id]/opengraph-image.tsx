@@ -1,4 +1,4 @@
-import { klinik, tedaviler } from '@/site.config';
+import { islemler, klinik, tedaviler } from '@/site.config';
 import { OG_OLCU, OG_TUR, ogGorseli } from '../../_ortak/og-duzen';
 
 /* Tedavi sayfalarının paylaşım görseli: madalyonun altında dalın adı durur,
@@ -16,12 +16,16 @@ export const alt = `Tedavi alanı — ${klinik.ad}`;
 type Props = { params: Promise<{ id: string }> };
 
 export function generateStaticParams() {
-  return tedaviler.map((t) => ({ id: t.id }));
+  return [
+    ...tedaviler.map((t) => ({ id: t.id })),
+    ...islemler.map((i) => ({ id: i.slug }))
+  ];
 }
 
 export default async function OgGorseli({ params }: Props) {
   const { id } = await params;
-  const tedavi = tedaviler.find((t) => t.id === id);
+  const sayfa =
+    tedaviler.find((t) => t.id === id) ?? islemler.find((i) => i.slug === id);
 
-  return tedavi ? ogGorseli({ baslik: tedavi.ad }) : ogGorseli();
+  return sayfa ? ogGorseli({ baslik: sayfa.ad }) : ogGorseli();
 }

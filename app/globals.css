@@ -121,6 +121,43 @@ a:hover { color: var(--text-link-hover); }
 .sss-simge-cizgi--dik { transform: rotate(90deg); }
 .sss-simge--acik .sss-simge-cizgi--dik { transform: rotate(90deg) scaleX(0); opacity: 0; }
 
+/* --- Tüm tedaviler dizini --- */
+
+/* Satırın tamamı tıklanabilir: ad, özet ve ok tek kutuda durur. Ok yalnız
+   imleç satırdayken kayar, çünkü kırk iki satırın hepsinde duran hareket
+   listeyi okunmaz kılıyor. */
+.tedavi-dizin-kalem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 10px;
+  margin: 0 -10px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+  transition: background var(--dur-fast) var(--ease-glass);
+}
+.tedavi-dizin-kalem:hover { background: var(--emerald-50); color: var(--text-strong); }
+
+.tedavi-dizin-kalem--pasif {
+  color: var(--text-muted);
+  font-weight: var(--fw-regular);
+  align-items: baseline;
+}
+.tedavi-dizin-kalem--pasif:hover { background: transparent; }
+
+.tedavi-dizin-ok {
+  flex: none;
+  color: var(--emerald-600);
+  transform: translateX(-3px);
+  opacity: 0;
+  transition: transform var(--dur-fast) var(--ease-glass), opacity var(--dur-fast) var(--ease-glass);
+}
+.tedavi-dizin-kalem:hover .tedavi-dizin-ok,
+.tedavi-dizin-kalem:focus-visible .tedavi-dizin-ok { transform: none; opacity: 1; }
+
 /* --- Sabit mobil eylem çubuğu --- */
 .mobil-bar-link {
   display: flex;

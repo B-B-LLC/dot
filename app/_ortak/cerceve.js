@@ -113,7 +113,7 @@ var useEffect = React.useEffect;
           dar: props.dar,
           menu: menu,
           randevu: function () { git('randevu', '/iletisim#randevu'); },
-          tumTedaviler: function () { git('tedaviler', '/#tedaviler'); }
+          tumTedaviler: function () { menu.kapat(); yonlendirici.push('/tedaviler'); }
         })
       )
     );

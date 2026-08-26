@@ -144,9 +144,10 @@ var KAPANMA_GECIKMESI = 140;
       }, k.baslik),
       h('ul', { style: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 1 } },
         k.kalemler.map(function (kalem) {
-          /* Kalem düz metinse henüz sayfası yok: bağlantı değil, liste satırı. */
+          /* Kalem düz metinse içeriği henüz yazılmamış: bağlantı değil, liste
+             satırı. Nesneye çevrildiği anda adresi slug'ından türer. */
           var ad = typeof kalem === 'string' ? kalem : kalem.ad;
-          var adres = typeof kalem === 'string' ? '' : kalem.adres;
+          var adres = typeof kalem === 'string' ? '' : '/tedaviler/' + kalem.slug;
           return h('li', { key: ad },
             h(adres ? 'a' : 'span', {
               className: 'tedavi-menu-kalem' + (adres ? '' : ' tedavi-menu-kalem--pasif'),

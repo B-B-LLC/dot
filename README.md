@@ -178,6 +178,12 @@ bölümüne ayrıca girilmelidir.
 
 ## Bilinen eksikler
 
+- **İşlem sayfalarının çoğu yazılmadı.** Menüdeki kırk iki kalemin on üçünün
+  içeriği hazır ve `/tedaviler/<slug>` sayfası oluşuyor; kalan yirmi dokuz
+  kalem düz metin olarak listede duruyor. Bir kalemin içeriği yazılıp
+  `site.config.ts` içinde nesneye çevrildiğinde sayfası, site haritası kaydı ve
+  paylaşım görseli kendiliğinden oluşur. Sayfaların birbirine benzemesi arama
+  motorunda "ince içerik" sayıldığı için her işlemin kendine ait metni olmalıdır.
 - **Yasal metinler şablondur.** `yasal.config.ts` yayına alınmadan önce bir
   hukukçu tarafından gözden geçirilmelidir; saklama süresi ve kullanılan üçüncü
   taraf hizmetler kliniğe göre değişir.

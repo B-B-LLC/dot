@@ -51,9 +51,20 @@ güncellenir.
 adres veya klinik adı yazılmaz — yeni bir klinik demosu yalnız config
 düzenlenerek çıkarılır.
 
-`tedaviler[]` dizisi türetilmiş bir yapıdır: her kalem `/tedaviler/<id>` sayfasını
-(`generateStaticParams`), kart ikonunu, menüyü, sitemap'i ve JSON-LD'deki hizmet
-listesini besler. Bir kalemi silmek ilgili sayfayı da yok eder.
+Tedavi içeriği iki katmandır ve ikisi de `/tedaviler/<...>` altında yayımlanır:
+
+`tedaviler[]` altı **ana dalı** tutar. Her kalem `/tedaviler/<id>` sayfasını
+(`generateStaticParams`), çarkın kartını, kart ikonunu, sitemap'i ve JSON-LD'deki
+hizmet listesini besler. Bir kalemi silmek ilgili sayfayı da yok eder.
+
+`tedaviMenusu.kategoriler[].kalemler[]` kliniğin tek tek **işlemlerini** tutar
+(bkz. *Tedaviler açılır menüsü*). İçeriği yazılmış kalem `Islem` nesnesine
+çevrilir; o an `/tedaviler/<slug>` sayfası, site haritası kaydı ve paylaşım
+görseli kendiliğinden oluşur. Türetilmiş `islemler[]` dizisi bu nesneleri
+kategorisiyle birlikte verir ve rota, sitemap, dizin sayfası oradan beslenir.
+
+İki katman aynı adres alanını paylaştığı için `site.config.ts` derleme sırasında
+slug çakışmasını denetler ve çakışma varsa hata atarak derlemeyi durdurur.
 
 Aynı şekilde `saatler[]` tek kaynaktır: hero'daki canlı saat kartı, ulaşım kartı,
 altbilgi ve `layout.tsx` içindeki `openingHoursSpecification` hep oradan okur.
@@ -97,8 +108,9 @@ vermeyi unutmayın.
 `site.config.ts`teki `tedaviMenusu`, `tedaviler[]`ten ayrı bir listedir: orada
 altı dalın kendi sayfası vardır, menüde kliniğin işlemleri dal dal sayılır.
 Paneldeki "42 Tedavi / 9 Kategori" o listeden hesaplanır. Kalem düz metinse
-bağlantı değil `span` basılır; `{ ad, adres }` biçimine çevrildiğinde `a` olur —
-sayfalar açıldıkça config'e adres yazmak yeter.
+bağlantı değil `span` basılır; `Islem` nesnesine çevrildiğinde `a` olur ve adres
+`slug`'ından türer. Yani menü hem gezinme listesi hem içerik kuyruğudur: düz
+metin kalan kalemler yazılmayı bekleyenlerdir.
 
 Menü geniş ekranda fareyle, dar ekranda dokunuşla açılır ve tek durumdan
 sürülür (`useTedaviMenusu`). İki nokta kolay bozulur:
@@ -115,6 +127,24 @@ sürülür (`useTedaviMenusu`). İki nokta kolay bozulur:
 Panel opaktır (`--grad-cream`), çünkü arkasından sayfa metni geçince kırk iki
 kalemlik liste okunmaz oluyor. Perde yalnız dar ekranda çizilir; negatif
 z-index'i onu çubuğun altına, sayfa içeriğinin üstüne koyar.
+
+### Tedavi rotaları
+
+`/tedaviler` dizin sayfası (`app/tedaviler/page.tsx`) iki katmanı birlikte
+gösterir: üstte altı dalın kartı, altında dokuz kategori ve kırk iki kalem.
+Sayfası yazılmamış kalem bağlantısız satır olarak durur — liste eksiksiz kalsın
+diye — ve üstteki açıklama satırı bekleyen kalem kalmadığında kendiliğinden
+görünmez olur. Gezinmedeki "Tüm tedaviler" düğmesi buraya gelir.
+
+`app/tedaviler/[id]` segmenti iki tür sayfayı taşır. `id` bir dal id'siyse
+`tedavi-icerik.js` çizilir (aşamalı süreç), bir işlem slug'ıysa
+`islem-icerik.js` (serbest başlıklı bölümler — süreç sırası olmayan işlemlerde
+numaralı liste yanlış bilgi verir). `generateMetadata`, `generateStaticParams` ve
+paylaşım görseli iki listeyi de kapsar.
+
+Notlar, sık sorulanlar ve randevu kartı iki sayfada da aynı görünür:
+ilk ikisi `tedavi-icerik.js`ten adla dışa aktarılır, randevu kartı
+`app/_ortak/randevu-karti.js` dosyasındadır (dizin sayfası da onu kullanır).
 
 ### Tasarım sistemi: `ds/` üretilmiştir
 
