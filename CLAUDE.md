@@ -88,6 +88,7 @@ eşiği olanlar sayı geçirir (saat kartı 560 px altında iki sütunu alt alta
 Kanca sunucuda `false` döner ve mount anında düzeltir, yani dar ekranda ilk kare
 geniş düzenle çizilir.
 - `app/_ortak/cerceve.js` — `SayfaCercevesi`: üst gezinme, altbilgi, mobil çubuk
+- `app/_ortak/kure.js` — hero'daki dönen küre (bkz. *Hero'daki dönen küre*)
 - `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
@@ -261,6 +262,35 @@ Manifest'te `display: 'browser'` bilerek seçilmiştir: site bir uygulama değil
 adres çubuğunu gizlemek ziyaretçiyi telefonda kilitlenmiş hissettiriyor.
 Tema rengi hem burada hem `layout.tsx` içindeki `viewport`ta `renk()` ile
 token'dan okunur.
+
+### Hero'daki dönen küre (`app/_ortak/kure.js`)
+
+Hero fotoğrafının sağ üstündeki krem baloncuk süs değil de canlı bir öğedir:
+gövdesi (krem cam, `--radius-blob`, `--shadow-3` ve iç gölgeler) eski düz
+baloncuğun aynısıdır, içinde beş konik degrade farklı hız ve yönde döner.
+Renkler token'dan gelir (`--emerald-500`, `--amber-400`, `--emerald-300`) ve
+`renkler` prop'uyla değiştirilebilir.
+
+Degradeler ve keyframe satır içi yazılamaz, `globals.css` içindeki `.kure`
+kurallarındadır. İki nokta kolay bozulur:
+
+- **`@property --kure-aci` şart.** Konik degradenin açısı ancak tipi bilinen
+  bir özel değişkenle canlandırılabilir; tanım silinirse tarayıcı açıyı düz
+  metin sayar, ara değer üretemez ve küre sessizce durur. Destek olmayan
+  tarayıcıda da aynı şey olur — küre durur ama bozulmaz, ayrı yedek gerekmez.
+- **Bulanıklık ve kontrast ölçüye bağlıdır.** `kure.js` içindeki katsayılar
+  (0.08 ve 0.003) degradeleri 96 px'te tek bir sedef hareketinde birleştirir;
+  sabitlenirse büyük ölçüde dağılmış lekeye döner.
+- **Keyframe bir tur değil on tur döner (3600°).** Degradelerin açısı
+  `--kure-aci`'nin kesirli katıdır (×1.2, ×0.8, ×-1.5, ×2.1, ×-0.7); açı 360°de
+  sarsaydı bu katlar tam tur tamamlamaz ve hepsi birden sıfıra sıçrardı —
+  dönüş gözle görülür biçimde kesilirdi. 3600° hepsinde tam sayı tur eder.
+  `globals.css`teki 3600 ile `kure.js`teki `DONGU_TURU` birlikte değişir.
+
+Küre her karede yeniden boyanır — konik degrade derleyiciye devredilemez.
+Çarktaki kuralın aynısı burada da geçerlidir: `IntersectionObserver` kutuyu
+izler, ekrandan çıkınca `.kure--durgun` ile `animation-play-state: paused`
+verilir; `prefers-reduced-motion` açıksa canlandırma hiç çalışmaz.
 
 ### Tedavi çarkı (`TedaviCarki`, `app/klinik-app.js`)
 

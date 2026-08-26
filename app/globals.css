@@ -276,6 +276,86 @@ a:hover { color: var(--text-link-hover); }
 .footer-link { color: var(--text-on-dark-muted); }
 .footer-link:hover { color: #fff; }
 
+/* --- Hero'daki dönen küre (app/_ortak/kure.js) --- */
+
+/* Konik degradelerin açısı ancak tipi bilinen bir özel değişkenle
+   canlandırılabilir: @property olmadan tarayıcı --kure-aci'yi düz metin sayar,
+   ara değer üretemez ve degrade hiç dönmez. Destek yoksa küre durur ama
+   bozulmaz — bu yüzden ayrı bir yedek çizim gerekmiyor. */
+@property --kure-aci {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Gövde eski baloncuğun aynısı: krem cam, blob yuvarlaklığı, aynı gölgeler.
+   Değişen tek şey içine dönen degradelerin gelmesi. */
+.kure {
+  display: grid;
+  grid-template-areas: 'yigin';
+  overflow: hidden;
+  border-radius: var(--radius-blob);
+  background: linear-gradient(150deg, #fff 0%, var(--sand-150) 100%);
+  box-shadow: var(--shadow-3), inset -6px -8px 20px rgba(58, 45, 32, .07), inset 6px 8px 20px #fff;
+}
+
+/* Beş konik degrade birbirinden farklı hızda ve yönde döner; tek tek
+   izlenemeyecek kadar bulanıklaştırıldıkları için gözde tek bir sedef
+   hareketi olarak birleşirler. Kontrast, bulanıklığın soldurduğu renkleri
+   geri getirir. */
+.kure::before {
+  content: '';
+  grid-area: yigin;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    conic-gradient(from calc(var(--kure-aci) *  1.2) at 30% 65%, var(--kure-c3) 0deg, transparent 45deg 315deg, var(--kure-c3) 360deg),
+    conic-gradient(from calc(var(--kure-aci) *  0.8) at 70% 35%, var(--kure-c2) 0deg, transparent 60deg 300deg, var(--kure-c2) 360deg),
+    conic-gradient(from calc(var(--kure-aci) * -1.5) at 65% 75%, var(--kure-c1) 0deg, transparent 90deg 270deg, var(--kure-c1) 360deg),
+    conic-gradient(from calc(var(--kure-aci) *  2.1) at 25% 25%, var(--kure-c2) 0deg, transparent 30deg 330deg, var(--kure-c2) 360deg),
+    conic-gradient(from calc(var(--kure-aci) * -0.7) at 80% 80%, var(--kure-c1) 0deg, transparent 45deg 315deg, var(--kure-c1) 360deg),
+    radial-gradient(ellipse 120% 80% at 40% 60%, var(--kure-c3) 0%, transparent 50%);
+  filter: blur(var(--kure-bulanik)) contrast(var(--kure-kontrast)) saturate(1.15);
+  animation: kure-don var(--kure-sure) linear infinite;
+  /* Boyama hero'nun geri kalanına bulaşmasın diye kendi katmanına alınır. */
+  transform: translateZ(0);
+}
+
+/* Cam gövdeye ışık düşmüş izlenimi veren tek nokta. */
+.kure::after {
+  content: '';
+  grid-area: yigin;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: radial-gradient(circle at 45% 55%, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .18) 30%, transparent 60%);
+  mix-blend-mode: overlay;
+}
+
+/* Açı bir turda değil, ON turda sarar. Sebebi katsayılar: degradelerin açısı
+   --kure-aci'nin kesirli katıdır (×1.2, ×0.8, ×-1.5, ×2.1, ×-0.7). Açı 360°de
+   başa sarsaydı bu katlar tam tur tamamlamaz — ×1.2 için 432°, yani 72° —
+   ve hepsi birden sıfıra sıçrardı: 20 saniyede bir görünen o kesilme.
+
+   3600° hepsinde tam sayı tur eder (12, 8, -15, 21, -7), yani sarma görünmez.
+   Süre de kure.js'te aynı oranda uzatılır, böylece dönüş hızı değişmez.
+
+   >>> Bu iki sayı birlikte değişir: 3600'ü bölersen kure.js'teki DONGU_TURU'nu
+       da böl, yoksa küre ya hızlanır ya da zıplaması geri gelir. <<< */
+@keyframes kure-don {
+  from { --kure-aci: 0deg; }
+  to { --kure-aci: 3600deg; }
+}
+
+/* Kutu ekrandan çıkınca durur: kare kare yeniden boyanan bir degradeyi
+   görünmezken döndürmenin anlamı yok (bkz. kure.js'teki gözcü). */
+.kure--durgun::before { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kure::before { animation: none; }
+}
+
 .noscript-note {
   max-width: 640px;
   margin: 64px auto;

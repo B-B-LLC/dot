@@ -155,6 +155,7 @@ sıfırlanır. Kalıcı koruma için CAPTCHA (örneğin Cloudflare Turnstile) ek
 | `app/_ortak/cerceve.js` | Üst gezinme, altbilgi, mobil çubuk, sayfa çerçevesi |
 | `app/_ortak/tedavi-menusu.js` | Gezinmedeki "Tedaviler" açılır menüsü |
 | `app/_ortak/randevu-karti.js` | Tedavi ve işlem sayfalarındaki randevu kartı |
+| `app/_ortak/kure.js` | Hero fotoğrafının sağ üstündeki dönen küre |
 | `app/_ortak/yasal-sayfa.js` | Yasal metin sayfalarının ortak düzeni |
 | `app/_ortak/hata-icerik.js`, `bulunamadi-icerik.js` | Hata ve 404 ekranlarının görünümü |
 | `app/_ortak/og-duzen.tsx`, `amblem.tsx`, `dis-yolu.ts` | Paylaşım görseli ve ikonların ortak düzeni, amblem |

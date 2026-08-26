@@ -20,6 +20,7 @@ import {
   ulasimNotlari as ULASIM_NOTLARI
 } from '@/site.config';
 import SayfaCercevesi from './_ortak/cerceve';
+import Kure from './_ortak/kure';
 import {
   h, BOLUMLER, MEKANLAR, KapakGorseli, YaziPerdesi, tedaviSimgesi, S, BolumBasligi,
   iki, durum, hafta, CALISMA_SAATLERI, bolumeGit, useDar, DAR_ESIK
@@ -192,15 +193,9 @@ var useCallback = React.useCallback;
       ),
 
       h('div', { style: { position: 'relative' } },
-        h('div', {
-          'aria-hidden': 'true',
-          style: {
-            position: 'absolute', right: -18, top: -26, width: 96, height: 96,
-            borderRadius: 'var(--radius-blob)',
-            background: 'linear-gradient(150deg,#fff 0%,var(--sand-150) 100%)',
-            boxShadow: 'var(--shadow-3),inset -6px -8px 20px rgba(58,45,32,.07),inset 6px 8px 20px #fff',
-            zIndex: 2
-          }
+        h(Kure, {
+          olcu: 96,
+          stil: { position: 'absolute', right: -18, top: -26, zIndex: 2 }
         }),
         h(Card, { tone: 'emerald', padding: 'none' },
           h('div', {
