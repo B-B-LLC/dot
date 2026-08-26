@@ -847,9 +847,37 @@ var useCallback = React.useCallback;
   /* 05 — Sık sorulan sorular                                            */
   /* ------------------------------------------------------------------ */
 
+  /* Cevaplar kapalıyken de DOM'da durur, çünkü yükseklik 0'dan cevabın kendi
+     boyuna doğru yumuşatılır ve bunun için elemanın iki durumda da var olması
+     gerekir. Kapalı gövde `inert` işaretlenir: ne odak alır ne de
+     erişilebilirlik ağacında görünür.
+
+     `height: auto` canlandırılamadığı için cevabın boyu ölçülüp CSS'e
+     `--sss-yuk` değişkeniyle bildirilir. Ölçüyü ResizeObserver tutar: yazı tipi
+     geç yüklenince ya da pencere daralıp cevap fazladan satıra taşınca değer
+     kendiliğinden tazelenir, açık panel de yeni boyuna yumuşayarak gider. */
   function SSS() {
     var pair = useState(null);
     var acik = pair[0], setAcik = pair[1];
+    var govdelerRef = useRef([]);
+
+    /* Her cevabın doğal boyu, kapalıyken bile ölçülebilsin diye iç kutudan
+       okunur: kırpma dış kutudadır. */
+    useEffect(function () {
+      var gozlemciler = [];
+      govdelerRef.current.forEach(function (kutu) {
+        var ic = kutu && kutu.firstElementChild;
+        if (!ic) return;
+        var yaz = function () { kutu.style.setProperty('--sss-yuk', ic.offsetHeight + 'px'); };
+        yaz();
+        var gozlemci = new ResizeObserver(yaz);
+        gozlemci.observe(ic);
+        gozlemciler.push(gozlemci);
+      });
+      return function () {
+        gozlemciler.forEach(function (gozlemci) { gozlemci.disconnect(); });
+      };
+    }, []);
 
     return h('section', { id: 'sss', style: S.bolum },
       h(BolumBasligi, {
@@ -876,21 +904,25 @@ var useCallback = React.useCallback;
                 h('span', null, s.soru),
                 h('span', {
                   'aria-hidden': 'true',
-                  style: {
-                    flex: 'none', width: 26, height: 26, borderRadius: '50%',
-                    background: 'var(--emerald-100)', color: 'var(--emerald-700)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: 'var(--font-mono)', fontSize: 15, lineHeight: 1
-                  }
-                }, bu ? '−' : '+')
+                  className: 'sss-simge' + (bu ? ' sss-simge--acik' : '')
+                },
+                  h('span', { className: 'sss-simge-cizgi' }),
+                  h('span', { className: 'sss-simge-cizgi sss-simge-cizgi--dik' })
+                )
               )
             ),
-            bu
-              ? h('p', {
-                  id: govdeId,
+            h('div', {
+              id: govdeId,
+              className: 'sss-govde' + (bu ? ' sss-govde--acik' : ''),
+              inert: !bu,
+              ref: function (el) { govdelerRef.current[i] = el; }
+            },
+              h('div', { className: 'sss-govde-ic' },
+                h('p', {
                   style: { margin: 0, padding: '0 22px 22px', fontSize: 15, lineHeight: 1.62, color: 'var(--text-muted)', maxWidth: '64ch' }
                 }, s.cevap)
-              : null
+              )
+            )
           );
         })
       )

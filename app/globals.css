@@ -70,6 +70,57 @@ a:hover { color: var(--text-link-hover); }
 }
 .sss-baslik:hover { background: rgba(255, 255, 255, .5); }
 
+/* Cevap 0'dan kendi boyuna açılır. `height: auto` canlandırılamadığı için boy
+   `--sss-yuk` değişkeninden okunur; onu klinik-app.js'teki ResizeObserver
+   yazar. Süreler token'dan geldiği için "hareketi azalt" ayarı açıkken hepsi
+   0ms'e iner: akordiyon anında açılır. */
+.sss-govde {
+  height: 0;
+  overflow: hidden;
+  transition: height var(--dur-base) var(--ease-in-out);
+}
+.sss-govde--acik { height: var(--sss-yuk, auto); }
+
+/* Metin yükseklikle birlikte belirir; kapanırken önden gider ki kırpılan
+   satırlar göze çarpmasın. */
+.sss-govde-ic > p {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-fast) var(--ease-glass),
+              transform var(--dur-base) var(--ease-glass);
+}
+.sss-govde--acik .sss-govde-ic > p {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--dur-instant);
+}
+
+/* Artı yarım tur dönerken dik çizgi silinir: işaret eksiye dönüşür. */
+.sss-simge {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--emerald-100);
+  color: var(--emerald-700);
+  transition: transform var(--dur-base) var(--ease-glass),
+              background var(--dur-fast) var(--ease-glass);
+}
+.sss-simge--acik { transform: rotate(180deg); background: var(--emerald-200); }
+.sss-simge-cizgi {
+  grid-area: 1 / 1;
+  width: 11px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform var(--dur-base) var(--ease-glass),
+              opacity var(--dur-fast) var(--ease-glass);
+}
+.sss-simge-cizgi--dik { transform: rotate(90deg); }
+.sss-simge--acik .sss-simge-cizgi--dik { transform: rotate(90deg) scaleX(0); opacity: 0; }
+
 /* --- Sabit mobil eylem çubuğu --- */
 .mobil-bar-link {
   display: flex;
