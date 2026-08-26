@@ -79,14 +79,15 @@ Alan alan, ne olduğu ve nereyi etkilediği:
 
   ad
       Resmî tam ad. "Özel ... Ağız ve Diş Sağlığı Polikliniği"
-      Etkilediği yerler: tüm sayfa başlıkları, altbilgi, JSON-LD, OG görseli,
-      randevu e-postasının konusu, KVKK/gizlilik metinlerindeki veri sorumlusu
-      satırı, 404 sayfası.
+      Etkilediği yerler: tüm sayfa başlıkları, altbilgi, JSON-LD, manifest'teki
+      uygulama adı, paylaşım görselinin alt metni, randevu e-postasının konusu,
+      KVKK/gizlilik metinlerindeki veri sorumlusu satırı, hata ve 404 sayfaları.
 
   marka
       Kısa ad, sonunda nokta olabilir: 'Meşe.'
-      Etkilediği yerler: üst menüdeki logo yazısı, altbilgi, OG görselindeki
-      büyük yazı ve tedavi OG görselindeki üst satır.
+      Etkilediği yerler: üst menüdeki logo yazısı, altbilgi, hata ekranları ve
+      manifest'teki kısa ad (sondaki nokta orada kırpılır).
+      NOT: paylaşım görselinde marka YAZISI yok, orada amblem var.
 
   telefon
       Ekranda görünen biçim: '0232 123 45 67'
@@ -130,7 +131,8 @@ Alan alan, ne olduğu ve nereyi etkilediği:
   konum
       'Alsancak, İzmir' — semt adı ilçeden daha çok arandığı için hastanın
       kullandığı ad yazılır (Konak değil Alsancak).
-      Sayfa başlıklarında kliniğin yanına gelir ve OG görselinin üst satırıdır.
+      Sayfa başlıklarında kliniğin yanına gelir ve paylaşım kartının alt
+      metnini besler.
 
   tanitim
       Ana sayfanın h1'i. Kliniğin tek cümlelik tanımı.
@@ -231,8 +233,8 @@ Hekim sayısı ve uzman sayısı /hekimler sayfasının açıklamasında otomati
 En kritik liste. Türetilmiş bir yapıdır — bir kalemi silmek şunları birden yok
 eder:
   - /tedaviler/<id> sayfasını
-  - ana sayfadaki kartını
-  - menü ve site haritası girdisini
+  - ana sayfadaki çarkın kartını ve /tedaviler dizinindeki kartını
+  - site haritası girdisini
   - JSON-LD'deki hizmet kaydını
   - o dalın OG paylaşım görselini
 
@@ -275,9 +277,29 @@ listeden hesaplanır, elle yazılmaz.
 
 Klinikte yapılmayan işlemi SİL, yapılan işlemi ekle. Kalem düz metin yazılır:
   kalemler: ['Fiber Dolgu', 'Kanal Tedavisi']
-Bu hâliyle kalem bağlantı değildir, listede durur. İşlemin açıklama sayfası
-açıldığında o kalem şu biçime çevrilir:
-  { ad: 'Fiber Dolgu', adres: '/tedaviler/fiber-dolgu' }
+Bu hâliyle kalem bağlantı değildir, menüde ve /tedaviler dizininde bağlantısız
+satır olarak durur — yani düz metin kalanlar "yazılmayı bekleyenler"dir.
+
+İçeriğini yazdığında kalemi Islem nesnesine çevir:
+  { ad: 'Fiber Dolgu',
+    slug: 'fiber-dolgu',        adresi belirler: /tedaviler/fiber-dolgu
+    dal: 'restoratif',          isteğe bağlı, hangi ana dala ait
+    ozet: '...',                menüde ve dizinde görünen tek cümle
+    metaAciklama: '...',        isteğe bağlı, arama sonucundaki satır
+    giris: '...',
+    bolumler: [{ baslik, metin }, ...],   SERBEST başlıklı, numarasız
+    notlar: ['...'],            isteğe bağlı
+    sorular: [{ soru, cevap }]  isteğe bağlı
+  }
+Nesneye çevrildiği anda sayfası, site haritası kaydı ve paylaşım görseli
+kendiliğinden oluşur; elle rota açmana gerek yok.
+
+>>> slug, tedaviler[] içindeki bir id ile AYNI OLAMAZ (ikisi de /tedaviler/
+    altında yaşıyor). Çakışırsa site.config.ts derlemeyi hatayla durdurur. <<<
+
+Not: bolumler[] serbest başlıklıdır, ana dallardaki asamalar[] gibi numaralı
+sıra değildir — süreç sırası olmayan işlemlerde numaralı liste yanlış bilgi
+verir.
 
 --- ulasimNotlari ---------------------------------------------------------
 Ulaşım kartındaki madde listesi. Metro/otobüs/otopark durumu.
@@ -366,10 +388,10 @@ Renk değiştirmek istersen tek yer:
       Bu dosya `ds/` altında ama tokens/ klasörü elle düzenlenebilir —
       üretilen dosyalar bundle.js ve styles.css'tir, onlara dokunma.
 
-  app/layout.tsx → themeColor: '#06301f'
-      >>> BU SABİT YAZILMIŞ. Marka rengini değiştirirsen burayı da elle
-          güncelle, yoksa mobil tarayıcının üst çubuğu eski renkte kalır. <<<
-      Değeri --emerald-900 ile aynı olmalı.
+  Mobil tarayıcının üst çubuk rengi
+      app/layout.tsx (viewport.themeColor) ve app/manifest.ts (theme_color)
+      renk('--emerald-900') ile token'dan okur. Elle dokunma gerekmez;
+      colors.css değişince ikisi de değişir.
 
   OG paylaşım görselinin renkleri
       app/_ortak/og-duzen.tsx renkleri colors.css'ten okur, elle dokunma
@@ -381,9 +403,24 @@ Font değiştirmek istersen:
   Not: OG görseli next/og'un varsayılan fontunu kullanır, marka fontunu değil.
   Marka fontuyla üretmek istersen depoya .ttf dosyası eklemek gerekir.
 
-FAVICON — ŞU AN HİÇ YOK:
-  app/icon.png (veya icon.svg) diye bir dosya koyarsan Next otomatik bağlar.
-  Her müşteride ayrı olmalı. Şu an tarayıcı sekmesinde boş kağıt ikonu çıkıyor.
+FAVICON — ÜRETİLİYOR, ELLE DOSYA KOYMA:
+  app/icon.tsx        sekme ikonu (32) ve manifest ikonları (192, 512)
+  app/apple-icon.tsx  iOS ana ekran ikonu (180)
+  app/manifest.ts     ana ekran kısayolunun adı, rengi, ikonları
+
+  Üçü de derleme sırasında PNG üretir; depoda ikon dosyası durmaz ve Next
+  <link rel="icon">, apple-touch-icon ve manifest etiketlerini kendisi basar.
+  Şekil app/_ortak/amblem.tsx içindeki diştir, renkler token'dan gelir — yani
+  marka rengini değiştirmek ikonu da değiştirir, ayrıca iş yok.
+
+  >>> app/icon.png KOYMA. Koyarsan üretilen ikonla çakışır. <<<
+
+  Müşterinin kendi logosunu koymak istersen amblem.tsx içindeki diş yolunu
+  değiştir; aynı yol app/_ortak/dis-yolu.ts üzerinden hata ekranlarında da
+  kullanılıyor, ikisi birlikte değişir.
+
+  Not: icon.tsx üç ölçüyü generateImageMetadata ile çıkarır. Bir ölçüyü
+  silersen manifest.ts içindeki /icon/<ölçü> adresini de sil.
 
 
 ================================================================================
@@ -395,12 +432,21 @@ demektir:
 
   ds/bundle.js, ds/styles.css   ÜRETİLMİŞ dosyalar. Elle düzenlenmez.
                                 _ds/ paketi değişirse: npm run gen:ds
-  app/_ortak/*.js               Ortak bileşenler (çerçeve, temel, yasal sayfa)
-  app/klinik-app.js             Ana sayfa bölümleri
+  app/_ortak/*                  Ortak bileşenler (çerçeve, temel, tedavi menüsü,
+                                randevu kartı, yasal sayfa, hata ekranları,
+                                amblem, OG düzeni, token okuyucu)
+  app/klinik-app.js             Ana sayfa bölümleri ve tedavi çarkı
   app/**/page.tsx               Rota dosyaları, yalnız metadata üretir
   app/api/randevu/route.ts      Randevu ucu
   app/robots.ts, app/sitemap.ts site.config'ten besleniyor
-  app/globals.css               :hover, medya sorgusu, yazdırma kuralları
+  app/opengraph-image.tsx       Paylaşım görselleri — derleme sırasında üretilir
+  app/tedaviler/[id]/opengraph-image.tsx
+  app/icon.tsx, apple-icon.tsx  Sekme ve iOS ikonu — derlemede üretilir
+  app/manifest.ts               Ana ekran kısayolu, klinik adını config'ten alır
+  app/error.tsx, global-error.tsx, not-found.tsx
+                                Hata ekranları, metinleri config'ten gelir
+  app/globals.css               :hover, medya sorgusu, akordiyon, çark
+                                düğmeleri, yazdırma kuralları
   index.html, assets/, support.js, tools/serve.js, "Klinik Sitesi.dc.html"
                                 Next.js öncesi eski statik sürüm. Derlemeye
                                 girmez, karşılaştırma için duruyor.
@@ -438,7 +484,8 @@ Sırayla:
   [ ] Vercel'e üç değişken girildi mi
   [ ] TEST RANDEVUSU GÖNDERİLDİ Mİ, MAİL GELDİ Mİ
   [ ] npm run build hatasız geçiyor mu
-  [ ] app/icon.png konuldu mu
+  [ ] Sekme ikonu çıkıyor mu (üretiliyor, dosya koymana gerek yok)
+  [ ] Menüdeki işlem kalemlerinden hangileri yazıldı, kalanlar düz metin mi
   [ ] Linki WhatsApp'a atıp önizleme görselini gördün mü
   [ ] Telefonda aç: mobil alt çubuk, harita, form çalışıyor mu
 
@@ -459,9 +506,9 @@ uğraşılmaz:
   - Turnstile (bot koruması) yok. Randevu ucunda honeypot, dakikada 5 istek
     sınırı ve alan uzunluk sınırları var ama captcha yok. Sunucu yeniden
     başlayınca istek sayacı sıfırlanır.
-  - Favicon yok.
-  - /tedaviler indeks sayfası yok. Menüdeki "Tedaviler" ana sayfa çapasına
-    gidiyor (/#tedaviler) — çalışıyor ama ayrı sayfa daha iyi olur.
+  - Menüdeki kırk iki işlem kaleminin yalnız on üçünün içeriği yazıldı; kalan
+    yirmi dokuzu düz metin olarak listede duruyor, sayfası yok. Her müşteride
+    hangilerinin yazılacağına baştan karar ver.
   - Hekim detay sayfaları yok (/hekimler/ad-soyad). Hasta hekim adıyla arıyor.
   - OG görseli marka fontunu değil, next/og'un varsayılan fontunu kullanıyor.
   - Fotoğraflar ham boyutta (2,5-3 MB) ve dosya adlarında boşluk var.

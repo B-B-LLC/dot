@@ -221,7 +221,8 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 
 Üç ayrı ekran vardır ve hangisinin çizileceğini Next belirler:
 
-- `app/not-found.tsx` — adres yok (404).
+- `app/not-found.tsx` — adres yok (404). Görünümü `_ortak/bulunamadi-icerik.js`
+  verir; sunucu bileşenidir, yalnız `metadata` üretir.
 - `app/error.tsx` — sayfa çizilirken hata çıktı. İstemci bileşenidir (kural) ve
   görünümü `_ortak/hata-icerik.js`ten alır: site çerçevesi, telefon düğmesi ve
   yeniden deneme. Next 16'da yeniden çizme prop'u `reset` değil **`retry`**dir.
