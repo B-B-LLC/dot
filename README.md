@@ -18,6 +18,12 @@ npm run dev
 
 Ardından `http://localhost:3000`.
 
+Üretim derlemesi — tip denetimi de burada yapılır:
+
+```bash
+npm run build
+```
+
 ## Yeni klinik demosu çıkarma
 
 Tek yapılacak iş `site.config.ts` dosyasının **KLİNİĞE ÖZEL** bölümünü
@@ -29,27 +35,40 @@ düzenlemek. Uygulama koduna dokunulmaz.
 | Çalışma saatleri | `saatler` |
 | Hekim listesi | `hekimler` |
 | Hasta kabul edilen dallar ve metinleri | `tedaviler` |
+| Kliniğin tek tek işlemleri (gezinmedeki açılır menü) | `tedaviMenusu` |
 | Ulaşım notları | `ulasimNotlari` |
 | Fotoğraflar | `gorseller` + hekimlerdeki `gorsel` |
 
 Aynı dosyanın **ORTAK METİNLER** bölümü (sterilizasyon adımları, koruyucu
 bilgiler, sık sorulan sorular) şablon metnidir; kliniğe göre değişmesi gerekmez.
 
-`tedaviler` dizisinden bir kalem silindiğinde ilgili sayfa, adres ve menü girdisi
-de kaybolur. Yeni kalem eklendiğinde sayfası kendiliğinden oluşur — `id` alanı
-hem adresi (`/tedaviler/<id>`) hem de kart ikonunu belirler.
+Tedavi içeriği iki katmandır ve ikisi de `/tedaviler/<...>` altında yayımlanır:
+
+`tedaviler` **ana dalları** tutar (implantoloji, ortodonti, endodonti,
+pedodonti, periodontoloji, restoratif). Bir kalem silindiğinde ilgili sayfa,
+adres ve kart da kaybolur; yeni kalem eklendiğinde sayfası kendiliğinden oluşur
+— `id` alanı hem adresi (`/tedaviler/<id>`) hem de kart ikonunu belirler.
+
+`tedaviMenusu.kategoriler[].kalemler[]` kliniğin tek tek **işlemlerini** tutar;
+gezinmedeki "Tedaviler" açılır menüsü buradan çizilir. Bir kalem düz metin
+olarak yazılabilir (menüde bağlantısız satır olarak durur) ya da içeriği
+yazılıp nesneye çevrilebilir; nesneye çevrildiği anda `/tedaviler/<slug>`
+sayfası, site haritası kaydı ve paylaşım görseli kendiliğinden oluşur.
 
 ## Sayfalar
 
 | Adres | İçerik |
 | --- | --- |
-| `/` | Hero, tedavi kartları, klinik, hekimler, bilgi, SSS, ulaşım ve randevu formu |
-| `/tedaviler/<id>` | Tedavi sayfası: giriş, aşamalar, süreç notları, sorular |
+| `/` | Hero, tedavi çarkı, klinik, hekimler, bilgi, SSS, ulaşım ve randevu formu |
+| `/tedaviler` | Dizin: altı ana dalın kartı, altında dokuz kategori ve tüm işlemler |
+| `/tedaviler/<id>` | Ana dal sayfası: giriş, aşamalar, süreç notları, sorular |
+| `/tedaviler/<slug>` | İşlem sayfası: giriş, serbest başlıklı bölümler, notlar, sorular |
 | `/hekimler` | Hekim kadrosu |
 | `/iletisim` | Adres, ulaşım, çalışma saatleri, randevu formu |
 | `/kvkk`, `/gizlilik`, `/cerez` | Yasal metinler (arama motorlarına kapalı) |
 | `/api/randevu` | Randevu formunun gönderim ucu |
 | `/sitemap.xml`, `/robots.txt` | Config'ten üretilir |
+| `/opengraph-image`, `/icon/<ölçü>`, `/apple-icon`, `/manifest.webmanifest` | Derleme sırasında üretilir |
 
 ## Fotoğraflar
 
@@ -134,7 +153,16 @@ sıfırlanır. Kalıcı koruma için CAPTCHA (örneğin Cloudflare Turnstile) ek
 | `app/klinik-app.js` | Ana sayfa bölümleri |
 | `app/_ortak/temel.js` | Paylaşılan stiller, yardımcılar, görünüm sabitleri |
 | `app/_ortak/cerceve.js` | Üst gezinme, altbilgi, mobil çubuk, sayfa çerçevesi |
+| `app/_ortak/tedavi-menusu.js` | Gezinmedeki "Tedaviler" açılır menüsü |
+| `app/_ortak/randevu-karti.js` | Tedavi ve işlem sayfalarındaki randevu kartı |
+| `app/_ortak/kure.js` | Hero fotoğrafının sağ üstündeki dönen küre |
 | `app/_ortak/yasal-sayfa.js` | Yasal metin sayfalarının ortak düzeni |
+| `app/_ortak/hata-icerik.js`, `bulunamadi-icerik.js` | Hata ve 404 ekranlarının görünümü |
+| `app/_ortak/og-duzen.tsx`, `amblem.tsx`, `dis-yolu.ts` | Paylaşım görseli ve ikonların ortak düzeni, amblem |
+| `app/_ortak/token-renk.ts` | `ds/tokens/colors.css`'i derleme anında okur (`renk('--emerald-900')`) |
+| `app/opengraph-image.tsx`, `app/tedaviler/[id]/opengraph-image.tsx` | **Üretilmiş** — 1200×630 paylaşım görselleri |
+| `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts` | **Üretilmiş** — sekme ikonu, iOS ikonu, manifest |
+| `app/error.tsx`, `app/global-error.tsx`, `app/not-found.tsx` | Hata ekranları |
 | `app/api/randevu/route.ts` | Randevu gönderim ucu |
 | `ds/` | **Üretilmiş** — tasarım sistemi modülü ve jetonları |
 | `tools/gen-ds-module.mjs` | `ds/` klasörünü üreten betik |
@@ -174,16 +202,32 @@ bölümüne ayrıca girilmelidir.
   68 px sabit yüksekliktedir ve beş bağlantı 375 px'e sığmaz. 860 px altında
   bağlantı listesi gizlenir, gezinme alttaki sabit eylem çubuğuna bırakılır.
 - **Gezinme bağlama göre davranır.** Ana sayfadaki bölümlere kaydırılır, ayrı
-  sayfalara adres üzerinden gidilir.
+  sayfalara adres üzerinden gidilir. "Tedaviler" ise açılır menüyü açar: geniş
+  ekranda fareyle, dar ekranda dokunuşla.
+- **Tedavi kartları kaydırmaya bağlı dönen bir yayda durur.** Kare döngüsü
+  doğrudan DOM'a yazar, yalnız bölüm ekrandayken ve sekme öndeyken çalışır;
+  `prefers-reduced-motion` açıksa hiç çalışmaz. Telefonda kaydırma payı
+  kapatılır, çark kullanıcının elindedir.
+- **Paylaşım görselleri ve ikonlar derleme sırasında üretilir.** Depoda PNG
+  durmaz; `opengraph-image`, `icon`, `apple-icon` ve `manifest` dosyalarının
+  varlığı yeter, Next etiketleri kendisi basar.
+- **Beklenmedik hata da markalıdır.** `error.tsx` site çerçevesiyle birlikte
+  telefon düğmesi ve yeniden deneme sunar; `global-error.tsx` kök düzen çöktüğü
+  durumda kendi `<html>` ve stilleriyle devreye girer.
 
 ## Bilinen eksikler
 
-- **İşlem sayfalarının çoğu yazılmadı.** Menüdeki kırk iki kalemin on üçünün
-  içeriği hazır ve `/tedaviler/<slug>` sayfası oluşuyor; kalan yirmi dokuz
-  kalem düz metin olarak listede duruyor. Bir kalemin içeriği yazılıp
-  `site.config.ts` içinde nesneye çevrildiğinde sayfası, site haritası kaydı ve
-  paylaşım görseli kendiliğinden oluşur. Sayfaların birbirine benzemesi arama
-  motorunda "ince içerik" sayıldığı için her işlemin kendine ait metni olmalıdır.
+- **İşlem metinleri bir diş hekimince okunmadı.** Menüdeki kırk iki kalemin
+  tamamının sayfası yazıldı, ancak metinler yapay zekâ araştırmasından
+  derlendi. Hasta karşısına çıkmadan önce klinik doğruluk açısından bir hekim
+  tarafından gözden geçirilmelidir — `yasal.config.ts` için hukukçu denetimi
+  neyse bunun için de o geçerlidir.
+- **Birbirine yakın işlem sayfaları var.** Sinüs lifting (genel / açık /
+  kapalı), gülüş tasarımı (klasik / dijital) ve pembe estetik ile pembe diş eti
+  estetiği aynı konunun komşu başlıklarıdır. Metinler bilerek farklı açılardan
+  yazıldı (biri karar ölçütünü, diğeri tekniğin kendisini anlatır), ama bu
+  sayfalar birleştirilir ya da yeniden yazılırsa aralarındaki ayrımın
+  korunması gerekir; yoksa arama motorunda "ince içerik" sayılırlar.
 - **Yasal metinler şablondur.** `yasal.config.ts` yayına alınmadan önce bir
   hukukçu tarafından gözden geçirilmelidir; saklama süresi ve kullanılan üçüncü
   taraf hizmetler kliniğe göre değişir.
@@ -194,8 +238,10 @@ bölümüne ayrıca girilmelidir.
   görsellerde başka klinik markaları (duvar logoları) ve hekim formalarında
   başka adlar okunuyor; hekim kadrosu bu adlara göre yazıldı. Yalnızca demo
   içindir, gerçek bir klinik sitesinde kliniğin kendi fotoğraflarıyla
-  değiştirilmelidir. Hero kartının fotoğrafı henüz eklenmedi, orada yer tutucu
-  duruyor (bkz. *Fotoğraflar*).
+  değiştirilmelidir (bkz. *Fotoğraflar*).
+- **Demo fotoğrafları ham boyutta.** Kaynak dosyalar 2,5–3 MB ve adlarında
+  boşluk ile Türkçe karakter var. `next/image` ziyaretçiye küçültülmüş hâlini
+  indirdiği için site yavaşlamaz, ama depo gereksiz şişer.
 - **CAPTCHA yok.** Bot tuzağı ve hız sınırı var; hız sınırı sunucu belleğinde
   tutulduğu için birden çok sunucu örneğinde zayıflar. Site herkese açık
   yayına girmeden önce Cloudflare Turnstile eklenmelidir.

@@ -88,6 +88,7 @@ eşiği olanlar sayı geçirir (saat kartı 560 px altında iki sütunu alt alta
 Kanca sunucuda `false` döner ve mount anında düzeltir, yani dar ekranda ilk kare
 geniş düzenle çizilir.
 - `app/_ortak/cerceve.js` — `SayfaCercevesi`: üst gezinme, altbilgi, mobil çubuk
+- `app/_ortak/kure.js` — hero'daki dönen küre (bkz. *Hero'daki dönen küre*)
 - `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
@@ -145,6 +146,29 @@ paylaşım görseli iki listeyi de kapsar.
 Notlar, sık sorulanlar ve randevu kartı iki sayfada da aynı görünür:
 ilk ikisi `tedavi-icerik.js`ten adla dışa aktarılır, randevu kartı
 `app/_ortak/randevu-karti.js` dosyasındadır (dizin sayfası da onu kullanır).
+
+#### İşlem sayfasındaki iki isteğe bağlı blok
+
+`Islem` nesnesine iki alan daha verilebilir; ikisi de veriyle sürülür, yani
+yeni bir sayfa için `islem-icerik.js`e dokunmak gerekmez.
+
+`zamanCizelgesi[]` aşama şeridini çizer (`asama`, `sure`, `aciklama`).
+Hastanın en çok sorduğu şey "ne kadar sürer" olduğu için bu bilgi metnin
+içinde bırakılmaz. `sure` her zaman aralık ya da niteleyicidir ("Tek seans",
+"Birkaç ay"); kesin gün sayısı yazılmaz. Tek seansta biten işlemde şerit
+çizilmez — üç kutuluk bir şerit orada bilgi değil süs olur.
+
+`karsilastirma` iki seçeneği ölçüt ölçüt karşılaştıran tabloyu çizer.
+Yalnız **gerçek bir seçimin olduğu** sayfaya konur ve o seçimin yapıldığı
+sayfaya konur: açık/kapalı sinüs lifting tablosu üç teknik sayfasında
+tekrarlanmaz, karar sayfası olan genel `sinus-lifting`tedir. Tablo aynı
+zamanda birbirine yakın başlıkların tekrara düşmesini engeller — sayfa
+komşusundan farklı olduğunu iddia etmek yerine ölçütle gösterir.
+
+Görünüm `globals.css`teki `.islem-cizelge` ve `.islem-tablo` kurallarındadır.
+Tablo dar ekranda sütunlara bölünmez, kendi kutusunda yatay kaydırılır
+(`.islem-tablo-kutu`): ölçütü iki değerinden ayırmak karşılaştırmayı okunmaz
+hâle getiriyordu. Şerit ise dar ekranda alt alta iner.
 
 ### Tasarım sistemi: `ds/` üretilmiştir
 
@@ -221,7 +245,8 @@ Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 
 Üç ayrı ekran vardır ve hangisinin çizileceğini Next belirler:
 
-- `app/not-found.tsx` — adres yok (404).
+- `app/not-found.tsx` — adres yok (404). Görünümü `_ortak/bulunamadi-icerik.js`
+  verir; sunucu bileşenidir, yalnız `metadata` üretir.
 - `app/error.tsx` — sayfa çizilirken hata çıktı. İstemci bileşenidir (kural) ve
   görünümü `_ortak/hata-icerik.js`ten alır: site çerçevesi, telefon düğmesi ve
   yeniden deneme. Next 16'da yeniden çizme prop'u `reset` değil **`retry`**dir.
@@ -260,6 +285,35 @@ Manifest'te `display: 'browser'` bilerek seçilmiştir: site bir uygulama değil
 adres çubuğunu gizlemek ziyaretçiyi telefonda kilitlenmiş hissettiriyor.
 Tema rengi hem burada hem `layout.tsx` içindeki `viewport`ta `renk()` ile
 token'dan okunur.
+
+### Hero'daki dönen küre (`app/_ortak/kure.js`)
+
+Hero fotoğrafının sağ üstündeki krem baloncuk süs değil de canlı bir öğedir:
+gövdesi (krem cam, `--radius-blob`, `--shadow-3` ve iç gölgeler) eski düz
+baloncuğun aynısıdır, içinde beş konik degrade farklı hız ve yönde döner.
+Renkler token'dan gelir (`--emerald-500`, `--amber-400`, `--emerald-300`) ve
+`renkler` prop'uyla değiştirilebilir.
+
+Degradeler ve keyframe satır içi yazılamaz, `globals.css` içindeki `.kure`
+kurallarındadır. İki nokta kolay bozulur:
+
+- **`@property --kure-aci` şart.** Konik degradenin açısı ancak tipi bilinen
+  bir özel değişkenle canlandırılabilir; tanım silinirse tarayıcı açıyı düz
+  metin sayar, ara değer üretemez ve küre sessizce durur. Destek olmayan
+  tarayıcıda da aynı şey olur — küre durur ama bozulmaz, ayrı yedek gerekmez.
+- **Bulanıklık ve kontrast ölçüye bağlıdır.** `kure.js` içindeki katsayılar
+  (0.08 ve 0.003) degradeleri 96 px'te tek bir sedef hareketinde birleştirir;
+  sabitlenirse büyük ölçüde dağılmış lekeye döner.
+- **Keyframe bir tur değil on tur döner (3600°).** Degradelerin açısı
+  `--kure-aci`'nin kesirli katıdır (×1.2, ×0.8, ×-1.5, ×2.1, ×-0.7); açı 360°de
+  sarsaydı bu katlar tam tur tamamlamaz ve hepsi birden sıfıra sıçrardı —
+  dönüş gözle görülür biçimde kesilirdi. 3600° hepsinde tam sayı tur eder.
+  `globals.css`teki 3600 ile `kure.js`teki `DONGU_TURU` birlikte değişir.
+
+Küre her karede yeniden boyanır — konik degrade derleyiciye devredilemez.
+Çarktaki kuralın aynısı burada da geçerlidir: `IntersectionObserver` kutuyu
+izler, ekrandan çıkınca `.kure--durgun` ile `animation-play-state: paused`
+verilir; `prefers-reduced-motion` açıksa canlandırma hiç çalışmaz.
 
 ### Tedavi çarkı (`TedaviCarki`, `app/klinik-app.js`)
 

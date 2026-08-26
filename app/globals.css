@@ -276,6 +276,199 @@ a:hover { color: var(--text-link-hover); }
 .footer-link { color: var(--text-on-dark-muted); }
 .footer-link:hover { color: #fff; }
 
+/* --- İşlem sayfasındaki aşama şeridi --- */
+
+/* Geniş ekranda aşamalar yan yana akar, dar ekranda alt alta iner. Sütun
+   sayısı içeriğe göre değiştiği için satır içiyle yazılamaz. */
+.islem-cizelge {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 4px;
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  counter-reset: asama;
+}
+
+.islem-cizelge-adim {
+  position: relative;
+  padding: 20px 18px 18px;
+  background: var(--emerald-50);
+  border-radius: var(--radius-md, 14px);
+}
+
+/* Aşamalar arasındaki bağlantı çizgisi: son adımda ve alt alta dizildiğinde
+   çizilmez. Süsleme olduğu için DOM'a düğüm eklemiyoruz. */
+.islem-cizelge-adim::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  right: -4px;
+  width: 4px;
+  height: 2px;
+  background: var(--emerald-200);
+}
+.islem-cizelge-adim:last-child::after { display: none; }
+
+.islem-cizelge-no {
+  display: inline-block;
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--emerald-600);
+  margin-bottom: 8px;
+}
+
+.islem-cizelge-sure {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--emerald-700);
+  margin: 6px 0 0;
+}
+
+/* --- İşlem sayfasındaki karşılaştırma tablosu --- */
+
+/* Dar ekranda sütunlar alt alta kırılmaz, tablo kendi içinde yatay kaydırılır:
+   ölçütü iki değerinden ayırmak karşılaştırmayı okunmaz hâle getiriyordu.
+   Kaydırma kutusu tabloya ait; sayfa gövdesi yatay kaymaz. */
+.islem-tablo-kutu {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md, 14px);
+}
+
+.islem-tablo {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.islem-tablo th,
+.islem-tablo td {
+  padding: 13px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.islem-tablo tbody tr:last-child th,
+.islem-tablo tbody tr:last-child td { border-bottom: 0; }
+
+.islem-tablo thead th {
+  background: var(--emerald-50);
+  font-family: var(--font-display, ui-sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--emerald-800);
+  white-space: nowrap;
+}
+
+/* İlk sütun ölçütün adıdır; satırın başlığı olduğu için ayrı ağırlıkta. */
+.islem-tablo tbody th {
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--surface-sunken);
+  white-space: nowrap;
+}
+
+.islem-tablo td { color: var(--text-muted); }
+
+/* Ölçütün altındaki küçük açıklama: neden bu ölçüte bakıldığını söyler.
+   Satır başlığının parçası olduğu için ayrı hücreye alınmaz. */
+.islem-tablo-olcut-not {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-faint);
+  white-space: normal;
+  max-width: 20ch;
+}
+
+/* --- Hero'daki dönen küre (app/_ortak/kure.js) --- */
+
+/* Konik degradelerin açısı ancak tipi bilinen bir özel değişkenle
+   canlandırılabilir: @property olmadan tarayıcı --kure-aci'yi düz metin sayar,
+   ara değer üretemez ve degrade hiç dönmez. Destek yoksa küre durur ama
+   bozulmaz — bu yüzden ayrı bir yedek çizim gerekmiyor. */
+@property --kure-aci {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Gövde eski baloncuğun aynısı: krem cam, blob yuvarlaklığı, aynı gölgeler.
+   Değişen tek şey içine dönen degradelerin gelmesi. */
+.kure {
+  display: grid;
+  grid-template-areas: 'yigin';
+  overflow: hidden;
+  border-radius: var(--radius-blob);
+  background: linear-gradient(150deg, #fff 0%, var(--sand-150) 100%);
+  box-shadow: var(--shadow-3), inset -6px -8px 20px rgba(58, 45, 32, .07), inset 6px 8px 20px #fff;
+}
+
+/* Beş konik degrade birbirinden farklı hızda ve yönde döner; tek tek
+   izlenemeyecek kadar bulanıklaştırıldıkları için gözde tek bir sedef
+   hareketi olarak birleşirler. Kontrast, bulanıklığın soldurduğu renkleri
+   geri getirir. */
+.kure::before {
+  content: '';
+  grid-area: yigin;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    conic-gradient(from calc(var(--kure-aci) *  1.2) at 30% 65%, var(--kure-c3) 0deg, transparent 45deg 315deg, var(--kure-c3) 360deg),
+    conic-gradient(from calc(var(--kure-aci) *  0.8) at 70% 35%, var(--kure-c2) 0deg, transparent 60deg 300deg, var(--kure-c2) 360deg),
+    conic-gradient(from calc(var(--kure-aci) * -1.5) at 65% 75%, var(--kure-c1) 0deg, transparent 90deg 270deg, var(--kure-c1) 360deg),
+    conic-gradient(from calc(var(--kure-aci) *  2.1) at 25% 25%, var(--kure-c2) 0deg, transparent 30deg 330deg, var(--kure-c2) 360deg),
+    conic-gradient(from calc(var(--kure-aci) * -0.7) at 80% 80%, var(--kure-c1) 0deg, transparent 45deg 315deg, var(--kure-c1) 360deg),
+    radial-gradient(ellipse 120% 80% at 40% 60%, var(--kure-c3) 0%, transparent 50%);
+  filter: blur(var(--kure-bulanik)) contrast(var(--kure-kontrast)) saturate(1.15);
+  animation: kure-don var(--kure-sure) linear infinite;
+  /* Boyama hero'nun geri kalanına bulaşmasın diye kendi katmanına alınır. */
+  transform: translateZ(0);
+}
+
+/* Cam gövdeye ışık düşmüş izlenimi veren tek nokta. */
+.kure::after {
+  content: '';
+  grid-area: yigin;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: radial-gradient(circle at 45% 55%, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .18) 30%, transparent 60%);
+  mix-blend-mode: overlay;
+}
+
+/* Açı bir turda değil, ON turda sarar. Sebebi katsayılar: degradelerin açısı
+   --kure-aci'nin kesirli katıdır (×1.2, ×0.8, ×-1.5, ×2.1, ×-0.7). Açı 360°de
+   başa sarsaydı bu katlar tam tur tamamlamaz — ×1.2 için 432°, yani 72° —
+   ve hepsi birden sıfıra sıçrardı: 20 saniyede bir görünen o kesilme.
+
+   3600° hepsinde tam sayı tur eder (12, 8, -15, 21, -7), yani sarma görünmez.
+   Süre de kure.js'te aynı oranda uzatılır, böylece dönüş hızı değişmez.
+
+   >>> Bu iki sayı birlikte değişir: 3600'ü bölersen kure.js'teki DONGU_TURU'nu
+       da böl, yoksa küre ya hızlanır ya da zıplaması geri gelir. <<< */
+@keyframes kure-don {
+  from { --kure-aci: 0deg; }
+  to { --kure-aci: 3600deg; }
+}
+
+/* Kutu ekrandan çıkınca durur: kare kare yeniden boyanan bir degradeyi
+   görünmezken döndürmenin anlamı yok (bkz. kure.js'teki gözcü). */
+.kure--durgun::before { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kure::before { animation: none; }
+}
+
 .noscript-note {
   max-width: 640px;
   margin: 64px auto;

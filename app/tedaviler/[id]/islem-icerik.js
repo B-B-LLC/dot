@@ -14,7 +14,7 @@ import { Card } from '@/ds/bundle';
 import { islemler as ISLEMLER, tedaviler as TEDAVILER } from '@/site.config';
 import SayfaCercevesi from '../../_ortak/cerceve';
 import RandevuKarti from '../../_ortak/randevu-karti';
-import { h, S, BolumBasligi, tedaviSimgesi } from '../../_ortak/temel';
+import { h, S, BolumBasligi, tedaviSimgesi, iki } from '../../_ortak/temel';
 import { Notlar, Sorular } from './tedavi-icerik';
 
 function Bolumler(props) {
@@ -25,6 +25,75 @@ function Bolumler(props) {
         h('p', { style: S.kartMetin }, b.metin)
       );
     })
+  );
+}
+
+/* Aşama şeridi: hastanın en çok sorduğu "ne kadar sürer" sorusunun cevabı
+   metnin içinde kaybolmasın diye ayrı çizilir.
+
+   Geniş ekranda aşamalar yan yana bir şerit, dar ekranda alt alta bir liste
+   olur; kırılmayı `.islem-cizelge` medya sorgusu yapar, çünkü ızgara sütun
+   sayısı satır içiyle yazılamıyor. Aşamalar arasındaki bağlantı çizgisi
+   süslemedir, bu yüzden `aria-hidden` değil — çizgi zaten CSS'ten gelir ve
+   DOM'a düğüm eklemez. */
+function ZamanCizelgesi(props) {
+  return h('div', { style: { marginTop: 44 } },
+    h('div', { style: S.baslikSatiri },
+      h('span', { style: S.kas }, 'SÜREÇ NE KADAR SÜRER'),
+      h('span', { style: S.cizgi })
+    ),
+    h('ol', { className: 'islem-cizelge' },
+      props.asamalar.map(function (a, i) {
+        return h('li', { key: a.asama, className: 'islem-cizelge-adim' },
+          h('span', { className: 'islem-cizelge-no' }, iki(i + 1)),
+          h('h3', { style: Object.assign({}, S.h3, { fontSize: 16 }) }, a.asama),
+          h('p', { className: 'islem-cizelge-sure' }, a.sure),
+          h('p', { style: Object.assign({}, S.kartMetin, { fontSize: 14 }) }, a.aciklama)
+        );
+      })
+    ),
+    h('p', { style: S.dipnot },
+      'Süreler ortalama değerlerdir ve kişiye göre değişir; kesin plan muayene sonrasında çıkarılır.')
+  );
+}
+
+/* Karşılaştırma tablosu. Dar ekranda tablo yatay kaydırılır — sütunları alt
+   alta kırmak, ölçütü iki değerden ayırdığı için karşılaştırmayı okunamaz
+   hâle getiriyordu. */
+function Karsilastirma(props) {
+  var k = props.karsilastirma;
+  return h('div', { style: { marginTop: 44 } },
+    h('div', { style: S.baslikSatiri },
+      h('span', { style: S.kas }, 'KARŞILAŞTIRMA'),
+      h('span', { style: S.cizgi })
+    ),
+    h('h2', { style: Object.assign({}, S.h3, { fontSize: 18, marginBottom: 14 }) }, k.baslik),
+    h('div', { className: 'islem-tablo-kutu' },
+      h('table', { className: 'islem-tablo' },
+        h('thead', null,
+          h('tr', null,
+            h('th', { scope: 'col' }, 'Ölçüt'),
+            h('th', { scope: 'col' }, k.sutunlar[0]),
+            h('th', { scope: 'col' }, k.sutunlar[1])
+          )
+        ),
+        h('tbody', null,
+          k.satirlar.map(function (s) {
+            return h('tr', { key: s.olcut },
+              h('th', { scope: 'row' },
+                s.olcut,
+                s.olcutAciklama
+                  ? h('span', { className: 'islem-tablo-olcut-not' }, s.olcutAciklama)
+                  : null
+              ),
+              h('td', null, s.a),
+              h('td', null, s.b)
+            );
+          })
+        )
+      )
+    ),
+    k.dipnot ? h('p', { style: S.dipnot }, k.dipnot) : null
   );
 }
 
@@ -106,6 +175,10 @@ export default function IslemIcerik(props) {
       ),
 
       h(Bolumler, { bolumler: islem.bolumler }),
+      islem.zamanCizelgesi && islem.zamanCizelgesi.length
+        ? h(ZamanCizelgesi, { asamalar: islem.zamanCizelgesi })
+        : null,
+      islem.karsilastirma ? h(Karsilastirma, { karsilastirma: islem.karsilastirma }) : null,
       islem.notlar && islem.notlar.length ? h(Notlar, { notlar: islem.notlar }) : null,
       islem.sorular && islem.sorular.length ? h(Sorular, { sorular: islem.sorular }) : null,
 
