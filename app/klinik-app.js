@@ -20,7 +20,6 @@ import {
   ulasimNotlari as ULASIM_NOTLARI
 } from '@/site.config';
 import SayfaCercevesi from './_ortak/cerceve';
-import { OLAYLAR, olay } from './_ortak/olcum';
 import {
   h, BOLUMLER, MEKANLAR, KapakGorseli, YaziPerdesi, tedaviSimgesi, S, BolumBasligi,
   iki, durum, hafta, CALISMA_SAATLERI, bolumeGit, useDar, DAR_ESIK
@@ -178,8 +177,7 @@ var useCallback = React.useCallback;
           h(Button, { size: 'lg', onClick: function () { bolumeGit('randevu'); } }, 'Randevu talebi'),
           h(Button, {
             size: 'lg', variant: 'cream', as: 'a',
-            href: haritaYolTarifi(), target: '_blank', rel: 'noopener',
-            'data-olcum-yer': 'hero'
+            href: haritaYolTarifi(), target: '_blank', rel: 'noopener'
           }, 'Yol tarifi')
         ),
         h('div', {
@@ -188,7 +186,6 @@ var useCallback = React.useCallback;
           h('span', null, KLINIK.adresKisa),
           h('a', {
             href: KLINIK.telHref,
-            'data-olcum-yer': 'hero',
             style: { fontFamily: 'var(--font-mono)', fontWeight: 500, letterSpacing: '-.01em' }
           }, KLINIK.telefon)
         )
@@ -1011,13 +1008,11 @@ var useCallback = React.useCallback;
         h('span', { style: { fontSize: 13.5, color: 'var(--text-muted)' } }, 'Yol tarifi'),
         h(Button, {
           size: 'sm', variant: 'cream', as: 'a', style: { flex: '1 1 132px' },
-          href: haritaYolTarifi(), target: '_blank', rel: 'noopener',
-          'data-olcum-yer': 'ulasim'
+          href: haritaYolTarifi(), target: '_blank', rel: 'noopener'
         }, 'Google Haritalar'),
         h(Button, {
           size: 'sm', variant: 'glass', as: 'a', style: { flex: '1 1 132px' },
-          href: haritaYolTarifiApple(), target: '_blank', rel: 'noopener',
-          'data-olcum-yer': 'ulasim'
+          href: haritaYolTarifiApple(), target: '_blank', rel: 'noopener'
         }, 'Apple Haritalar')
       )
     );
@@ -1088,9 +1083,6 @@ var useCallback = React.useCallback;
         })
         .then(function (sonuc) {
           if (sonuc.tamam) {
-            /* Ölçümdeki tek dönüşüm: talep gerçekten sunucuya ulaştı.
-               Doğrulama hatasında ya da bağlantı koptuğunda sayılmaz. */
-            olay(OLAYLAR.randevu, { yer: 'randevu-formu' });
             setGonderildi(true);
             return;
           }
@@ -1137,7 +1129,7 @@ var useCallback = React.useCallback;
           }, 'Randevu talebiniz alındı.'),
           h('p', { style: { fontSize: 15, lineHeight: 1.62, color: 'var(--text-muted)', margin: '10px 0 0', maxWidth: '40ch' } },
             'Danışma çalışma saatleri içinde sizi arayacak. Bu arada bir şey sormak isterseniz ',
-            h('a', { href: KLINIK.telHref, 'data-olcum-yer': 'randevu-onayi' }, KLINIK.telefon),
+            h('a', { href: KLINIK.telHref }, KLINIK.telefon),
             ' numarasından ulaşabilirsiniz.'
           ),
           h('div', { style: { marginTop: 24 } },

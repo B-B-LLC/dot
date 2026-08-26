@@ -17,10 +17,7 @@ export default function RandevuKarti() {
     }, 'İlk randevuda muayene yapılır, bulgular anlatılır ve seçenekler konuşulur. Danışma çalışma saatleri içinde size dönüş yapar.'),
     h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 22 } },
       h(Button, { size: 'lg', as: 'a', href: '/iletisim#randevu' }, 'Randevu talebi'),
-      h(Button, {
-        size: 'lg', variant: 'cream', as: 'a',
-        href: KLINIK.telHref, 'data-olcum-yer': 'randevu-karti'
-      }, KLINIK.telefon)
+      h(Button, { size: 'lg', variant: 'cream', as: 'a', href: KLINIK.telHref }, KLINIK.telefon)
     )
   );
 }

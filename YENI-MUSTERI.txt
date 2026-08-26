@@ -387,62 +387,7 @@ FAVICON — ŞU AN HİÇ YOK:
 
 
 ================================================================================
-8. [ÖNERİLEN] ÖLÇÜM — site.config.ts → `olcum`
-================================================================================
-
-Bu blok doldurulmazsa site çalışır ama üç ay sonra müşteriye "site ne getirdi"
-sorusunun cevabı olmaz. Sayılan üç şey: telefona tıklama, WhatsApp'a tıklama,
-randevu formunun gönderilmesi. Dördüncü olarak yol tarifi de sayılır.
-
-Ölçüm ÇEREZSİZDİR. Ziyaretçiye çerez yazılmaz, IP saklanmaz; bu yüzden çerez
-onay bandı gerekmez ve KVKK tarafı rahattır. Yasal metinlerdeki ölçüm maddeleri
-`olcum.saglayici` değerine bağlıdır: 'yok' yaparsan metinlerden de düşerler,
-elle silmen gereken bir şey kalmaz.
-
-  saglayici
-      'vercel'    → Vercel Web Analytics. Site zaten Vercel'de yayınlanıyorsa
-                    en kolayı: hesap açmak, betik eklemek gerekmez.
-                    Vercel panelinde: proje → Analytics → Enable.
-                    >>> DİKKAT: Vercel'de ÖZEL OLAYLAR (telefon, WhatsApp,
-                        randevu) Pro planla gelir. Hobby planında yalnız sayfa
-                        görüntülenmesi sayılır, üç dönüşüm olayı sayılmaz. <<<
-      'plausible' → Plausible Analytics. Aylık ücretli, her planda özel olay
-                    çalışır, sunucuları AB'de. `alan` alanını doldur.
-      'yok'       → Hiçbir betik yüklenmez, hiçbir olay gönderilmez.
-
-  alan
-      Yalnız Plausible için: paneldeki site adı, ör. 'meseklinik.com'.
-      Vercel'de boş kalır.
-
-  betik
-      Yalnız Plausible için ve çoğu kurulumda boş kalır. Kendi sunucunda
-      barındırıyorsan ya da engelleyicilere takılmamak için betiği kendi alan
-      adından sunuyorsan buraya o adresi yaz.
-
-  googleDogrulama
-      Google Search Console → "HTML etiketi" yöntemini seçince verdiği
-      content değeri (etiketin tamamı değil, yalnız içindeki kod).
-      Yazınca her sayfaya google-site-verification etiketi basılır.
-      Alan adının DNS'ine erişimin varsa TXT kaydı daha kalıcıdır, o zaman
-      burayı boş bırak.
-
-NASIL DOĞRULARSIN:
-  Ölçüm betiği yalnız YAYINDAKİ derlemede yüklenir; `npm run dev` sırasında
-  yüklenmez. Geliştirmede olaylar tarayıcı konsoluna "ölçüm: telefon {...}"
-  diye yazılır, böylece bağlantının sayıldığını sunucuya bir şey göndermeden
-  görebilirsin. Yayına aldıktan sonra telefonundan siteyi açıp "Ara"ya bas ve
-  panelde olayın düştüğünü kontrol et (Vercel'de birkaç dakika gecikir).
-
-YENİ BAĞLANTI EKLERSEN:
-  Telefon, WhatsApp ve harita bağlantıları tek tek işaretlenmez; tıklamalar
-  belgeden yakalanır ve adresine bakılarak sayılır (app/_ortak/olcum.js).
-  Yani yeni eklediğin bir tel: bağlantısı kendiliğinden sayılmaya başlar.
-  İstersen bağlantıya data-olcum-yer="..." koy; panelde olayın hangi bölümden
-  geldiği o adla görünür (gezinme, altbilgi, mobil-cubuk, hero, ulasim…).
-
-
-================================================================================
-9. DOKUNULMAYACAKLAR
+8. DOKUNULMAYACAKLAR
 ================================================================================
 
 Bu dosyalar müşteriden müşteriye DEĞİŞMEZ. Değiştiriyorsan bir şey ters gidiyor
@@ -471,7 +416,7 @@ Kod düzeni kuralları (yeni sayfa açarken):
 
 
 ================================================================================
-10. YAYIN ÖNCESİ KONTROL LİSTESİ
+9. YAYIN ÖNCESİ KONTROL LİSTESİ
 ================================================================================
 
 Sırayla:
@@ -496,11 +441,8 @@ Sırayla:
   [ ] app/icon.png konuldu mu
   [ ] Linki WhatsApp'a atıp önizleme görselini gördün mü
   [ ] Telefonda aç: mobil alt çubuk, harita, form çalışıyor mu
-  [ ] olcum.saglayici seçildi mi (Vercel'de Analytics açıldı mı)
 
 Yayından sonra:
-  [ ] Panelde sayfa görüntülemesi düşüyor mu
-  [ ] Telefondan "Ara"ya basıp olayın panelde göründüğünü doğrula
   [ ] Google Search Console'a alan adını ekle
   [ ] sitemap.xml'i Search Console'a bildir
   [ ] robots.txt'i tarayıcıda aç, "Disallow: /" GİTMİŞ olmalı
@@ -508,7 +450,7 @@ Yayından sonra:
 
 
 ================================================================================
-11. BİLİNEN EKSİKLER (şablonun kendisinde)
+10. BİLİNEN EKSİKLER (şablonun kendisinde)
 ================================================================================
 
 Bunlar her müşteride tekrar eden açıklar. Şablonda çözülürse bir daha
