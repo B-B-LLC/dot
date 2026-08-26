@@ -155,26 +155,32 @@ uygulanır. Uzun kenar 40/48 oranında kareye ortalanır.
 `app/opengraph-image.tsx` ile `app/tedaviler/[id]/opengraph-image.tsx`, ortak
 düzeni `app/_ortak/og-duzen.tsx`ten alıp derleme sırasında 1200×630 PNG üretir.
 Bu dosyaların varlığı yeter: Next hem `og:image` hem `twitter:image`
-etiketlerini kendisi basar, alt sayfalar kökteki görseli devralır. Metinler
-`site.config.ts`ten geldiği için klinik değişince görsel de değişir.
+etiketlerini kendisi basar, alt sayfalar kökteki görseli devralır.
+
+Görselin ana öğesi yazı değil, krem daire içinde zümrüt bir diş: `Madalyon`.
+Diş `DIS_YOLU` ile tek bir SVG yolu olarak çizilir, yani vektördür ve hangi
+boyda basılırsa basılsın kenarı nettir. Ana sayfa yalnız madalyonu basar;
+tedavi sayfaları `baslik` geçerek altına dalın adını ekler.
+
+Bütün ölçüler önizlemenin küçük gösterilmesinden doğar:
+
+- **`GUVENLI_EN` (560 px).** WhatsApp dar kartta görseli şerit olarak değil,
+  ortasından kesilmiş kare küçük resim olarak gösterir — 1200 pikselin yalnız
+  ortadaki 630'u görünür. Düzen bu yüzden ortalanır; sola yaslanmış bir başlık
+  orada ikiye bölünüyordu.
+- **`OKUNUR_PUNTO` (46).** O kare ekranda ~160 piksel çizilir, yani görsel
+  dörtte birine iner. Bu puntonun altındaki yazı bulanık şeride döner. Sığmayan
+  bilgi küçültülerek eklenmez, çıkarılır.
+- **Yazı yerine şekil.** WhatsApp küçük resmi hem küçültüp hem yeniden
+  sıkıştırır; bundan en çok zarar gören şey harflerin ince kıvrımlarıdır, dolu
+  bir siluet ise neredeyse etkilenmez. Kliniğin adı ve açıklaması kartın yanında
+  zaten tam metin durduğu için görselde tekrar edilmez.
 
 Görsel PNG'ye çevrildiğinden orada CSS çalışmaz ve `var(--emerald-900)`
 çözülmez. Sabit renk kodu yazmamak için `app/_ortak/token-renk.ts`,
 `ds/tokens/colors.css` dosyasını derleme anında okuyup `var()` zincirini çözer;
-`renk('--surface-inverse')` biçiminde kullanılır. Yazı tipi marka fontu değil,
+`renk('--sand-50')` biçiminde kullanılır. Yazı tipi marka fontu değil,
 `next/og`un varsayılanıdır.
-
-Düzen ortalanır ve yazılar `GUVENLI_EN` (560 px) genişliğiyle sınırlanır, çünkü
-WhatsApp dar kartta görseli şerit olarak değil ortasından kesilmiş kare küçük
-resim olarak gösterir: 1200 pikselin yalnız ortadaki 630'u görünür. Sola
-yaslanmış bir başlık orada ikiye bölünür. `puntoAyarla` da bu genişliğe göre
-kısar; satır sonundan bölünemediği için en çok küçülen tek uzun kelimedir.
-
-Aynı sebeple görselde iki satırdan fazlası ve `OKUNUR_PUNTO`'dan (46) küçük yazı
-yoktur: o kare ekranda ~160 piksel çizilir, yani görsel dörtte birine iner ve
-altındaki her şey bulanık şeride döner. Sığmayan bilgi küçültülerek eklenmez,
-çıkarılır — kartın yanında sayfanın başlığı ile açıklaması zaten tam metin
-olarak duruyor, görselin onları tekrar etmesi gereksiz.
 
 `site.adres` yer tutucu kalırsa `metadataBase` yanlış olur ve `og:image`
 çözülmeyen bir alan adına işaret eder — görsel üretilmiş olsa bile önizlemede

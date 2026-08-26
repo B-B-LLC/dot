@@ -10,12 +10,7 @@ export const contentType = OG_TUR;
 export const alt = `${klinik.ad} — ${klinik.konum}`;
 
 export default function OgGorseli() {
-  /* Marka iri, altında yalnız semt. Kliniğin tam adı buraya yazılmaz: kartın
-     yanında başlık olarak zaten duruyor, görselde ise okunmayacak kadar
-     küçülüyordu. */
-  return ogGorseli({
-    buyuk: klinik.marka,
-    punto: 168,
-    alt: klinik.konum
-  });
+  /* Yalnız madalyon: klinik adı da semt de kartın yanında başlık ve açıklama
+     olarak zaten tam metin duruyor, görselde tekrar edilince okunmuyordu. */
+  return ogGorseli();
 }
