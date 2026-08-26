@@ -12,7 +12,20 @@
    site.config.ts değiştiğinde burada da güncellenir.
    ==================================================================== */
 
-import { klinik } from './site.config';
+import { klinik, olcum } from './site.config';
+
+/* Ölçüm site.config.ts'ten açılıp kapatılır. Kapalıyken (`saglayici: 'yok'`)
+   aşağıdaki ölçüm maddeleri metinlerden tamamen düşer; böylece yasal metin
+   ile sitenin gerçek davranışı birbirinden ayrılamaz. */
+const olcumVar = olcum.saglayici !== 'yok';
+
+const OLCUM_ADI =
+  olcum.saglayici === 'plausible' ? 'Plausible Analytics' : 'Vercel Web Analytics';
+
+/** Ölçüm açıkken verilen maddeleri döndürür, kapalıyken hiçbirini. */
+function olcumluysa<T>(...ogeler: T[]): T[] {
+  return olcumVar ? ogeler : [];
+}
 
 export type YasalBolum = { baslik: string; paragraflar: string[] };
 
@@ -42,7 +55,16 @@ export const kvkkMetni: YasalMetin = {
         'Bu site üzerinden randevu talebi oluşturduğunuzda yalnızca formda belirttiğiniz veriler ' +
           'işlenir: ad ve soyad, telefon numarası, tercih ettiğiniz tarih ve varsa iletmek ' +
           'istediğiniz not.',
-        'Site ziyaretiniz sırasında reklam veya profilleme amacıyla veri toplanmaz.'
+        'Site ziyaretiniz sırasında reklam veya profilleme amacıyla veri toplanmaz.',
+        ...olcumluysa(
+          'Sayfa ziyaretleri ve iletişim düğmelerine yapılan tıklamalar anonim olarak ' +
+            'sayılır. Bu sayım için tarayıcınıza çerez yazılmaz, IP adresiniz saklanmaz ve ' +
+            'ziyaretçiler arasında sizi tanımlayan kalıcı bir kimlik oluşturulmaz; ' +
+            'toplanan veri; görüntülenen sayfanın adresi, siteye hangi bağlantıdan ' +
+            'gelindiği, tıklanan düğmenin türü, tarayıcı ve cihaz türü ile ülke–şehir ' +
+            'düzeyinde yaklaşık konumdan ibarettir. Bu veriler tek başına ya da başka ' +
+            'verilerle eşleştirilerek kimliğinizi belirlemeye elverişli değildir.'
+        )
       ]
     },
     {
@@ -71,7 +93,13 @@ export const kvkkMetni: YasalMetin = {
       paragraflar: [
         'Kişisel verileriniz, yalnızca yasal yükümlülüklerin yerine getirilmesi amacıyla yetkili ' +
           'kamu kurum ve kuruluşlarıyla paylaşılabilir.',
-        'Bunun dışında üçüncü kişilere, reklam ortaklarına veya yurt dışına aktarılmaz.'
+        'Bunun dışında üçüncü kişilere, reklam ortaklarına veya yurt dışına aktarılmaz.',
+        ...olcumluysa(
+          `Yukarıda anlatılan anonim ziyaret sayımı ${OLCUM_ADI} hizmeti üzerinden ` +
+            'yapılır ve verileri yurt dışındaki sunucularında işlenir. Bu sayım kişisel ' +
+            'veri içermediğinden kişisel verilerinizin yurt dışına aktarımı söz konusu ' +
+            'değildir.'
+        )
       ]
     },
     {
@@ -110,8 +138,13 @@ export const gizlilikMetni: YasalMetin = {
           'numarası, tercih ettiğiniz tarih ve varsa notunuz.',
         'Sayfaları gezmek için herhangi bir bilgi vermeniz gerekmez. Üyelik, oturum açma ya ' +
           'da profil oluşturma yoktur.',
-        'Reklam ağı, sosyal medya izleyicisi veya ziyaretçi davranışı ölçen bir araç ' +
-          'kullanılmaz.'
+        olcumVar
+          ? 'Reklam ağı veya sosyal medya izleyicisi kullanılmaz. Sitenin kaç kez ' +
+            'ziyaret edildiğini ve iletişim düğmelerinin kaç kez kullanıldığını görmek ' +
+            'için çerezsiz bir sayaç çalışır; kimseyi tanımaz, kişisel veri toplamaz ' +
+            '(ayrıntısı Çerez Politikası’ndadır).'
+          : 'Reklam ağı, sosyal medya izleyicisi veya ziyaretçi davranışı ölçen bir araç ' +
+            'kullanılmaz.'
       ]
     },
     {
@@ -186,6 +219,23 @@ export const cerezMetni: YasalMetin = {
           'iletilir.'
       ]
     },
+    ...olcumluysa({
+      baslik: 'Çerezsiz ziyaretçi sayacı',
+      paragraflar: [
+        `Sitede ${OLCUM_ADI} adlı ölçüm hizmeti çalışır. Hangi sayfaların ne kadar ` +
+          'okunduğunu ve telefon, WhatsApp, yol tarifi düğmelerinin kaç kez ' +
+          'kullanıldığını saymak için kullanılır.',
+        'Bu sayaç tarayıcınıza çerez yazmaz ve cihazınızda hiçbir iz bırakmaz. IP ' +
+          'adresiniz kaydedilmez; tekil ziyaretçi sayısı, gün sonunda geçersiz hâle ' +
+          'gelen ve geri çevrilemeyen bir özet değerle hesaplanır. Ziyaretiniz ertesi ' +
+          'gün yeni bir ziyaretçi sayılır, yani sizi günler boyunca izleyen bir kayıt ' +
+          'oluşmaz.',
+        'Çerez kullanılmadığı ve kişisel veri işlenmediği için bu ölçüm onayınıza ' +
+          'bağlı değildir; sitede çerez onay bandı bulunmamasının nedeni budur. ' +
+          'Yine de sayılmak istemezseniz tarayıcınızın izleme engelleyicisi ya da bir ' +
+          'reklam engelleyici bu betiği durdurur; site aynı şekilde çalışmaya devam eder.'
+      ]
+    }),
     {
       baslik: 'Dış bağlantılar',
       paragraflar: [

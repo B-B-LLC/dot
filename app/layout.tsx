@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 
+import { OlcumBetigi } from './_ortak/olcum';
 import { renk } from './_ortak/token-renk';
-import { klinik, saatler, site, tedaviler } from '@/site.config';
+import { klinik, olcum, saatler, site, tedaviler } from '@/site.config';
 
 import '@/ds/styles.css';
 import './globals.css';
@@ -35,6 +36,10 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   /* Demo sürümü arama motorlarına kapalı — bkz. site.config.ts */
   robots: site.demoModu ? { index: false, follow: false } : undefined,
+  /* Search Console doğrulaması; kod yazılmadıysa etiket hiç basılmaz. */
+  verification: olcum.googleDogrulama
+    ? { google: olcum.googleDogrulama }
+    : undefined,
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
@@ -88,6 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="tr" className={`${jakarta.variable} ${plexMono.variable}`}>
       <body>
         {children}
+        <OlcumBetigi />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}

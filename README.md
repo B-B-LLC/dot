@@ -31,6 +31,7 @@ düzenlemek. Uygulama koduna dokunulmaz.
 | Hasta kabul edilen dallar ve metinleri | `tedaviler` |
 | Ulaşım notları | `ulasimNotlari` |
 | Fotoğraflar | `gorseller` + hekimlerdeki `gorsel` |
+| Ölçüm sağlayıcısı ve Search Console kodu | `olcum` (bkz. *Ölçüm*) |
 
 Aynı dosyanın **ORTAK METİNLER** bölümü (sterilizasyon adımları, koruyucu
 bilgiler, sık sorulan sorular) şablon metnidir; kliniğe göre değişmesi gerekmez.
@@ -123,6 +124,43 @@ koruması.
 Hız sınırı sunucu belleğinde tutulur; sunucu örneği yeniden başladığında
 sıfırlanır. Kalıcı koruma için CAPTCHA (örneğin Cloudflare Turnstile) eklenmelidir.
 
+## Ölçüm
+
+Sitenin ne getirdiği ölçülür: sayfa görüntülemeleri ve dönüşüm sayılan dört
+tıklama — **telefon**, **WhatsApp**, **yol tarifi** ve **randevu formunun
+gönderilmesi**.
+
+Sağlayıcı `site.config.ts` içindeki `olcum` bloğundan seçilir:
+
+| `saglayici` | Ne olur |
+| --- | --- |
+| `'vercel'` | Vercel Web Analytics. Panelden **Analytics → Enable** yeter, hesap ve betik gerekmez. |
+| `'plausible'` | Plausible Analytics. `alan` alanına paneldeki site adı yazılır. |
+| `'yok'` | Hiçbir betik yüklenmez, hiçbir olay gönderilmez. |
+
+Vercel'de **özel olaylar Pro planla gelir**; Hobby planında yalnız sayfa
+görüntülenmesi sayılır, dört dönüşüm olayı sayılmaz. Plausible'da olaylar her
+planda çalışır.
+
+Ölçüm çerezsizdir: iki sağlayıcı da tarayıcıya çerez yazmaz, IP saklamaz ve
+ziyaretçiyi günler boyunca izleyen bir kimlik oluşturmaz. Bu yüzden çerez onay
+bandı gerekmez. `yasal.config.ts` içindeki ölçüm maddeleri `olcum.saglayici`
+değerine bağlıdır — `'yok'` yapıldığında metinden de düşerler.
+
+Google Search Console doğrulaması için `olcum.googleDogrulama` alanına panelin
+verdiği kod yazılır; `layout.tsx` etiketi kendisi basar. Alan adının DNS'ine
+erişim varsa TXT kaydı tercih edilir, o zaman bu alan boş bırakılır.
+
+Ölçüm betiği yalnız üretim derlemesinde yüklenir. `npm run dev` sırasında
+olaylar tarayıcı konsoluna `ölçüm: telefon {…}` biçiminde yazılır; bağlantının
+sayıldığı, sunucuya bir şey gönderilmeden görülebilir.
+
+Telefon, WhatsApp ve harita bağlantılarına tek tek dinleyici asılmaz: tıklama
+belgeden yakalanır ve adresine bakılarak sınıflanır (`app/_ortak/olcum.js`).
+Sonradan eklenen bir `tel:` bağlantısı da kendiliğinden sayılır. Bağlantıya
+`data-olcum-yer="gezinme"` gibi bir öznitelik konursa olay panelde o kırılımla
+görünür.
+
 ## Dosya düzeni
 
 | Yol | İçerik |
@@ -134,6 +172,7 @@ sıfırlanır. Kalıcı koruma için CAPTCHA (örneğin Cloudflare Turnstile) ek
 | `app/klinik-app.js` | Ana sayfa bölümleri |
 | `app/_ortak/temel.js` | Paylaşılan stiller, yardımcılar, görünüm sabitleri |
 | `app/_ortak/cerceve.js` | Üst gezinme, altbilgi, mobil çubuk, sayfa çerçevesi |
+| `app/_ortak/olcum.js` | Ziyaretçi ölçümü: sağlayıcı betiği ve dönüşüm olayları |
 | `app/_ortak/yasal-sayfa.js` | Yasal metin sayfalarının ortak düzeni |
 | `app/api/randevu/route.ts` | Randevu gönderim ucu |
 | `ds/` | **Üretilmiş** — tasarım sistemi modülü ve jetonları |
