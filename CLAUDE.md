@@ -91,6 +91,7 @@ geniş düzenle çizilir.
 - `app/_ortak/kure.js` — hero'daki dönen küre (bkz. *Hero'daki dönen küre*)
 - `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
 - `app/_ortak/olcum.js` — ziyaretçi ölçümü: sağlayıcı betiği ve `olay()`
+- `app/_ortak/sosyal.js` — altbilgideki sosyal medya düğmeleri
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
 
@@ -367,6 +368,36 @@ sınırları ve e-posta başlığı enjeksiyon koruması vardır.
 
 Bu davranış `yasal.config.ts` içindeki KVKK metninde anlatılır: uçun veri
 işleyişi değişirse o metin de güncellenmelidir.
+
+### Sosyal medya düğmeleri (`app/_ortak/sosyal.js`)
+
+Altbilgideki üç düğme ayrı bir listeden değil, `klinik.sosyal` dizisinden
+gelir — yapısal veriye `sameAs` olarak yazılan dizinin aynısı. Hesap tek yere
+yazılır, iki yer birden beslenir.
+
+Dizi sosyal medya olmayan adres de taşıyabilir (Google işletme kaydı). Adresin
+içinde ağın alan adı aranır; tanınmayan adres düğme basmaz ama `sameAs`
+listesinde kalır. X'in eski alan adı da tanınır (`x.com`, `twitter.com`).
+Sıra `AGLAR` dizisinden gelir, config'teki yazım sırasından değil: klinik
+hesaplarını hangi sırayla yazarsa yazsın düğmeler aynı yerde durur. Hiç hesap
+yoksa bileşen `null` döner, altbilgide boş satır kalmaz.
+
+Instagram ve Facebook sitedeki diğer ikonlarla aynı çizgi ölçüsündedir (19 px,
+1.75 kalınlık). X'in markası dolu bir harf olduğu için tek istisnadır ve optik
+ağırlığı ötekilere eşitlensin diye 16 px çizilir — aynı ölçüde çizilirse yanında
+kalın durur.
+
+Görünüm `globals.css` içindeki `.sosyal-dugme` kurallarındadır: koyu zümrüt
+gradyanlı cam disk, imleç değince kenar amber'a döner, içinden bir parlama
+geçer ve düğme büyüyüp 2° yatar. Üç nokta kolay bozulur:
+
+- **Parlamanın yarı saydam amber'ı `color-mix` ile jetondan türetilir.**
+  Sabit renk kodu girilmez; marka rengi değişince parlama da değişir.
+- **Süreler `--dur-*` jetonlarındandır.** "Hareketi azalt" ayarı açıkken
+  hepsi 0ms olur: durum değişir ama hiçbir şey oynamaz, ayrı bir kural
+  gerekmez.
+- **`:focus-visible` kuralı ayrıca yazılmıştır.** Kökteki genel odak halkası
+  düğmenin gölgesini silip yuvarlaklığını 8px'e düşürüyordu.
 
 ### Ölçüm (`app/_ortak/olcum.js`)
 

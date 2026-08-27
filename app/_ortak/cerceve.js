@@ -8,6 +8,7 @@ import { NavBar, Button } from '@/ds/bundle';
 import { klinik as KLINIK, haritaYolTarifi } from '@/site.config';
 import { h, BOLUMLER, CALISMA_SAATLERI, bolumeGit, useDar } from './temel';
 import { useTedaviMenusu, TedaviTetigi, TedaviPaneli } from './tedavi-menusu';
+import SosyalSatir from './sosyal';
 
 var Fragment = React.Fragment;
 var useRef = React.useRef;
@@ -142,7 +143,9 @@ var useEffect = React.useEffect;
               style: { fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, letterSpacing: '-.035em', color: '#fff' }
             }, markaAdi, markaNoktali ? h('span', { style: { color: 'var(--amber-500)' } }, '.') : null),
             h('p', { style: { fontSize: 14, lineHeight: 1.6, color: 'var(--text-on-dark-muted)', margin: '14px 0 0', maxWidth: '32ch' } }, KLINIK.ad),
-            h('p', { style: { fontSize: 13, lineHeight: 1.6, color: 'rgba(255,255,255,.5)', margin: '10px 0 0', maxWidth: '32ch' } }, KLINIK.ruhsat)
+            h('p', { style: { fontSize: 13, lineHeight: 1.6, color: 'rgba(255,255,255,.5)', margin: '10px 0 0', maxWidth: '32ch' } }, KLINIK.ruhsat),
+            /* Hesap yazılmamışsa bileşen null döner, boş satır kalmaz. */
+            h(SosyalSatir, { stil: { marginTop: 22 } })
           ),
 
           h('div', null,

@@ -135,6 +135,13 @@ Alan alan, ne olduğu ve nereyi etkilediği:
       yazma; boş bırakılırsa alan hiç basılmaz.
       Örnek: sosyal: ['https://www.instagram.com/klinikadi']
 
+      Instagram, X ve Facebook adresleri AYRICA altbilgide düğme olur.
+      Şablonda üçü de yer tutucudur (mesepoliklinik) — kliniğin gerçek
+      hesaplarıyla değiştir, olmayan hesabın satırını sil. Uydurma adres
+      düğmeyi boşa götürür ve sameAs'i de yanlışlar.
+      Google işletme kaydı gibi tanınmayan adres düğme basmaz, yalnız
+      yapısal veriye yazılır.
+
   konum
       'Alsancak, İzmir' — semt adı ilçeden daha çok arandığı için hastanın
       kullandığı ad yazılır (Konak değil Alsancak).
@@ -552,6 +559,7 @@ Sırayla:
   [ ] Telefonda aç: mobil alt çubuk, harita, form çalışıyor mu
   [ ] olcum.saglayici seçildi mi (Vercel'de Analytics açıldı mı)
   [ ] klinik.sosyal dolduruldu mu (Instagram, Google işletme kaydı)
+  [ ] Altbilgideki sosyal düğmeler kliniğin GERÇEK hesaplarına gidiyor mu
   [ ] klinik.haritaKoordinat yazıldı mı (yapısal verideki konum ondan çıkar)
 
 Yayından sonra:

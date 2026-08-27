@@ -469,6 +469,83 @@ a:hover { color: var(--text-link-hover); }
   .kure::before { animation: none; }
 }
 
+/* --- Altbilgideki sosyal medya düğmeleri ---
+
+   Koyu zümrüt altbilginin üstünde duran cam disk: dinlenirken sessiz, imleç
+   üstüne gelince kenarı amber'a döner, içinden bir parlama geçer ve düğme
+   hafifçe büyüyüp yatar. Renklerin hepsi jetondan gelir; parlamanın yarı
+   saydam amber'ı `color-mix` ile aynı jetondan türetilir, ayrı bir renk
+   kodu girilmez.
+
+   Süreler `--dur-*` jetonlarıyla verildiği için "hareketi azalt" ayarı
+   açıkken hepsi 0ms'e iner: durum değişir ama hiçbir şey oynamaz. */
+.sosyal-satir {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sosyal-dugme {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line-on-dark);
+  color: var(--text-on-dark-muted);
+  background-image: linear-gradient(to top right, var(--emerald-950), var(--emerald-800));
+  -webkit-backdrop-filter: var(--glass-backdrop-sm);
+  backdrop-filter: var(--glass-backdrop-sm);
+  box-shadow: var(--shadow-2), var(--inner-glass-dark);
+  transition:
+    transform var(--dur-base) var(--ease-glass),
+    border-color var(--dur-base) var(--ease-glass),
+    color var(--dur-base) var(--ease-glass),
+    box-shadow var(--dur-base) var(--ease-glass);
+}
+
+/* Parlama şeridi düğmenin solunda bekler, üstüne gelince sağa süpürür. */
+.sosyal-dugme::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    color-mix(in srgb, var(--amber-300) 42%, transparent) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform var(--dur-sheet) var(--ease-out);
+}
+
+/* İkon parlamanın üstünde kalır. */
+.sosyal-dugme svg { position: relative; z-index: 1; }
+
+.sosyal-dugme:hover,
+.sosyal-dugme:focus-visible {
+  color: var(--text-on-dark);
+  border-color: var(--amber-400);
+  transform: scale(1.08) rotate(2deg);
+}
+.sosyal-dugme:hover { box-shadow: var(--shadow-accent), var(--inner-glass-dark); }
+
+.sosyal-dugme:hover::before,
+.sosyal-dugme:focus-visible::before { transform: translateX(100%); }
+
+/* Kökteki :focus-visible kuralı tek renk halka basar ve buradaki gölgeyi
+   silerdi; düğmenin kendi halkası amber olsun diye ayrıca yazılır. */
+.sosyal-dugme:focus-visible {
+  box-shadow: var(--ring-focus-accent), var(--shadow-accent), var(--inner-glass-dark);
+  border-radius: var(--radius-pill);
+}
+
+.sosyal-dugme:active { transform: scale(var(--press-scale)) rotate(0deg); }
+
 .noscript-note {
   max-width: 640px;
   margin: 64px auto;

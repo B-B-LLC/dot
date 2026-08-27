@@ -103,7 +103,11 @@ export type Klinik = {
   /** Kliniğin kendi hesapları: Instagram, Google işletme kaydı, YouTube …
       Yapısal verideki `sameAs` alanına yazılır ve arama motoruna "bu sayfa
       ile bu hesaplar aynı kliniğe aittir" der. Boş bırakılırsa alan hiç
-      basılmaz. Başka bir kliniğin ya da hekimin hesabı yazılmaz. */
+      basılmaz. Başka bir kliniğin ya da hekimin hesabı yazılmaz.
+
+      Instagram, X ve Facebook adresleri ayrıca altbilgide düğme olur
+      (bkz. app/_ortak/sosyal.js). Tanınmayan adres — Google işletme kaydı
+      gibi — düğme basmaz ama `sameAs` listesinde durmaya devam eder. */
   sosyal?: string[];
 
   ruhsat: string;
@@ -192,7 +196,13 @@ export const klinik: Klinik = {
   haritaEtiketleri: ['Kıbrıs Şehitleri Cad.', 'Alsancak Garı'],
   haritaKoordinat: '',
 
-  sosyal: [],
+  /* Yer tutucu: gerçek klinikte kendi hesaplarıyla değiştirilir, olmayan
+     hesabın satırı silinir — uydurma adres düğmeyi boşa götürür. */
+  sosyal: [
+    'https://www.instagram.com/mesepoliklinik',
+    'https://x.com/mesepoliklinik',
+    'https://www.facebook.com/mesepoliklinik'
+  ],
 
   ruhsat: 'İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000',
   editor: 'Site editörü: Ayşe Demir · editor@mesepoliklinik.example',

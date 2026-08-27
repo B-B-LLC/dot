@@ -195,6 +195,7 @@ görünür.
 | `app/_ortak/randevu-karti.js` | Tedavi ve işlem sayfalarındaki randevu kartı |
 | `app/_ortak/kure.js` | Hero fotoğrafının sağ üstündeki dönen küre |
 | `app/_ortak/olcum.js` | Ziyaretçi ölçümü: sağlayıcı betiği ve dönüşüm olayları |
+| `app/_ortak/sosyal.js` | Altbilgideki sosyal medya düğmeleri |
 | `app/_ortak/yasal-sayfa.js` | Yasal metin sayfalarının ortak düzeni |
 | `app/_ortak/hata-icerik.js`, `bulunamadi-icerik.js` | Hata ve 404 ekranlarının görünümü |
 | `app/_ortak/og-duzen.tsx`, `amblem.tsx`, `dis-yolu.ts` | Paylaşım görseli ve ikonların ortak düzeni, amblem |
