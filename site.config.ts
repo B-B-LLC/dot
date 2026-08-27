@@ -100,6 +100,12 @@ export type Klinik = {
       (ör. '38.4345,27.1428'). */
   haritaKoordinat?: string;
 
+  /** Kliniğin kendi hesapları: Instagram, Google işletme kaydı, YouTube …
+      Yapısal verideki `sameAs` alanına yazılır ve arama motoruna "bu sayfa
+      ile bu hesaplar aynı kliniğe aittir" der. Boş bırakılırsa alan hiç
+      basılmaz. Başka bir kliniğin ya da hekimin hesabı yazılmaz. */
+  sosyal?: string[];
+
   ruhsat: string;
   editor: string;
   sonGuncelleme: string;
@@ -186,10 +192,16 @@ export const klinik: Klinik = {
   haritaEtiketleri: ['Kıbrıs Şehitleri Cad.', 'Alsancak Garı'],
   haritaKoordinat: '',
 
+  sosyal: [],
+
   ruhsat: 'İzmir İl Sağlık Müdürlüğü ruhsatlıdır. Ruhsat no: 0000/000',
   editor: 'Site editörü: Ayşe Demir · editor@mesepoliklinik.example',
   sonGuncelleme: 'Son güncelleme: 10.08.2026'
 };
+
+/** Kliniğin tam adı ve konumu. Sekme başlığı, paylaşım başlığı ve yapısal
+    veri aynı cümleyi kullansın diye burada bir kez kurulur. */
+export const anaBaslik = `${klinik.ad} — ${klinik.konum}`;
 
 /* --- Harita ---------------------------------------------------------------
    Adres tek bir yerde (klinik.adresTam) durur; hem yol tarifi bağlantıları hem
@@ -214,6 +226,14 @@ export function haritaYolTarifi(k: Klinik = klinik) {
     o alan yalnızca Google bağlantısını değiştirir. */
 export function haritaYolTarifiApple(k: Klinik = klinik) {
   return `https://maps.apple.com/?daddr=${haritaSorgusu(k)}&dirflg=d`;
+}
+
+/** Konumu Google Haritalar'da gösteren bağlantı — yol tarifi ekranı değil.
+    Yapısal verideki `hasMap` alanı bunu kullanır. Klinik kendi işletme
+    kaydının adresini yazdıysa (`klinik.harita`) o tercih edilir. */
+export function haritaKonumu(k: Klinik = klinik) {
+  if (k.harita) return k.harita;
+  return `https://www.google.com/maps?q=${haritaSorgusu(k)}&hl=tr`;
 }
 
 /** Karta gömülen haritanın iframe adresi. Anahtar gerektirmez. */

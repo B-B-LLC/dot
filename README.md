@@ -187,7 +187,7 @@ görünür.
 | `site.config.ts` | Klinik bilgileri ve tüm site metinleri |
 | `public/gorseller/` | Kliniğin fotoğrafları |
 | `yasal.config.ts` | KVKK aydınlatma metni ve çerez politikası |
-| `app/layout.tsx` | Ortak iskelet, meta etiketleri, JSON-LD, yazı tipleri |
+| `app/layout.tsx` | Ortak iskelet, meta etiketleri, yazı tipleri, kliniğin JSON-LD kaydı |
 | `app/klinik-app.js` | Ana sayfa bölümleri |
 | `app/_ortak/temel.js` | Paylaşılan stiller, yardımcılar, görünüm sabitleri |
 | `app/_ortak/cerceve.js` | Üst gezinme, altbilgi, mobil çubuk, sayfa çerçevesi |
@@ -198,6 +198,7 @@ görünür.
 | `app/_ortak/yasal-sayfa.js` | Yasal metin sayfalarının ortak düzeni |
 | `app/_ortak/hata-icerik.js`, `bulunamadi-icerik.js` | Hata ve 404 ekranlarının görünümü |
 | `app/_ortak/og-duzen.tsx`, `amblem.tsx`, `dis-yolu.ts` | Paylaşım görseli ve ikonların ortak düzeni, amblem |
+| `app/_ortak/yapisal-veri.tsx` | Sayfa başına schema.org verisi (kırıntı, sorular, tedavi, hekim) |
 | `app/_ortak/token-renk.ts` | `ds/tokens/colors.css`'i derleme anında okur (`renk('--emerald-900')`) |
 | `app/opengraph-image.tsx`, `app/tedaviler/[id]/opengraph-image.tsx` | **Üretilmiş** — 1200×630 paylaşım görselleri |
 | `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts` | **Üretilmiş** — sekme ikonu, iOS ikonu, manifest |

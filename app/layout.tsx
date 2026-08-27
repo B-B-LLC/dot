@@ -3,7 +3,12 @@ import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google';
 
 import { OlcumBetigi } from './_ortak/olcum';
 import { renk } from './_ortak/token-renk';
-import { klinik, olcum, saatler, site, tedaviler } from '@/site.config';
+import {
+  KLINIK_KIMLIK, SITE_KIMLIK, YapisalVeri, grafik, mutlak
+} from './_ortak/yapisal-veri';
+import {
+  anaBaslik, gorseller, haritaKonumu, klinik, olcum, saatler, site, tedaviler
+} from '@/site.config';
 
 import '@/ds/styles.css';
 import './globals.css';
@@ -27,11 +32,9 @@ const plexMono = IBM_Plex_Mono({
 /* Bu dosyadaki metinlerin tamamı site.config.ts'ten türetilir; klinik
    değiştiğinde burada elle güncellenecek bir şey kalmamalıdır. */
 
-const BASLIK = `${klinik.ad} — ${klinik.konum}`;
-
 export const metadata: Metadata = {
   metadataBase: new URL(site.adres),
-  title: BASLIK,
+  title: anaBaslik,
   description: klinik.metaAciklama,
   alternates: { canonical: '/' },
   /* Demo sürümü arama motorlarına kapalı — bkz. site.config.ts */
@@ -44,7 +47,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'tr_TR',
     siteName: klinik.ad,
-    title: BASLIK,
+    title: anaBaslik,
     description: klinik.metaAciklama
   }
 };
@@ -54,15 +57,48 @@ export const viewport: Viewport = {
   themeColor: renk('--emerald-900')
 };
 
-/* Yapısal veri: schema.org gün adlarını İngilizce ister. */
+/* --- Yapısal veri ---------------------------------------------------------
+
+   Kliniğin kendisi burada, kök düzende bir kez tarif edilir ve her sayfaya
+   basılır. Sayfaların kendi verisi (kırıntı gezinme, sorular, tedavi) bu
+   düğümü tekrar etmez, `@id` ile ona bağlanır — bkz. _ortak/yapisal-veri.tsx.
+
+   Alanların çoğu koşulludur: config'te boş bırakılan bir bilgi için alan hiç
+   basılmaz. Eksik alan sessizdir, uydurma alan zararlıdır. */
+
+/* schema.org gün adlarını İngilizce ister. */
 const GUN_ADLARI = [
   'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 ];
 
-const JSON_LD = {
-  '@context': 'https://schema.org',
+/* Kliniğin fotoğrafları. Yolu boş bırakılan alanlar listeye girmez. */
+const GORSELLER = [gorseller.hero, ...Object.values(gorseller.mekanlar)]
+  .filter((gorsel) => gorsel.yol)
+  .map((gorsel) => mutlak(gorsel.yol));
+
+/** Config'teki 'enlem,boylam' metnini koordinat düğümüne çevirir; biçim
+    tutmuyorsa (ya da alan boşsa) hiçbir şey döndürmez. */
+function koordinatDugumu() {
+  const eslesme = (klinik.haritaKoordinat ?? '')
+    .match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
+  if (!eslesme) return undefined;
+  return {
+    '@type': 'GeoCoordinates',
+    latitude: Number(eslesme[1]),
+    longitude: Number(eslesme[2])
+  };
+}
+
+const geo = koordinatDugumu();
+
+const KLINIK_DUGUMU = {
   '@type': 'Dentist',
+  '@id': KLINIK_KIMLIK,
   name: klinik.ad,
+  description: klinik.metaAciklama,
+  url: site.adres,
+  telephone: klinik.telHref.replace(/^tel:/, ''),
+  email: klinik.eposta,
   address: {
     '@type': 'PostalAddress',
     streetAddress: klinik.sokak,
@@ -71,9 +107,14 @@ const JSON_LD = {
     postalCode: klinik.postaKodu,
     addressCountry: 'TR'
   },
-  telephone: klinik.telHref.replace(/^tel:/, ''),
-  email: klinik.eposta,
-  url: site.adres,
+  ...(geo ? { geo } : {}),
+  hasMap: haritaKonumu(),
+  areaServed: { '@type': 'City', name: klinik.il },
+  medicalSpecialty: 'Dentistry',
+  logo: mutlak('/icon/512'),
+  ...(GORSELLER.length ? { image: GORSELLER } : {}),
+  /* Kliniğin kendi hesapları; yoksa alan basılmaz. */
+  ...(klinik.sosyal?.length ? { sameAs: klinik.sosyal } : {}),
   openingHoursSpecification: saatler
     .filter((kural) => !kural.kapali)
     .map((kural) => ({
@@ -82,10 +123,24 @@ const JSON_LD = {
       opens: kural.ac,
       closes: kural.kap
     })),
+  /* Ana dallar. `@id` tedavi sayfasındaki düğümle aynıdır, yani iki kayıt
+     tek varlıkta birleşir. */
   availableService: tedaviler.map((tedavi) => ({
     '@type': 'MedicalProcedure',
-    name: tedavi.ad
+    '@id': `${mutlak(`/tedaviler/${tedavi.id}`)}#islem`,
+    name: tedavi.ad,
+    description: tedavi.ozet,
+    url: mutlak(`/tedaviler/${tedavi.id}`)
   }))
+};
+
+const SITE_DUGUMU = {
+  '@type': 'WebSite',
+  '@id': SITE_KIMLIK,
+  url: site.adres,
+  name: klinik.ad,
+  inLanguage: 'tr-TR',
+  publisher: { '@id': KLINIK_KIMLIK }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -94,10 +149,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <OlcumBetigi />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-        />
+        <YapisalVeri veri={grafik([SITE_DUGUMU, KLINIK_DUGUMU])} />
       </body>
     </html>
   );

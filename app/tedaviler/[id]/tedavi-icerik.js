@@ -113,7 +113,7 @@ export default function TedaviIcerik(props) {
       h('nav', { 'aria-label': 'Konum', style: { marginBottom: 22, fontSize: 13.5, color: 'var(--text-muted)' } },
         h('a', { href: '/' }, 'Ana sayfa'),
         h('span', { style: { margin: '0 8px', color: 'var(--text-faint)' } }, '/'),
-        h('a', { href: '/#tedaviler' }, 'Tedaviler'),
+        h('a', { href: '/tedaviler' }, 'Tedaviler'),
         h('span', { style: { margin: '0 8px', color: 'var(--text-faint)' } }, '/'),
         h('span', { style: { color: 'var(--text-strong)' } }, tedavi.ad)
       ),

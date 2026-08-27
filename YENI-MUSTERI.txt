@@ -128,6 +128,13 @@ Alan alan, ne olduğu ve nereyi etkilediği:
       YALNIZCA JSON-LD (schema.org) için. Google Haritalar'ın işletme kartında
       görünür. adresTam ile tutarlı olsun ama parça parça yazılır.
 
+  sosyal
+      Kliniğin kendi hesapları, tam adresle: Instagram, Google işletme kaydı,
+      YouTube… Yapısal veriye 'sameAs' olarak yazılır ve arama motoruna "bu
+      site ile bu hesaplar aynı kliniğe aittir" der. Emin olmadığın hesabı
+      yazma; boş bırakılırsa alan hiç basılmaz.
+      Örnek: sosyal: ['https://www.instagram.com/klinikadi']
+
   konum
       'Alsancak, İzmir' — semt adı ilçeden daha çok arandığı için hastanın
       kullandığı ad yazılır (Konak değil Alsancak).
@@ -544,6 +551,8 @@ Sırayla:
   [ ] Linki WhatsApp'a atıp önizleme görselini gördün mü
   [ ] Telefonda aç: mobil alt çubuk, harita, form çalışıyor mu
   [ ] olcum.saglayici seçildi mi (Vercel'de Analytics açıldı mı)
+  [ ] klinik.sosyal dolduruldu mu (Instagram, Google işletme kaydı)
+  [ ] klinik.haritaKoordinat yazıldı mı (yapısal verideki konum ondan çıkar)
 
 Yayından sonra:
   [ ] Panelde sayfa görüntülemesi düşüyor mu
@@ -552,6 +561,9 @@ Yayından sonra:
   [ ] sitemap.xml'i Search Console'a bildir
   [ ] robots.txt'i tarayıcıda aç, "Disallow: /" GİTMİŞ olmalı
   [ ] Bir sayfanın kaynağına bak: "noindex" KALMAMIŞ olmalı
+  [ ] Ana sayfayı ve bir tedavi sayfasını Google'ın "Zengin Sonuç Testi"nden
+      geçir (search.google.com/test/rich-results); klinik, kırıntı ve sorular
+      hatasız görünmeli
 
 
 ================================================================================

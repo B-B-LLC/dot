@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { klinik } from '@/site.config';
 import { cerezMetni } from '@/yasal.config';
+import { YapisalVeri, yasalVeri } from '../_ortak/yapisal-veri';
 import YasalSayfa from '../_ortak/yasal-sayfa';
 
 export const metadata: Metadata = {
@@ -12,5 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default function CerezSayfasi() {
-  return <YasalSayfa metin={cerezMetni} />;
+  return (
+    <>
+      <YapisalVeri veri={yasalVeri('/cerez', cerezMetni)} />
+      <YasalSayfa metin={cerezMetni} />
+    </>
+  );
 }

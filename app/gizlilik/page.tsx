@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { klinik } from '@/site.config';
 import { gizlilikMetni } from '@/yasal.config';
+import { YapisalVeri, yasalVeri } from '../_ortak/yapisal-veri';
 import YasalSayfa from '../_ortak/yasal-sayfa';
 
 export const metadata: Metadata = {
@@ -12,5 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default function GizlilikSayfasi() {
-  return <YasalSayfa metin={gizlilikMetni} />;
+  return (
+    <>
+      <YapisalVeri veri={yasalVeri('/gizlilik', gizlilikMetni)} />
+      <YasalSayfa metin={gizlilikMetni} />
+    </>
+  );
 }

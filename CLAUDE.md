@@ -399,6 +399,42 @@ sayılmaz.
 (`olcumluysa()`); ölçüm davranışı değişirse o maddeler de güncellenmelidir.
 `olcum.googleDogrulama` dolduğunda `layout.tsx` Search Console etiketini basar.
 
+### Yapısal veri (`app/_ortak/yapisal-veri.tsx`)
+
+Arama motorlarına gönderilen schema.org verisi tek bir yardımcıdan üretilir.
+Klinik ve site kök düzende bir kez tarif edilir; sayfalar kendi düğümlerini
+basar ve kliniği tekrar anlatmak yerine sabit kimliğine bağlanır
+(`KLINIK_KIMLIK`). Aynı kimlik alan eklemeye de yarar: `/hekimler` yalnızca
+`employee` yazar, kayıt kök düzendekiyle birleşir.
+
+Sayfa başına ne basıldığı:
+
+| Sayfa | Tür | Ek |
+| --- | --- | --- |
+| `/` | `WebPage` + `FAQPage` | sorular `mainEntity` |
+| `/tedaviler` | `CollectionPage` | bütün sayfaların `ItemList`i |
+| `/tedaviler/<id>` | `MedicalWebPage` + `FAQPage` | `about` → `MedicalProcedure` |
+| `/hekimler` | `WebPage` | hekimler `Person`, klinik `employee` |
+| `/iletisim` | `ContactPage` | — |
+| yasal sayfalar | `WebPage` | yalnız kırıntı (sayfalar `noindex`) |
+
+Uyulması gereken üç kural:
+
+- **Kırıntı gezinme yalnız ekranda görünüyorsa basılır ve metni birebir aynı
+  olur.** `/hekimler` ile `/iletisim` sayfalarında kırıntı çubuğu yoktur, veri
+  de yoktur. Tedavi sayfalarındaki kırıntının ara basamağı `/tedaviler`dir —
+  ekrandaki bağlantı da oraya gider.
+- **Config'te boş kalan alan hiç basılmaz.** Koordinat, sosyal hesap, hekim
+  fotoğrafı, mezuniyet biçimi tutmayan kayıt: hepsi koşulludur. Eksik alan
+  sessizdir, uydurma alan zararlıdır.
+- **Soru listesi olan sayfa iki türlüdür** (`['MedicalWebPage', 'FAQPage']`).
+  `FAQPage` soruları `mainEntity`de ister, o yüzden dizin sayfalarındaki
+  `ItemList` ile aynı alanı paylaşır ve ikisi bir arada verilmez.
+
+Hekimler `Physician` değil `Person`dır: şemada `Physician` bir kuruluş
+türüdür (muayenehane), buradaki hekimler ise klinikte çalışan kişilerdir
+(`worksFor`).
+
 ### Demo modu ve SEO
 
 `site.demoModu` varsayılan `true`: `robots.txt` taramayı kapatır, sayfalar
