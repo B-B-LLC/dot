@@ -135,7 +135,10 @@ Alan alan, ne olduğu ve nereyi etkilediği:
       yazma; boş bırakılırsa alan hiç basılmaz.
       Örnek: sosyal: ['https://www.instagram.com/klinikadi']
 
-      Instagram, X ve Facebook adresleri AYRICA altbilgide düğme olur.
+      Instagram, X ve Facebook adresleri AYRICA altbilgide düğme olur;
+      yanlarında WhatsApp düğmesi de durur ama onun adresi buradan değil
+      `whatsapp` alanından gelir (wa.me kimlik sayfası değildir, sameAs'e
+      yazılmaz).
       Şablonda üçü de yer tutucudur (mesepoliklinik) — kliniğin gerçek
       hesaplarıyla değiştir, olmayan hesabın satırını sil. Uydurma adres
       düğmeyi boşa götürür ve sameAs'i de yanlışlar.

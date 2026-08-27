@@ -371,9 +371,17 @@ işleyişi değişirse o metin de güncellenmelidir.
 
 ### Sosyal medya düğmeleri (`app/_ortak/sosyal.js`)
 
-Altbilgideki üç düğme ayrı bir listeden değil, `klinik.sosyal` dizisinden
+Altbilgideki düğmeler ayrı bir listeden değil, `klinik.sosyal` dizisinden
 gelir — yapısal veriye `sameAs` olarak yazılan dizinin aynısı. Hesap tek yere
 yazılır, iki yer birden beslenir.
+
+WhatsApp bunun istisnasıdır: adresini `klinik.whatsapp` alanından alır ve
+satırın başında durur. `wa.me` bir kimlik sayfası değil iletişim bağlantısıdır,
+`sameAs`'e yazılmaz; `rel`'inden de `me` düşürülür. Ölçümde de hesap değil
+dönüşüm sayılır — belgeye asılı dinleyici onu `whatsapp` olayı olarak
+kendiliğinden sayar (bkz. *Ölçüm*), `data-olcum-yer` yalnız kırılımını verir.
+Bu düğme aynı zamanda WhatsApp'ın geniş ekrandaki tek girişidir: mobil eylem
+çubuğu 860 px altında çizildiği için masaüstünde başka bağlantısı yoktu.
 
 Dizi sosyal medya olmayan adres de taşıyabilir (Google işletme kaydı). Adresin
 içinde ağın alan adı aranır; tanınmayan adres düğme basmaz ama `sameAs`
@@ -382,10 +390,11 @@ Sıra `AGLAR` dizisinden gelir, config'teki yazım sırasından değil: klinik
 hesaplarını hangi sırayla yazarsa yazsın düğmeler aynı yerde durur. Hiç hesap
 yoksa bileşen `null` döner, altbilgide boş satır kalmaz.
 
-Instagram ve Facebook sitedeki diğer ikonlarla aynı çizgi ölçüsündedir (19 px,
-1.75 kalınlık). X'in markası dolu bir harf olduğu için tek istisnadır ve optik
-ağırlığı ötekilere eşitlensin diye 16 px çizilir — aynı ölçüde çizilirse yanında
-kalın durur.
+WhatsApp, Instagram ve Facebook sitedeki diğer ikonlarla aynı çizgi
+ölçüsündedir (19 px, 1.75 kalınlık); WhatsApp'ın çizimi mobil çubuktakinin
+birebir aynısıdır, aynı bağlantı iki yerde farklı görünmesin diye. X'in
+markası dolu bir harf olduğu için tek istisnadır ve optik ağırlığı ötekilere
+eşitlensin diye 16 px çizilir — aynı ölçüde çizilirse yanında kalın durur.
 
 Görünüm `globals.css` içindeki `.sosyal-dugme` kurallarındadır: koyu zümrüt
 gradyanlı cam disk, imleç değince kenar amber'a döner, içinden bir parlama

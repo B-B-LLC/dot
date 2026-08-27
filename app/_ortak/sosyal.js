@@ -2,11 +2,17 @@
 
 /* Altbilgideki sosyal medya düğmeleri.
 
-   Liste `site.config.ts` içindeki `klinik.sosyal` alanından gelir — yapısal
-   veriye `sameAs` olarak yazılan dizinin aynısı. Böylece hesap tek yere
-   yazılır: arama motoru da görür, ziyaretçi de. Dizi Google işletme kaydı
-   gibi sosyal medya olmayan adresler de taşıyabildiği için tanınmayan adres
-   sessizce atlanır; `sameAs` tarafında yine durur. */
+   Hesaplar `site.config.ts` içindeki `klinik.sosyal` alanından gelir —
+   yapısal veriye `sameAs` olarak yazılan dizinin aynısı. Böylece hesap tek
+   yere yazılır: arama motoru da görür, ziyaretçi de. Dizi Google işletme
+   kaydı gibi sosyal medya olmayan adresler de taşıyabildiği için tanınmayan
+   adres sessizce atlanır; `sameAs` tarafında yine durur.
+
+   WhatsApp bunun istisnasıdır ve adresini `klinik.whatsapp` alanından alır:
+   `wa.me` bir kimlik sayfası değil iletişim bağlantısıdır, `sameAs`'e
+   yazılmaz. Ölçüm tarafında da hesap değil dönüşüm sayılır — belgeye asılı
+   dinleyici bu düğmeyi kendiliğinden `whatsapp` olayı olarak sayar
+   (bkz. olcum.js), `data-olcum-yer` yalnız kırılımını verir. */
 
 import * as React from 'react';
 import { klinik as KLINIK } from '@/site.config';
@@ -31,9 +37,28 @@ function dolu(yol, boy) {
   }, h('path', { d: yol }));
 }
 
-/* `parcalar` adresin içinde aranır; hem eski hem yeni alan adı yazılabilir
-   (x.com ile twitter.com aynı hesaptır). */
+/* Sıra buradaki sıradır. Önce WhatsApp durur: ötekiler kliniği tanıtır, o
+   ise hastayı doğrudan danışmaya bağlar.
+
+   `adres` verilmişse bağlantı oradan gelir; verilmemişse `parcalar`
+   `klinik.sosyal` içinde aranır. Parça listesi hem eski hem yeni alan adını
+   taşır (x.com ile twitter.com aynı hesaptır). */
 var AGLAR = [
+  {
+    anahtar: 'whatsapp',
+    ad: 'WhatsApp',
+    adres: function () { return KLINIK.whatsapp; },
+    etiket: 'WhatsApp’tan yazın',
+    rel: 'noopener',
+    cizim: function () {
+      /* Mobil çubuktakiyle birebir aynı çizim: aynı bağlantı iki yerde
+         farklı görünmesin. */
+      return cizgi([
+        h('path', { key: 'a', d: 'M20.4 11.6a8.4 8.4 0 0 1-12.3 7.5L3.6 20.4l1.3-4.5A8.4 8.4 0 1 1 20.4 11.6Z' }),
+        h('path', { key: 'b', d: 'M9.3 9.1c.4 2.6 2.3 4.5 4.9 5.2l1-1.4 1.8.8v1.4c-2.9.5-6.4-2.4-7.5-5.3l1.4-.7Z' })
+      ]);
+    }
+  },
   {
     anahtar: 'instagram',
     ad: 'Instagram',
@@ -76,9 +101,11 @@ var AGLAR = [
 export function sosyalHesaplar(adresler) {
   var liste = adresler || [];
   return AGLAR.map(function (ag) {
-    var adres = liste.find(function (a) {
-      return ag.parcalar.some(function (parca) { return a.indexOf(parca) !== -1; });
-    });
+    var adres = ag.adres
+      ? ag.adres()
+      : liste.find(function (a) {
+          return ag.parcalar.some(function (parca) { return a.indexOf(parca) !== -1; });
+        });
     return adres ? { ag: ag, adres: adres } : null;
   }).filter(Boolean);
 }
@@ -99,10 +126,12 @@ export default function SosyalSatir(props) {
         className: 'sosyal-dugme',
         href: hesap.adres,
         target: '_blank',
-        /* `me`: bu adresin aynı kliniğe ait olduğunu söyler, sameAs'in
-           bağlantı üzerindeki karşılığıdır. */
-        rel: 'noopener me',
-        'aria-label': hesap.ag.ad + ' hesabımız'
+        /* Varsayılan `me`, bu adresin aynı kliniğe ait olduğunu söyler —
+           sameAs'in bağlantı üzerindeki karşılığıdır. WhatsApp kimlik
+           bildirmediği için onu kendi satırında düşürür. */
+        rel: hesap.ag.rel || 'noopener me',
+        'data-olcum-yer': 'altbilgi',
+        'aria-label': hesap.ag.etiket || (hesap.ag.ad + ' hesabımız')
       }, hesap.ag.cizim());
     })
   );
