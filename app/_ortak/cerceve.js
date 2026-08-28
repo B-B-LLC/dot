@@ -5,7 +5,9 @@
 import * as React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { NavBar, Button } from '@/ds/bundle';
-import { klinik as KLINIK, haritaYolTarifi } from '@/site.config';
+import {
+  klinik as KLINIK, tedaviMenusu as TEDAVI_MENUSU, haritaYolTarifi
+} from '@/site.config';
 import { h, BOLUMLER, CALISMA_SAATLERI, bolumeGit, useDar } from './temel';
 import { useTedaviMenusu, TedaviTetigi, TedaviPaneli } from './tedavi-menusu';
 import SosyalSatir from './sosyal';
@@ -18,6 +20,16 @@ var useEffect = React.useEffect;
   /* ------------------------------------------------------------------ */
   /* Üst gezinme                                                         */
   /* ------------------------------------------------------------------ */
+
+  /** Tarayıcının kendi davranışına bırakılması gereken tıklama mı?
+      Değiştirici tuşlu ya da sol tuş dışındaki tıklamalarda bağlantı yeni
+      sekmede açılmalı, yönlendirme koda alınmamalıdır. Olay verilmediğinde
+      (NavBar yaması uygulanmamışsa) eski davranış sürer. */
+  function duzTiklama(ev) {
+    if (!ev) return true;
+    return ev.button === 0 &&
+      !ev.metaKey && !ev.ctrlKey && !ev.shiftKey && !ev.altKey;
+  }
 
   function UstGezinme(props) {
     var navRef = useRef(null);
@@ -37,11 +49,19 @@ var useEffect = React.useEffect;
 
     /* Tedaviler başlığı hem bölüme gider hem açılır menüyü taşır. Geniş ekranda
        menü fareyle açıldığı için tıklama eskisi gibi bölüme kaydırır; dar
-       ekranda fare yok, dokunuş menüyü açıp kapatır. */
+       ekranda fare yok, dokunuş menüyü açıp kapatır.
+
+       `adres` geçilince NavBar o kalemi düğme değil `<a href>` olarak basar
+       (bkz. tools/gen-ds-module.mjs içindeki yama). Yönlendirmeyi aşağıdaki
+       onNavigate üstlenmeye devam eder; adres, bağlantının yeni sekmede
+       açılabilmesi ve sayfa haritasında sayılması için vardır. */
     function bolumBaglantisi(b) {
-      if (b.id !== 'tedaviler') return b.etiket;
+      if (b.id !== 'tedaviler') {
+        return { value: b.etiket, adres: b.adres, label: b.etiket };
+      }
       return {
         value: b.etiket,
+        adres: b.adres,
         label: h(TedaviTetigi, { etiket: b.etiket, dar: props.dar, menu: menu })
       };
     }
@@ -86,9 +106,13 @@ var useEffect = React.useEffect;
             ? [bolumBaglantisi(tedavilerBolumu)]
             : BOLUMLER.map(bolumBaglantisi),
           active: props.aktif,
-          onNavigate: function (etiket) {
+          onNavigate: function (etiket, ev) {
             var b = BOLUMLER.find(function (x) { return x.etiket === etiket; });
             if (!b) return;
+            /* Ctrl/⌘/Shift ile ya da orta tuşla açılan bağlantı tarayıcıya
+               bırakılır: yeni sekmede açma buradan çalışıyor. */
+            if (!duzTiklama(ev)) return;
+            if (ev) ev.preventDefault();
             if (b.id === 'tedaviler' && props.dar) { menu.degistir(); return; }
             git(b.id, b.adres);
           },
@@ -114,8 +138,7 @@ var useEffect = React.useEffect;
         h(TedaviPaneli, {
           dar: props.dar,
           menu: menu,
-          randevu: function () { git('randevu', '/iletisim#randevu'); },
-          tumTedaviler: function () { menu.kapat(); yonlendirici.push('/tedaviler'); }
+          randevu: function () { git('randevu', '/iletisim#randevu'); }
         })
       )
     );
@@ -173,13 +196,25 @@ var useEffect = React.useEffect;
             )
           ),
 
+          /* Üst çubuktaki başlıkları DS'in NavBar'ı düğme olarak basıyor, yani
+             sayfa haritasında bağlantı sayılmıyorlar: /tedaviler ile /hekimler
+             sitede başka hiçbir yerden bağlantı almıyordu. Bu iki adresin her
+             sayfada duran gerçek bağlantısı buradadır.
+
+             İki başlık tek sütunda: beşinci bir ızgara sütunu açmak çalışma
+             saatleri sütununu gün adı + saat sığmayacak kadar daraltıyor. */
           h('div', null,
-            h('div', { style: sutunBasligi }, 'YASAL'),
+            h('div', { style: sutunBasligi }, 'SAYFALAR'),
+            h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14 } },
+              h('a', { className: 'footer-link', href: '/tedaviler' }, TEDAVI_MENUSU.panel.tumu),
+              h('a', { className: 'footer-link', href: '/hekimler' }, 'Hekim kadrosu'),
+              h('a', { className: 'footer-link', href: '/iletisim' }, 'İletişim ve ulaşım')
+            ),
+            h('div', { style: Object.assign({}, sutunBasligi, { marginTop: 26 }) }, 'YASAL'),
             h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14 } },
               h('a', { className: 'footer-link', href: '/kvkk' }, 'KVKK Aydınlatma Metni'),
               h('a', { className: 'footer-link', href: '/gizlilik' }, 'Gizlilik Politikası'),
-              h('a', { className: 'footer-link', href: '/cerez' }, 'Çerez Politikası'),
-              h('a', { className: 'footer-link', href: '/iletisim' }, 'İletişim ve ulaşım')
+              h('a', { className: 'footer-link', href: '/cerez' }, 'Çerez Politikası')
             )
           )
         ),

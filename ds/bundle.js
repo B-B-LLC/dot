@@ -1416,12 +1416,16 @@ function NavBar({
     const v = typeof l === 'string' ? l : l.value;
     const label = typeof l === 'string' ? l : l.label;
     const on = v === active;
-    return /*#__PURE__*/React.createElement("button", {
+    return /*#__PURE__*/React.createElement(l && l.adres ? "a" : "button", {
       key: v,
-      onClick: () => onNavigate && onNavigate(v),
+      href: l && l.adres ? l.adres : undefined,
+      onClick: (ev) => onNavigate && onNavigate(v, ev),
       style: {
         height: 36,
         padding: '0 15px',
+        display: 'inline-flex',
+        alignItems: 'center',
+        textDecoration: 'none',
         border: 'none',
         borderRadius: 'var(--radius-pill)',
         background: on ? 'rgba(13,122,83,.10)' : 'transparent',

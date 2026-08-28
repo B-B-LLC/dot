@@ -263,6 +263,9 @@ a:hover { color: var(--text-link-hover); }
   border: 0;
   background: none;
   cursor: pointer;
+  /* Düğme değil bağlantı: dizin sayfası arama motoruna görünsün ve yeni
+     sekmede açılabilsin diye. Altı çizili varsayılanı burada kapatılır. */
+  text-decoration: none;
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: var(--fw-semibold);

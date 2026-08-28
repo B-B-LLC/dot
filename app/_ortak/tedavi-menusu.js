@@ -298,10 +298,13 @@ var KAPANMA_GECIKMESI = 140;
               sayiKutusu(kategoriler.length, 'Kategori')
             ),
 
-            h('button', {
-              type: 'button',
+            /* Düğme değil bağlantı: dizin sayfasının sitedeki tek tutamağı
+               burasıydı ve düğme olduğu için arama motoru /tedaviler'i hiçbir
+               sayfadan bağlantı almamış sayıyordu. */
+            h('a', {
               className: 'tedavi-menu-tumu',
-              onClick: function () { menu.kapat(); props.tumTedaviler(); }
+              href: '/tedaviler',
+              onClick: function () { menu.kapat(); }
             }, MENU.panel.tumu, h('span', { 'aria-hidden': 'true' }, ' ↗'))
           )
         )

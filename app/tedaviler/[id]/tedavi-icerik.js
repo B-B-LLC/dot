@@ -5,7 +5,9 @@
 
 import * as React from 'react';
 import { Card, Button } from '@/ds/bundle';
-import { klinik as KLINIK, tedaviler as TEDAVILER } from '@/site.config';
+import {
+  klinik as KLINIK, islemler as ISLEMLER, tedaviler as TEDAVILER
+} from '@/site.config';
 import SayfaCercevesi from '../../_ortak/cerceve';
 import RandevuKarti from '../../_ortak/randevu-karti';
 import { h, S, BolumBasligi, iki, tedaviSimgesi } from '../../_ortak/temel';
@@ -65,6 +67,39 @@ function Sorular(props) {
         return h(Card, { key: s.soru, tone: 'plain', padding: 'md' },
           h('h3', { style: S.h3 }, s.soru),
           h('p', { style: S.kartMetin }, s.cevap)
+        );
+      })
+    )
+  );
+}
+
+/* Bu dalın altındaki işlemler. Dal sayfası kliniğin en güçlü sayfalarından
+   biridir — menüde adı geçer, çarkta kartı vardır, kök şemada hizmet olarak
+   sayılır — ama o gücü altındaki işlem sayfalarına aktarmıyordu: buraya
+   gelen ziyaretçi "peki tek diş için ne oluyor" sorusunun sayfasına yalnız
+   açılır menüden ulaşabiliyordu.
+
+   `dal` alanı verilmemiş işlem burada görünmez; listeye girmesi için
+   site.config.ts'te dalının yazılması gerekir. */
+function DaldakiIslemler(props) {
+  var kalemler = ISLEMLER.filter(function (i) { return i.dal === props.dal; });
+  if (!kalemler.length) return null;
+
+  return h('div', { style: { marginTop: 40 } },
+    h('h2', {
+      style: Object.assign({}, S.h2, { fontSize: 'clamp(20px,2.4vw,24px)' })
+    }, props.ad + ' başlığındaki işlemler'),
+    h('div', { style: Object.assign({}, S.izgara(260), { marginTop: 20 }) },
+      kalemler.map(function (i) {
+        return h('a', {
+          key: i.slug,
+          href: '/tedaviler/' + i.slug,
+          style: { display: 'block', color: 'inherit' }
+        },
+          h(Card, { tone: 'plain', padding: 'md', interactive: true },
+            h('h3', { style: Object.assign({}, S.h3, { fontSize: 17 }) }, i.ad),
+            h('p', { style: Object.assign({}, S.kartMetin, { marginTop: 8 }) }, i.ozet)
+          )
         );
       })
     )
@@ -139,6 +174,7 @@ export default function TedaviIcerik(props) {
       h(Asamalar, { asamalar: tedavi.asamalar }),
       h(Notlar, { notlar: tedavi.notlar }),
       h(Sorular, { sorular: tedavi.sorular }),
+      h(DaldakiIslemler, { dal: tedavi.id, ad: tedavi.ad }),
 
       h('p', { style: S.dipnot },
         'Bu sayfadaki bilgiler genel süreci anlatır ve tıbbi tavsiye yerine geçmez. ' +

@@ -137,7 +137,20 @@ z-index'i onu çubuğun altına, sayfa içeriğinin üstüne koyar.
 gösterir: üstte altı dalın kartı, altında dokuz kategori ve kırk iki kalem.
 Sayfası yazılmamış kalem bağlantısız satır olarak durur — liste eksiksiz kalsın
 diye — ve üstteki açıklama satırı bekleyen kalem kalmadığında kendiliğinden
-görünmez olur. Gezinmedeki "Tüm tedaviler" düğmesi buraya gelir.
+görünmez olur. Gezinme menüsündeki "Tüm tedaviler" bağlantısı buraya gelir.
+
+Sayfalar arası bağlantı kasten yoğundur, çünkü bir sayfaya kaç iç bağlantı
+verildiği arama motoru için önem sinyalidir. Üç yol birden kurulur: dal sayfası
+kendi altındaki işlemleri listeler (`DaldakiIslemler`), işlem sayfası hem dalına
+hem kategori komşularına bağlanır (`Komsular`), altbilgideki "SAYFALAR" sütunu
+`/tedaviler` ile `/hekimler`i her sayfadan bağlar. Bu sütun kaldırılırsa
+`/hekimler` yeniden yetim kalır — kendi başına başka bağlantı almıyor.
+
+`DaldakiIslemler` yalnız `dal` alanı yazılmış işlemleri gösterir. Altı dal
+kliniğin işlemlerinin tamamını kapsamaz: protez, ağız-diş-çene cerrahisi ve
+estetik başlıklarının dalı yoktur, o işlemlerde alan bilerek boş bırakılır.
+Zorlama bir atama kırıntı gezinmeye yanlış bilgi yazar. Kategori (`kategori`)
+ise kırk iki işlemin tamamını kapsar; komşu bağlantıları ondan sürülür.
 
 `app/tedaviler/[id]` segmenti iki tür sayfayı taşır. `id` bir dal id'siyse
 `tedavi-icerik.js` çizilir (aşamalı süreç), bir işlem slug'ıysa
@@ -181,6 +194,34 @@ ve 17 bileşeni dışa aktarır (`NavBar`, `Card`, `Button`, `Field`, `Input`,
 `Checkbox`, `Icon`, …). Betik ayrıca `lucide` ikon kümesini tembel yüklemeye
 bağlar ve paketin Google Fonts `@import` satırını boşaltır (fontlar
 `next/font` ile `app/layout.tsx`ten gelir). Paket değişirse `npm run gen:ds`.
+
+Kaynak LF'e normalleştirilerek okunur: paket Windows'ta CRLF ile açılıyor
+(git `autocrlf`) ama depoda LF duruyor, aşağıdaki yama ise çok satırlı parça
+arıyor.
+
+#### `NavBar` bağlantı yaması
+
+Üreteç bileşen gövdelerini olduğu gibi taşır; **tek istisna `NavBar`'dır**.
+DS'in `NavBar`'ı her gezinme öğesini `<button>` olarak basar ve adres vermenin
+yolu yoktur. Bunun bedeli ağırdı: o başlıklar sayfa haritasında bağlantı
+sayılmadığı için `/hekimler` sitede hiçbir yerden bağlantı almıyordu ve
+ziyaretçi hiçbir başlığı yeni sekmede açamıyordu. Düğmenin içine `<a>` koymak
+çözüm değil — etkileşimli öğe içinde etkileşimli öğe geçersiz HTML'dir.
+
+Bu yüzden `gen-ds-module.mjs` yalnız `NavBar` bölgesinde iki değişiklik yapar:
+`adres` taşıyan kalem `<a href>`, taşımayan `<button>` olarak basılır; ve
+`onNavigate` çağrısına tıklama olayı eklenir. Kırılma noktaları:
+
+- **Yama paketin `NavBar.jsx` özetine bağlıdır** (`NAVBAR_OZETI`, paket
+  başlığındaki `sourceHashes`). Paket güncellenip o dosya değişirse üretim hata
+  vererek durur — yama sessizce uygulanmamış olmaz. Yeni sürümde `links.map`
+  bloğu doğrulanıp özet güncellenir.
+- **Aranan parçalar bölgeye kısıtlıdır**; `height: 36` gibi satırlar paketin
+  başka bileşenlerinde de geçiyor. Her parça tam bir kez bulunmazsa hata verilir.
+- **Olayı kullanan taraf `preventDefault` çağırmak zorundadır**, yoksa hem kod
+  hem tarayıcı yönlendirir. `cerceve.js` bunu `duzTiklama()` ile yapar:
+  değiştirici tuşlu ya da sol tuş dışındaki tıklama tarayıcıya bırakılır, yeni
+  sekmede açma buradan çalışır.
 
 Stiller satır içi `style` nesneleriyle yazılır ve değerler token'lardan okunur
 (`var(--emerald-700)`, `var(--radius-blob)`, `var(--dur-base)`). Sabit renk kodu
