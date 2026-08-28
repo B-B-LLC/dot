@@ -396,9 +396,22 @@ yüzden `globals.css` içinde gövdeye `overflow-x: clip` konmuştur (`hidden`in
 aksine kaydırma kutusu açmaz, yapışkan yerleşimi bozmaz). Ok ve nokta
 düğmelerinin görünümü aynı dosyadaki `.cark-ok` / `.cark-nokta` sınıflarındadır.
 
-Altı bağlantı her zaman DOM'dadır (sayfa haritası ve klavye erişimi için); bir
-karta odaklanınca yay o karta döner ve kart bağlantılarında `draggable`
-kapalıdır — açık kalırsa tarayıcının bağlantı sürükleme davranışı çarkı keser.
+Altı bağlantı her zaman DOM'dadır (sayfa haritası ve klavye erişimi için) ve
+kart bir bağlantı gibi davranır: tıklandığında önde olup olmadığına
+bakılmaksızın kendi sayfasına gider. Çark yalnız sunumu değiştirir. Klavyeyle
+odaklanınca yay o karta döner — ama yalnız `:focus-visible` iken, yoksa fare
+tıklaması da odak verdiği için kart sayfa açılmadan önce boşuna bir tur atar.
+
+Kart bağlantılarında `draggable` kapalıdır; açık kalırsa tarayıcının bağlantı
+sürükleme davranışı çarkı keser.
+
+**İşaretçi basılırken yakalanmaz.** `setPointerCapture` yalnız sürükleme eşiği
+(4 px) aşıldığında kurulur. Basar basmaz kurulursa tarayıcı yalnız pointer
+olaylarını değil ardından gelen `click`i de sahneye yönlendirir: kartın
+bağlantısı olay yolunda hiç yer almaz, tıklama sessizce yutulur ve kart
+masaüstünde tıklanamaz hâle gelir. Yakalamayı `pointerup`ta geri vermek
+kurtarmaz, hedef o noktada belirlenmiştir. Dokunmada görülmez, çünkü orada
+yakalama kendiliğinden basılan öğeye — kartın kendisine — kurulur.
 
 ### Randevu ucu
 

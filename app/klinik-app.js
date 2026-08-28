@@ -524,11 +524,19 @@ var useCallback = React.useCallback;
       dondur();
     }
 
+    /* İşaretçi basılırken YAKALANMAZ. Yakalama, tarayıcının yalnız pointer
+       olaylarını değil ardından gelen `click`i de sahneye yönlendirmesine yol
+       açıyor: kartın bağlantısı olay yolunda hiç yer almıyor ve tıklama
+       sessizce yutuluyordu. Bırakma anında geri vermek de kurtarmıyor, hedef o
+       noktada belirlenmiş oluyor. Dokunmada görülmemesinin sebebi, orada
+       yakalamanın kendiliğinden basılan öğeye (kartın kendisine) kurulması.
+
+       Bu yüzden yakalama sürükleme gerçekten başlayınca kurulur: o an
+       etkileşim zaten tıklama değildir ve `tasindiRef` gezinmeyi durdurur. */
     function tutBasla(e) {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      surukRef.current = { x: e.clientX, aci: kullaniciRef.current };
+      surukRef.current = { x: e.clientX, aci: kullaniciRef.current, yakali: false };
       tasindiRef.current = false;
-      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (hata) { /* eski tarayıcı */ }
       devral();
       dondur();
     }
@@ -537,24 +545,39 @@ var useCallback = React.useCallback;
       var s = surukRef.current;
       if (!s) return;
       var dx = e.clientX - s.x;
-      if (Math.abs(dx) > 4) tasindiRef.current = true;
+      if (Math.abs(dx) > 4) {
+        tasindiRef.current = true;
+        /* Buradan sonra imleç sahnenin dışına çıksa da hareket izlensin. */
+        if (!s.yakali) {
+          s.yakali = true;
+          try { e.currentTarget.setPointerCapture(e.pointerId); } catch (hata) { /* eski tarayıcı */ }
+        }
+      }
       var genislik = sahneRef.current ? sahneRef.current.clientWidth : 320;
       kullaniciRef.current = s.aci + (dx / genislik) * adim * 2;
       dondur();
     }
 
-    function tutBitir() {
-      if (!surukRef.current) return;
+    function tutBitir(e) {
+      var s = surukRef.current;
+      if (!s) return;
       surukRef.current = null;
+
+      if (s.yakali) {
+        try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (hata) { /* eski tarayıcı */ }
+      }
+
       /* Bırakınca en yakın kart öne oturur. */
       var hedef = kaydirmaRef.current + kullaniciRef.current;
       kullaniciRef.current += carkSapma(Math.round(hedef / adim) * adim - hedef);
       dondur();
     }
 
-    function kartTiklandi(e, i) {
-      if (tasindiRef.current) { tasindiRef.current = false; e.preventDefault(); return; }
-      if (i !== aktifRef.current) { e.preventDefault(); kartaGit(i); }
+    /* Kart bir bağlantıdır: tıklandığında kendi sayfasına gider, önde olup
+       olmadığına bakılmaz. Çark yalnız sunumu değiştirir. Tek istisna
+       sürüklemedir — parmağını/imlecini yaya kaydırmak gezinme sayılmaz. */
+    function kartTiklandi(e) {
+      if (tasindiRef.current) { tasindiRef.current = false; e.preventDefault(); }
     }
 
     return h('div', {
@@ -603,8 +626,15 @@ var useCallback = React.useCallback;
                 key: t.id,
                 ref: function (el) { kartlarRef.current[i] = el; },
                 href: '/tedaviler/' + t.id,
-                onClick: function (e) { kartTiklandi(e, i); },
-                onFocus: function () { if (i !== aktifRef.current) kartaGit(i); },
+                onClick: kartTiklandi,
+                /* Yalnız klavyeyle gelen odakta yaya döner: fare tıklaması da
+                   odak verdiği için ayrım yapılmazsa kart, sayfa açılmadan
+                   önce boşuna bir tur atıyor. */
+                onFocus: function (e) {
+                  if (i === aktifRef.current) return;
+                  try { if (!e.target.matches(':focus-visible')) return; } catch (hata) { /* eski tarayıcı */ }
+                  kartaGit(i);
+                },
                 /* Kartın üstünden sürüklenince tarayıcının bağlantı sürükleme
                    davranışı devreye girip çarkı yarıda kesiyordu. */
                 draggable: false,
