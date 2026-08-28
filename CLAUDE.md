@@ -21,12 +21,17 @@ düzeltmeleri bu dosyayı eskitmez — onlarda dokunulmaz.
 ```bash
 npm install
 npm run dev            # http://localhost:3000
-npm run build          # üretim derlemesi (tip denetimi de burada yapılır)
+npm run build          # kontrol + üretim derlemesi (tip denetimi de burada)
 npm start
+npm run kontrol        # yalnız yayın öncesi kontrol (bkz. Yayın öncesi kontrol)
+KONTROL=yayin npm run kontrol   # demo iken "yayına ne kaldı" listesi
 npx tsc --noEmit       # yalnız tip denetimi
 npm run gen:ds         # ds/ klasörünü _ds/ paketinden yeniden üretir
 node tools/serve.js 4173   # depodaki eski statik sürümü açar (index.html)
 ```
+
+`package.json` içindeki `engines.node` en az 22.18 ister: kontrol betiği
+`site.config.ts`i Node'un tip soyma özelliğiyle doğrudan içe aktarıyor.
 
 Test paketi ve linter yoktur. `.claude/launch.json` her iki sunucuyu da tanımlar
 (`next`, `eski-site`).
@@ -535,6 +540,47 @@ türüdür (muayenehane), buradaki hekimler ise klinikte çalışan kişilerdir
 `noindex` işaretlenir. `canonical`, `sitemap.xml` ve OG etiketlerinin tamamı
 `site.adres` ile `site.demoModu` değerlerinden beslenir. Gerçek yayında ikisi de
 değiştirilir.
+
+### Yayın öncesi kontrol (`tools/kontrol.mjs`)
+
+`build` betiğinin başında çalışır ve şablondan kalan yer tutucuların gerçek bir
+kliniğin yayınına sızmasını engeller. Bu hataların ortak yanı sessiz olmaları:
+site derlenir, sayfa açılır, kimse fark etmez — ziyaretçi çalışmayan numarayı
+arayana ya da müşteri "üç aydır Google'da yokuz" diye telefon edene kadar.
+
+Kip ayrı bir bayrakla değil `site.demoModu` ile sürülür, çünkü yayına geçişin
+kendisi zaten o satırdır:
+
+- `demoModu: true` — demo derlemesi. Yer tutucu beklenen durumdur; yalnız
+  yapısal hatalar derlemeyi durdurur, yayın öncesi kapatılacaklar liste olarak
+  yazılır ve derleme sürer.
+- `demoModu: false` — yayın derlemesi. Yer tutucuların hepsi hatadır ve derleme
+  durur. Yani yer tutucuyla yayına çıkılamaz.
+
+`KONTROL=yayin` bayrağı çevirmeden yayın denetimini çalıştırır (kalanları
+görmek için), `KONTROL=demo` gevşetir.
+
+Denetim iki türlüdür. **Yapısal** olanlar her kipte hatadır: `site.adres` boş
+olamaz, `https://` ile başlar, eğik çizgiyle bitmez; config'te adı geçen her
+`/gorseller/...` dosyası `public/` altında gerçekten durmalıdır (yolu yanlış
+görsel hata vermez, sessizce çizim yer tutucusuna düşer). **Yayına özel**
+olanlar `YER_TUTUCULAR` listesindeki izlerdir (`.example`, `mesepoliklinik`,
+`0000/000`, örnek telefon, demo alan adı) ve boş kalan `haritaKoordinat` ile
+`googleDogrulama`.
+
+İki nokta kolay bozulur:
+
+- **Yer tutucu taraması alan alan değil parça parçadır.** Betik `site`,
+  `olcum`, `klinik`, `hekimler` ve `gorseller` nesnelerini özyinelemeli gezer,
+  her metni `YER_TUTUCULAR` izlerine karşı arar. Config'e yeni bir alan
+  eklendiğinde betiği güncellemek gerekmez. Tedavi metinleri kasten dışarıdadır:
+  onlar içeriktir ve içlerinde geçen sayılar yanlış alarm üretir.
+- **Betik `site.config.ts`i doğrudan içe aktarır**, metnini ayrıştırmaz — o
+  yüzden dosya yeniden biçimlendirilse de denetim bozulmaz. Bunun bedeli Node
+  22.18+ (tip soyma) ve `package.json`daki `engines.node` kaydıdır. Node bir
+  `.ts` içe aktarımında `MODULE_TYPELESS_PACKAGE_JSON` uyarısı basar; depoya
+  `"type": "module"` eklemek CommonJS betiklerini kıracağı için yalnız o uyarı
+  susturulur (`u.code` ile — `u.name` her uyarıda `'Warning'`tir).
 
 ### Depoda duran eski sürüm
 

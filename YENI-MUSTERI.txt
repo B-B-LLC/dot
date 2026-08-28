@@ -537,8 +537,24 @@ Kod düzeni kuralları (yeni sayfa açarken):
 10. YAYIN ÖNCESİ KONTROL LİSTESİ
 ================================================================================
 
+ÖNCE BETİĞİ ÇALIŞTIR. Aşağıdaki maddelerin bir kısmını makine denetliyor:
+
+    KONTROL=yayin npm run kontrol
+
+Bu komut yayına ne kaldığını satır numarasıyla listeler. Şablondan kalan yer
+tutucuları (örnek telefon, .example e-posta, 0000/000 ruhsat, demo alan adı),
+eksik görsel dosyalarını ve boş bırakılmış haritaKoordinat / googleDogrulama
+alanlarını yakalar.
+
+site.demoModu = false yapıldığı andan itibaren aynı denetim `npm run build`in
+başında kendiliğinden çalışır ve yer tutucu kalmışsa DERLEME GEÇMEZ. Yani
+aşağıdaki listedeki teknik maddeleri unutmak artık mümkün değil; betiğin
+göremediği maddeler (metnin doğruluğu, fotoğrafın doğru oda olması) elle
+denetlenir.
+
 Sırayla:
 
+  [ ] KONTROL=yayin npm run kontrol temiz mi
   [ ] site.adres gerçek alan adı mı? (.example kalmadı mı)
   [ ] site.demoModu = false yapıldı mı?          <<< EN ÇOK UNUTULAN <<<
   [ ] telefon ve telHref aynı numara mı?
