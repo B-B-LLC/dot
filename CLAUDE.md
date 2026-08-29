@@ -212,9 +212,18 @@ komşusundan farklı olduğunu iddia etmek yerine ölçütle gösterir.
 
 İçerik derinliği `node tools/icerik-olc.mjs` ile ölçülür: sayfada gerçekten
 görünen metni (giriş, bölümler, şerit, tablo, notlar, sorular) sayar ve en
-inceden başlayarak sıralar. Hedefler sayfa başına 600+ kelime ve 4-5 sorudur.
-Bir sayfanın metni elden geçirildiğinde o kaleme `guncelleme` tarihi yazılır;
-site haritası bunu okur (bkz. *Demo modu ve SEO*).
+inceden başlayarak sıralar. Hedefler sayfa başına 600+ kelime ve 4-5 sorudur;
+kırk iki işlem sayfasının tamamı bugün bu eşiğin üstündedir. Bir sayfanın metni
+elden geçirildiğinde o kaleme `guncelleme` tarihi yazılır; site haritası bunu
+okur (bkz. *Demo modu ve SEO*).
+
+Toplu içerik eklemek için `tools/icerik-ekle.mjs` vardır: bir kalemin
+`bolumler`, `sorular`, `notlar` ya da `zamanCizelgesi` dizisinin sonuna hazır
+satırlar yazar, mevcut metne dokunmaz. Config bir TS modülü olduğu için
+ayrıştırıp yeniden yazdırmak yorumları ve satır kırımlarını kaybettirirdi;
+bunun yerine bölge slug'a göre daraltılıp diziler köşeli parantez sayılarak
+bulunur ve tırnak içindeki parantezler atlanır. Elle düzenlemede gerekmez,
+onlarca sayfaya aynı yapıyı eklerken işe yarar.
 
 Görünüm `globals.css`teki `.islem-cizelge` ve `.islem-tablo` kurallarındadır.
 Tablo dar ekranda sütunlara bölünmez, kendi kutusunda yatay kaydırılır

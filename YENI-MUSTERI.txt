@@ -605,7 +605,9 @@ uğraşılmaz:
     sınırı ve alan uzunluk sınırları var ama captcha yok. Sunucu yeniden
     başlayınca istek sayacı sıfırlanır.
   - Kırk iki işlem sayfasının metinleri yapay zekâ araştırmasından derlendi ve
-    HENÜZ BİR DİŞ HEKİMİ OKUMADI. Yayına almadan önce klinik doğruluk
+    HENÜZ BİR DİŞ HEKİMİ OKUMADI. Sayfalar 29.08.2026'da derinleştirildi
+    (hepsi 600+ kelime, 4-5 soru); metin arttıkça denetim ihtiyacı da arttı.
+    Yayına almadan önce klinik doğruluk
     denetimi şart. Yeni müşteride ayrıca şu kontrol edilmeli: listedeki her
     işlem o klinikte gerçekten yapılıyor mu? Yapılmayan işlemin sayfası
     silinmeli (kalemi tekrar düz metne çevirmek yerine komple kaldır).
