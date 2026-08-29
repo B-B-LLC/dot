@@ -13,18 +13,25 @@ import {
 import '@/ds/styles.css';
 import './globals.css';
 
-/* latin-ext alt kümesi Türkçe karakterler (ğ ş ı İ ç ö ü) için gerekli. */
+/* latin-ext alt kümesi Türkçe karakterler (ğ ş ı İ ç ö ü) için gerekli.
+
+   Ağırlık listesi sitede gerçekten kullanılanla sınırlıdır: next/font burada
+   sayılan her ağırlık × her stil × her alt küme için ayrı bir dosya indirir,
+   kullanılmayanı da indirir. 300 hiçbir yerde geçmiyordu ve italik hiç
+   kullanılmıyor — ikisi Jakarta'nın dosya sayısını üçte birine düşürüyor.
+   Yeni bir ağırlık kullanacaksan önce buraya eklemen gerekir, yoksa tarayıcı
+   en yakınını sentezler ve harfler kalınlaşmış gibi görünür. */
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  style: ['normal', 'italic'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-jakarta'
 });
 
+/* Tek satırlık künye yazılarında kullanılır; yalnız normal ve orta ağırlık. */
 const plexMono = IBM_Plex_Mono({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '500'],
   display: 'swap',
   variable: '--font-plex-mono'
 });
@@ -47,6 +54,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'tr_TR',
     siteName: klinik.ad,
+    /* Ana sayfanın kendi adresi. Next `og:url`ü canonical'dan türetmez;
+       alt sayfalarınkini _ortak/ustveri.ts basar. */
+    url: '/',
     title: anaBaslik,
     description: klinik.metaAciklama
   }

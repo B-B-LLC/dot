@@ -171,6 +171,27 @@ if (!adres) {
   }
 }
 
+/* Site haritasındaki lastModified bu alandan gelir; biçim tutmazsa tarih
+   sessizce derleme anına düşer ve alanın anlamı kaybolur. */
+const icerikTarihi = new Date(`${site.icerikGuncelleme}T00:00:00Z`);
+if (Number.isNaN(icerikTarihi.getTime())) {
+  ekle(
+    'hata',
+    'site.icerikGuncelleme',
+    'İçerik tarihi okunamıyor',
+    [`Bulunan: ${site.icerikGuncelleme}`, "Biçim 'YYYY-AA-GG' olmalı (ör. '2026-08-29')."],
+    { iz: 'icerikGuncelleme:' }
+  );
+} else if (icerikTarihi.getTime() > Date.now() + 86_400_000) {
+  ekle(
+    'uyari',
+    'site.icerikGuncelleme',
+    'İçerik tarihi gelecekte',
+    ['Site haritası içeriğin henüz yazılmamış olduğunu bildirir.'],
+    { iz: 'icerikGuncelleme:' }
+  );
+}
+
 /* Görsel yolları: dosya yoksa sayfa hata vermez, sessizce çizim yer tutucusuna
    düşer. Sessiz olduğu için denetlenir. */
 for (const [alan, deger] of kimlikMetinleri()) {

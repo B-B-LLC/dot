@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
 
-import { klinik } from '@/site.config';
 import { cerezMetni } from '@/yasal.config';
 import { YapisalVeri, yasalVeri } from '../_ortak/yapisal-veri';
+import { ustveri } from '../_ortak/ustveri';
 import YasalSayfa from '../_ortak/yasal-sayfa';
 
-export const metadata: Metadata = {
-  title: `${cerezMetni.baslik} — ${klinik.ad}`,
-  description: cerezMetni.ozet,
-  alternates: { canonical: '/cerez' },
-  robots: { index: false, follow: true }
-};
+export const metadata: Metadata = ustveri({
+  yol: '/cerez',
+  ad: cerezMetni.baslik,
+  aciklama: cerezMetni.ozet,
+  dizinDisi: true
+});
 
 export default function CerezSayfasi() {
   return (

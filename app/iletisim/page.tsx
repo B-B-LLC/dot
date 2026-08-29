@@ -2,16 +2,17 @@ import type { Metadata } from 'next';
 
 import { klinik } from '@/site.config';
 import { KLINIK_KIMLIK, YapisalVeri, sayfaVeri } from '../_ortak/yapisal-veri';
+import { ustveri } from '../_ortak/ustveri';
 import IletisimIcerik from './iletisim-icerik';
 
-const BASLIK = `İletişim ve ulaşım — ${klinik.ad}`;
+const AD = 'İletişim ve ulaşım';
 const ACIKLAMA = `${klinik.adresTam}. Randevu talebi, çalışma saatleri ve ulaşım bilgileri.`;
 
-export const metadata: Metadata = {
-  title: BASLIK,
-  description: ACIKLAMA,
-  alternates: { canonical: '/iletisim' }
-};
+export const metadata: Metadata = ustveri({
+  yol: '/iletisim',
+  ad: AD,
+  aciklama: ACIKLAMA
+});
 
 export default function IletisimSayfasi() {
   return (
@@ -20,7 +21,7 @@ export default function IletisimSayfasi() {
         veri={sayfaVeri({
           yol: '/iletisim',
           tur: 'ContactPage',
-          baslik: BASLIK,
+          baslik: metadata.title as string,
           aciklama: ACIKLAMA,
           hakkinda: { '@id': KLINIK_KIMLIK }
         })}

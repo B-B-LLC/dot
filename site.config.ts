@@ -22,7 +22,17 @@ export const site = {
      taramayı kapatır ve sayfalar index dışı işaretlenir.
 
      Gerçek bir kliniğin sitesi yayına alınırken false yapın. */
-  demoModu: true
+  demoModu: true,
+
+  /* İçeriğin son elden geçirildiği gün (YYYY-AA-GG).
+
+     `sitemap.xml`teki `lastModified` buradan gelir. Eskiden derleme anı
+     yazılıyordu; o zaman her yayın bütün sayfaların değiştiğini iddia
+     ediyordu ve arama motoru bir süre sonra alanı ciddiye almayı bırakıyor.
+
+     Bir sayfanın metni ayrıca elden geçtiyse kendi `guncelleme` alanı
+     yazılır, o sayfa için bu tarihin yerine geçer. */
+  icerikGuncelleme: '2026-08-29'
 };
 
 /* ---------- Ziyaretçi ölçümü ---------- */
@@ -69,6 +79,14 @@ export const olcum: Olcum = {
 export type Klinik = {
   ad: string;
   marka: string;
+  /** Alt sayfaların sekme başlığında kullanılan kısa ad.
+
+      Kliniğin resmî tam adı tek başına arama sonucundaki ~60 karakterlik
+      alanı doldurduğu için, alt sayfalarda başlığın asıl bilgisi (hangi
+      işlem) kesiliyordu. Başlık kalıbı `{Sayfa} | {Kısa ad}, {Şehir}` —
+      bkz. sayfaBasligi(). En uzun işlem adıyla birlikte 60 karakteri
+      aşmayacak kadar kısa tutun. */
+  kisaAd: string;
   telefon: string;
   telHref: string;
   eposta: string;
@@ -158,6 +176,9 @@ export type Tedavi = {
   giris: string;
   asamalar: TedaviAsama[];
   /** Hastanın süreç boyunca bilmesi gerekenler. */
+  /** Bu sayfanın metni en son ne zaman elden geçti (YYYY-AA-GG).
+      Yazılmazsa site.icerikGuncelleme kullanılır; site haritası bunu okur. */
+  guncelleme?: string;
   notlar: string[];
   sorular: Soru[];
 };
@@ -170,6 +191,7 @@ export type KoruyucuBilgi = { harf: string; baslik: string; metin: string };
 export const klinik: Klinik = {
   ad: 'Özel Meşe Ağız ve Diş Sağlığı Polikliniği',
   marka: 'Meşe.',
+  kisaAd: 'Meşe Diş Polikliniği',
   telefon: '0232 000 00 00',
   telHref: 'tel:+902320000000',
   eposta: 'danisma@mesepoliklinik.example',
@@ -210,8 +232,21 @@ export const klinik: Klinik = {
 };
 
 /** Kliniğin tam adı ve konumu. Sekme başlığı, paylaşım başlığı ve yapısal
-    veri aynı cümleyi kullansın diye burada bir kez kurulur. */
+    veri aynı cümleyi kullansın diye burada bir kez kurulur. Yalnız ana
+    sayfada geçer: orada aranan şey kliniğin kendisidir. */
 export const anaBaslik = `${klinik.ad} — ${klinik.konum}`;
+
+/** Alt sayfaların başlık kuyruğu: ' | {Kısa ad}, {Şehir}'.
+
+    Şehrin başlıkta durması tesadüf değil — hasta "izmir implant" diye arıyor,
+    yalnız "implant" diye değil. Kuyruk her alt sayfada aynı olduğu için
+    burada bir kez kurulur. */
+export const baslikKuyrugu = ` | ${klinik.kisaAd}, ${klinik.il}`;
+
+/** Alt sayfa başlığı. Ana sayfa `anaBaslik`i kullanır, ötekilerin hepsi bunu. */
+export function sayfaBasligi(ad: string) {
+  return `${ad}${baslikKuyrugu}`;
+}
 
 /* --- Harita ---------------------------------------------------------------
    Adres tek bir yerde (klinik.adresTam) durur; hem yol tarifi bağlantıları hem
@@ -790,6 +825,9 @@ export type Islem = {
   /** Karşılaştırma tablosu. Sayfada gerçek bir seçim varsa eklenir. */
   karsilastirma?: IslemKarsilastirma;
   /** Hastanın süreç boyunca bilmesi gerekenler. */
+  /** Bu sayfanın metni en son ne zaman elden geçti (YYYY-AA-GG).
+      Yazılmazsa site.icerikGuncelleme kullanılır; site haritası bunu okur. */
+  guncelleme?: string;
   notlar?: string[];
   sorular?: Soru[];
   dal?: Tedavi['id'];

@@ -97,8 +97,31 @@ geniş düzenle çizilir.
 - `app/_ortak/tedavi-menusu.js` — gezinmedeki "Tedaviler" açılır menüsü
 - `app/_ortak/olcum.js` — ziyaretçi ölçümü: sağlayıcı betiği ve `olay()`
 - `app/_ortak/sosyal.js` — altbilgideki sosyal medya düğmeleri
+- `app/_ortak/ustveri.ts` — sayfa `metadata`sı (bkz. *Sayfa üstverisi*)
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
+
+#### Sayfa üstverisi (`app/_ortak/ustveri.ts`)
+
+Ana sayfa dışındaki her rotanın `metadata`sı `ustveri()`den geçer. Elle
+yazıldığında üç şey sessizce kaçıyordu, üçü de burada bir kez çözülür:
+
+- **Başlık kalıbı `{Sayfa} | {Kısa ad}, {Şehir}`.** Kliniğin resmî tam adı
+  arama sonucundaki ~60 karakterlik alanı tek başına dolduruyor ve asıl
+  bilgiyi kesiyordu. Kuyruk `site.config.ts`teki `sayfaBasligi()`ten gelir,
+  kısa ad `klinik.kisaAd` alanıdır. Şehir başlıkta durur çünkü hasta "izmir
+  implant" diye arıyor. Yeni bir `kisaAd` seçerken en uzun işlem adıyla
+  toplamın 60 karakteri aşmadığına bakın. Ana sayfa istisnadır: orada aranan
+  şey kliniğin kendisi olduğu için `anaBaslik` (tam ad + semt) kullanılır.
+- **`og:url`.** Next bunu `canonical`dan türetmez; `openGraph.url`
+  yazılmadıkça hiç basılmaz.
+- **`openGraph` kök düzeni ezer, birleştirmez.** Next üstveriyi *sığ*
+  birleştirir, yani bir sayfa `openGraph` yazdığı anda kökteki bloğun tamamı
+  düşer — `siteName` böyle kayboluyordu. `ustveri()` bloğu her seferinde
+  bütün olarak kurar.
+
+Kendi adresi olmayan ekranlar (`not-found.tsx`) bu yardımcıyı kullanmaz:
+canonical ve `og:url` verilmemesi gerekir.
 
 #### Her sayfada tek `h1`
 
@@ -540,6 +563,23 @@ türüdür (muayenehane), buradaki hekimler ise klinikte çalışan kişilerdir
 `noindex` işaretlenir. `canonical`, `sitemap.xml` ve OG etiketlerinin tamamı
 `site.adres` ile `site.demoModu` değerlerinden beslenir. Gerçek yayında ikisi de
 değiştirilir.
+
+`sitemap.xml`teki `lastModified` derleme anından değil içerikten gelir:
+sayfanın kendi `guncelleme` alanı (`Tedavi` ve `Islem` üzerinde, isteğe bağlı),
+yoksa `site.icerikGuncelleme`. Derleme anı yazıldığında her yayın bütün
+sayfaların değiştiğini iddia ediyordu; arama motoru bir süre sonra o alana
+bakmayı bırakır. Bir sayfanın metnini elden geçirdiğinizde o sayfaya
+`guncelleme` yazın.
+
+### Yazı tipi ağırlıkları
+
+`layout.tsx`teki `weight` listeleri sitede gerçekten kullanılanla sınırlıdır.
+`next/font` orada sayılan her ağırlık × her stil × her alt küme için ayrı dosya
+indirir — kullanılmayanı da. Jakarta'da 300 hiç geçmiyordu ve italik hiç
+kullanılmıyor; ikisi düşünce yazı tipi dosyası sayısı 30'dan 14'e indi
+(Jakarta 5 ağırlık × 2 alt küme, mono 2 × 2). Yeni bir ağırlık kullanacaksan
+önce listeye eklemen gerekir, yoksa tarayıcı en yakınını sentezler ve harfler
+kalınlaşmış görünür.
 
 ### Yayın öncesi kontrol (`tools/kontrol.mjs`)
 

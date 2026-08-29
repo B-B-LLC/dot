@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 
-import { klinik } from '@/site.config';
+import { sayfaBasligi } from '@/site.config';
 import BulunamadiIcerik from './_ortak/bulunamadi-icerik';
 
+/* Kendi adresi olmayan bir ekran: canonical ve og:url verilmez, o yüzden
+   ustveri() yerine elle yazılır. */
 export const metadata: Metadata = {
-  title: `Sayfa bulunamadı — ${klinik.ad}`,
+  title: sayfaBasligi('Sayfa bulunamadı'),
   robots: { index: false, follow: true }
 };
 

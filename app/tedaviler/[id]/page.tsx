@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { islemler, klinik, tedaviler } from '@/site.config';
+import { islemler, sayfaBasligi, tedaviler } from '@/site.config';
 import type { Kirinti } from '../../_ortak/yapisal-veri';
 import { YapisalVeri, islemVeri, sayfaVeri } from '../../_ortak/yapisal-veri';
+import { ustveri } from '../../_ortak/ustveri';
 import IslemIcerik from './islem-icerik';
 import TedaviIcerik from './tedavi-icerik';
 
@@ -27,19 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sayfa = tedavi ?? islem;
   if (!sayfa) return {};
 
-  const baslik = `${sayfa.ad} — ${klinik.ad}`;
   const aciklama = tedavi ? tedavi.metaAciklama : islem!.metaAciklama ?? islem!.ozet;
-  return {
-    title: baslik,
-    description: aciklama,
-    alternates: { canonical: `/tedaviler/${id}` },
-    openGraph: {
-      type: 'article',
-      locale: 'tr_TR',
-      title: baslik,
-      description: aciklama
-    }
-  };
+  return ustveri({
+    yol: `/tedaviler/${id}`,
+    ad: sayfa.ad,
+    aciklama,
+    tur: 'article'
+  });
 }
 
 export default async function TedaviSayfasi({ params }: Props) {
@@ -54,7 +49,7 @@ export default async function TedaviSayfasi({ params }: Props) {
           veri={sayfaVeri({
             yol,
             tur: 'MedicalWebPage',
-            baslik: `${tedavi.ad} — ${klinik.ad}`,
+            baslik: sayfaBasligi(tedavi.ad),
             aciklama: tedavi.metaAciklama,
             kirintilar: [
               { ad: 'Ana sayfa', yol: '/' },
@@ -87,7 +82,7 @@ export default async function TedaviSayfasi({ params }: Props) {
           veri={sayfaVeri({
             yol,
             tur: 'MedicalWebPage',
-            baslik: `${islem.ad} — ${klinik.ad}`,
+            baslik: sayfaBasligi(islem.ad),
             aciklama: islem.metaAciklama ?? islem.ozet,
             kirintilar,
             hakkinda: islemVeri({ yol, ad: islem.ad, aciklama: islem.ozet }),

@@ -1,25 +1,26 @@
 import type { Metadata } from 'next';
 
-import { klinik, hekimler } from '@/site.config';
+import { hekimler } from '@/site.config';
 import {
   KLINIK_KIMLIK, YapisalVeri, hekimVeri, sayfaVeri
 } from '../_ortak/yapisal-veri';
+import { ustveri } from '../_ortak/ustveri';
 import HekimlerIcerik from './hekimler-icerik';
 
 const uzmanlar = hekimler.filter((hekim) => hekim.akademik !== '—').length;
 
-const BASLIK = `Hekim kadrosu — ${klinik.ad}`;
+const AD = 'Hekim kadrosu';
 
 const ACIKLAMA =
   `Poliklinikte görev yapan ${hekimler.length} diş hekimi` +
   (uzmanlar ? `, ${uzmanlar} uzman hekim` : '') +
   '. Mezuniyet ve uzmanlık bilgileri.';
 
-export const metadata: Metadata = {
-  title: BASLIK,
-  description: ACIKLAMA,
-  alternates: { canonical: '/hekimler' }
-};
+export const metadata: Metadata = ustveri({
+  yol: '/hekimler',
+  ad: AD,
+  aciklama: ACIKLAMA
+});
 
 /* Hekimler bağımsız düğüm olarak yazılır; sayfa onlara `mainEntity` ile,
    klinik `employee` ile bağlanır. Klinik burada baştan tarif edilmez: aynı
@@ -34,7 +35,7 @@ export default function HekimlerSayfasi() {
       <YapisalVeri
         veri={sayfaVeri({
           yol: '/hekimler',
-          baslik: BASLIK,
+          baslik: metadata.title as string,
           aciklama: ACIKLAMA,
           anaVarlik: {
             '@type': 'ItemList',
