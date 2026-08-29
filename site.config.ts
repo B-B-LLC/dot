@@ -1049,6 +1049,7 @@ export const tedaviMenusu: {
         {
           ad: 'Kompozit Dolgu',
           slug: 'kompozit-dolgu',
+          guncelleme: '2026-08-29',
           dal: 'restoratif',
           ozet: 'Diş rengindeki dolgu maddesiyle çürük boşluğunun tek seansta kapatılması.',
           metaAciklama:
@@ -1074,17 +1075,91 @@ export const tedaviMenusu: {
                 'dolgularına göre daha uzun sürer.'
             },
             {
+              baslik: 'Neden katman katman',
+              metin:
+                'Kompozit ışıkla sertleşirken hafifçe büzülür. Boşluk tek seferde doldurulursa bu ' +
+                'büzülme dolgu ile diş arasındaki bağı zorlar ve kenarda mikroskobik bir aralık ' +
+                'bırakabilir. O aralıktan sızan bakteri, dolgunun altında yeni çürük başlatır. ' +
+                'İnce katmanlar hâlinde çalışmak gerilimi dağıtır; işlemin biraz uzun sürmesinin ' +
+                'sebebi budur.'
+            },
+            {
+              baslik: 'Hassasiyet ne zaman beklenir',
+              metin:
+                'Derin çürüklerde dolgu sonrası birkaç günlük soğuk hassasiyeti olağandır: çürük ' +
+                'sinire yaklaştıkça diş uyarana daha duyarlı hâle gelir ve toparlanması zaman alır. ' +
+                'Hassasiyetin günler içinde azalması beklenir. Artıyorsa, sıcakla ortaya çıkıyorsa ' +
+                'ya da kendiliğinden zonklama başladıysa değerlendirilmesi gerekir — bu, kanal ' +
+                'tedavisinin gündeme gelebileceği bir bulgudur.'
+            },
+            {
               baslik: 'Ömrünü belirleyen şeyler',
               metin:
                 'Dolgunun ömrü boşluğun büyüklüğüne, dişe binen çiğneme yüküne ve ağız bakımına bağlıdır. ' +
                 'Kenarından sızıntı başlayan bir dolgu yenilenir; büyük madde kaybında dolgu yerine ' +
-                'inley/onley ya da kaplama önerilebilir.'
+                'inley/onley ya da kaplama önerilebilir. Belirleyici ölçüt, geriye kalan diş ' +
+                'duvarlarının çiğneme yükünü taşıyıp taşıyamayacağıdır: dolgu dişi doldurur, ' +
+                'ama dişi ayakta tutmaz.'
+            },
+            {
+              baslik: 'Renk uyumu neden zaman alır',
+              metin:
+                'Kompozitin tonu dişin kendi rengine göre seçilir. Ön bölgede birden çok ton bir ' +
+                'arada kullanılarak dişin doğal geçişleri taklit edilir; bu yüzden ön diş ' +
+                'dolguları arka diş dolgularına göre daha uzun sürer. Renk, diş kurumadan ' +
+                'seçilir: uzun süre açık kalan diş geçici olarak matlaşıp açılır ve o an ' +
+                'seçilen ton sonradan koyu kalır.'
+            },
+            {
+              baslik: 'Dolgu sonrası ısırma ayarı',
+              metin:
+                'Dolgu bittiğinde çiğneme yüzeyinin karşı dişle ilişkisi kontrol edilir. Uyuşturma ' +
+                'nedeniyle hasta o an yüksekliği doğru hissedemeyebilir; bu yüzden his geçtikten ' +
+                'sonra fark edilen bir yükseklik bekletilmeden bildirilmelidir. Yüksek kalan bir ' +
+                'dolgu hem dişin hassaslaşmasına hem malzemenin kırılmasına yol açar ve ' +
+                'düzeltilmesi birkaç dakika sürer.'
             }
           ],
+          karsilastirma: {
+            baslik: 'Kompozit dolgu ile inley/onley',
+            sutunlar: ['Kompozit dolgu', 'İnley / onley'],
+            satirlar: [
+              {
+                olcut: 'Nerede hazırlanır',
+                a: 'Doğrudan ağızda, aynı seansta.',
+                b: 'Ölçü alınıp laboratuvarda üretilir.'
+              },
+              {
+                olcut: 'Seans sayısı',
+                a: 'Tek seans.',
+                b: 'En az iki seans; arada geçici dolgu kullanılır.'
+              },
+              {
+                olcut: 'Hangi madde kaybında',
+                olcutAciklama: 'Seçimi belirleyen ana ölçüt',
+                a: 'Küçük ve orta boşluklarda.',
+                b: 'Duvarların zayıfladığı geniş boşluklarda.'
+              },
+              {
+                olcut: 'Büzülme',
+                a: 'Ağızda sertleştiği için katman katman çalışmak gerekir.',
+                b: 'Ağız dışında üretildiği için bu sorun yaşanmaz.'
+              },
+              {
+                olcut: 'Onarım',
+                a: 'Kenar kırığı çoğunlukla yerinde onarılır.',
+                b: 'Genellikle yenilenmesi gerekir.'
+              }
+            ],
+            dipnot:
+              'Daha büyük restorasyon her zaman daha iyi değildir: küçük bir boşluk için inley yapmak gereksiz diş kesimi demektir. Ölçüt boşluğun büyüklüğü ve kalan diş duvarlarının sağlamlığıdır.'
+          },
           notlar: [
             'Uyuşturma yapıldıysa his geçene kadar sıcak içecek ve çiğneme dudak ısırmaya yol açabilir.',
             'Dolgu ilk günlerde soğuğa karşı hassas olabilir.',
-            'Isırışta yükseklik hissi kalırsa dolgu birkaç dakikada düzeltilir; alışmayı beklemeyin.'
+            'Isırışta yükseklik hissi kalırsa dolgu birkaç dakikada düzeltilir; alışmayı beklemeyin.',
+            'Hassasiyet günler içinde azalmıyor ya da artıyorsa kontrol gerekir.',
+            'Ön diş dolgularında renk uyumu için işlem daha uzun sürer; randevu buna göre planlanır.'
           ],
           sorular: [
             {
@@ -1098,6 +1173,27 @@ export const tedaviMenusu: {
               cevap:
                 'Değiştirilebilir. Sağlam duran bir dolguyu yalnızca görüntü için değiştirmek diş dokusu ' +
                 'kaybına yol açtığından, karar muayenede birlikte verilir.'
+            },
+            {
+              soru: 'Dolgu yaptırdım ama hâlâ hassas, normal mi?',
+              cevap:
+                'Derin çürüklerden sonra birkaç günlük soğuk hassasiyeti beklenir ve azalarak geçer. ' +
+                'Hassasiyetin artması, sıcakla ortaya çıkması ya da kendiliğinden zonklamaya ' +
+                'dönüşmesi beklenen seyir değildir; bu durumda dişin yeniden değerlendirilmesi gerekir.'
+            },
+            {
+              soru: 'Dolgunun altında çürük ilerler mi?',
+              cevap:
+                'Çürük tamamen temizlenip dolgu kenarları sızdırmaz biçimde kapatıldığında ilerlemez. ' +
+                'Zamanla kenarda sızıntı başlarsa altında yeni çürük gelişebilir; bu, kontrollerde ' +
+                've gerektiğinde röntgenle takip edilen bir durumdur.'
+            },
+            {
+              soru: 'Kaç dolgu aynı seansta yapılabilir?',
+              cevap:
+                'Birden çok dolgu aynı randevuda yapılabilir; sınırı çoğunlukla uyuşturulan bölge ' +
+                've randevu süresi belirler. Aynı taraftaki dişler birlikte planlanır, böylece ' +
+                'daha az sayıda uyuşturma yeter.'
             }
           ]
         },
@@ -1329,40 +1425,151 @@ export const tedaviMenusu: {
         {
           ad: 'Fissür Örtücü',
           slug: 'fissur-ortucu',
+          guncelleme: '2026-08-29',
           dal: 'pedodonti',
           ozet: 'Arka dişlerin derin çukurlarının akıcı bir maddeyle kapatılarak çürükten korunması.',
+          metaAciklama:
+            'Fissür örtücü nedir, hangi dişlere ve hangi yaşta uygulanır? İşlem sırası, ömrü ve ' +
+            'flor uygulamasından farkı.',
           giris:
             'Fissür örtücü, azı dişlerinin çiğneme yüzeyindeki dar ve derin oluklara akıcı bir maddenin ' +
             'yerleştirilip sertleştirilmesidir. Bu oluklar fırça kılından dar olduğu için temizlenmesi zordur ' +
-            've çürük çoğunlukla oradan başlar.',
+            've çürük çoğunlukla oradan başlar. Uygulama diş dokusundan madde kaldırmaz; yalnızca ' +
+            'fırçanın giremediği yüzeyi kapatarak orada plak birikmesini engeller.',
           bolumler: [
+            {
+              baslik: 'Fissür nedir, neden çürüğün başladığı yerdir',
+              metin:
+                'Azı dişlerinin çiğneme yüzeyi düz değildir; tepecikler ve aralarındaki oluklardan oluşur. ' +
+                'Bu oluklara fissür denir. Bazı dişlerde fissür sığ ve genişken, bazılarında dar bir yarık ' +
+                'biçimindedir. Dar olanların dibine fırça kılı ulaşamaz, tükürüğün temizleyici etkisi de ' +
+                'sınırlı kalır. Besin artığı ve plak orada birikince çürük süreci diğer yüzeylerden daha ' +
+                'erken başlar.'
+            },
             {
               baslik: 'Kimlere uygulanır',
               metin:
                 'Yeni sürmüş kalıcı azı dişleri en uygun adaylardır; süt azılarına da uygulanabilir. ' +
-                'Dişin çürüksüz ve tamamen sürmüş olması gerekir.'
+                'Dişin çürüksüz ve tamamen sürmüş olması gerekir — diş eti hâlâ çiğneme yüzeyinin bir ' +
+                'kısmını örtüyorsa yüzey kuru tutulamaz ve örtücü tutunmaz, bu durumda sürme tamamlanana ' +
+                'kadar beklenir. Fissürü sığ ve geniş olan dişlerde uygulama gerekmeyebilir; karar ' +
+                'muayenede dişe bakılarak verilir.'
             },
             {
               baslik: 'İşlem sırası',
               metin:
                 'Diş temizlenip kurutulur, yüzey hazırlanır ve örtücü madde oluklara akıtılarak ışıkla ' +
-                'sertleştirilir. Uyuşturma ve diş kesme gerekmez, tek diş için birkaç dakika sürer.'
+                'sertleştirilir. Uyuşturma ve diş kesme gerekmez, tek diş için birkaç dakika sürer. ' +
+                'İşlemin en kritik adımı yüzeyin kuru tutulmasıdır: tükürük bulaşırsa örtücü tutunmaz. ' +
+                'Bu yüzden çocuk işlem boyunca ağzını açık tutabilmeli, gerekirse tükürük emici ve ' +
+                'yanak ekartörü kullanılır.'
             },
             {
-              baslik: 'Takip',
+              baslik: 'Sonrasında ne olur',
+              metin:
+                'Uyuşturma yapılmadığı için çocuk işlemden hemen sonra normal hayatına döner ve yemek ' +
+                'yiyebilir. İlk gün ısırma hissinde hafif bir yükseklik duygusu olabilir; bu genellikle ' +
+                'birkaç saatte kaybolur, geçmezse örtücü inceltilir. Ağrı, hassasiyet veya renk değişikliği ' +
+                'beklenen bulgular değildir.'
+            },
+            {
+              baslik: 'Ömrü ve takip',
               metin:
                 'Örtücü zamanla aşınabilir ya da kenarından ayrılabilir. Altı aylık kontrollerde durumu ' +
-                'değerlendirilir, gerekirse tazelenir.'
+                'değerlendirilir, gerekirse tazelenir. Kısmen ayrılmış bir örtücü, hiç yapılmamış olmasından ' +
+                'daha risklidir: kenarından sızan plak fark edilmeden birikir. Bu yüzden kontrol randevuları ' +
+                'uygulamanın kendisi kadar önemlidir.'
+            },
+            {
+              baslik: 'Örtücü mü, dolgu mu',
+              metin:
+                'Fissür örtücü koruyucu bir uygulamadır ve yalnız çürüksüz dişe yapılır. Oluğun dibinde ' +
+                'çürük başlamışsa örtücü onu kapatmakla kalmaz, ilerlemesini gizler. Bu durumda çürük ' +
+                'temizlenip dolgu yapılır; oluğun geri kalanı aynı seansta örtücüyle kapatılabilir. ' +
+                'Hangisinin gerektiği muayenede ve gerekirse röntgenle belirlenir — dışarıdan bakınca ' +
+                'renk değişikliği gösteren her oluk çürük değildir, her sağlam görünen oluk da temiz ' +
+                'değildir.'
+            },
+            {
+              baslik: 'Çocuğun işleme hazırlanması',
+              metin:
+                'Fissür örtücü, çocuğun diş hekimiyle ilk tanışması için elverişli bir ' +
+                'işlemdir: iğne yok, diş kesilmiyor, birkaç dakika sürüyor. Bu deneyimin ' +
+                'olumlu geçmesi sonraki randevuları kolaylaştırır. Evde ağrıyı gündeme ' +
+                'getiren cümleler yerine ne yapılacağının basitçe anlatılması yeterlidir. ' +
+                'Tek beklenen şey, çocuğun kısa süre ağzını açık tutabilmesidir; yüzey ' +
+                'kuru kalmazsa örtücü tutunmaz.'
             }
           ],
+          karsilastirma: {
+            baslik: 'Fissür örtücü ile flor uygulaması',
+            sutunlar: ['Fissür örtücü', 'Flor uygulaması'],
+            satirlar: [
+              {
+                olcut: 'Ne yapar',
+                olcutAciklama: 'İki yöntemin çalışma biçimi farklıdır',
+                a: 'Oluğu fiziksel olarak kapatır, plağın girmesini engeller.',
+                b: 'Mine yüzeyini güçlendirir, asit karşısındaki direncini artırır.'
+              },
+              {
+                olcut: 'Hangi yüzeyi korur',
+                a: 'Yalnız uygulandığı dişin çiğneme yüzeyini.',
+                b: 'Ağızdaki bütün diş yüzeylerini.'
+              },
+              {
+                olcut: 'Uygulama',
+                a: 'Diş diş uygulanır, yüzeyin kuru kalması gerekir.',
+                b: 'Jel veya vernik olarak tüm ağza uygulanır.'
+              },
+              {
+                olcut: 'Tekrarı',
+                a: 'Aşındıkça tazelenir; kontrolde değerlendirilir.',
+                b: 'Belirli aralıklarla tekrarlanır.'
+              },
+              {
+                olcut: 'Birbirinin yerine geçer mi',
+                a: 'Hayır — arayüz çürüğüne etkisi yoktur.',
+                b: 'Hayır — derin fissürün dibine ulaşamaz.'
+              }
+            ],
+            dipnot:
+              'İkisi seçenek değil, birbirini tamamlayan uygulamalardır; hangisinin gerekli olduğu çocuğun çürük riskine ve diş yüzeylerinin yapısına göre belirlenir.'
+          },
           notlar: [
             'Uygulamadan hemen sonra yemek yenebilir.',
-            'Örtücü fırçalama ihtiyacını ortadan kaldırmaz; yalnız ulaşılamayan oluğu kapatır.'
+            'Örtücü fırçalama ihtiyacını ortadan kaldırmaz; yalnız ulaşılamayan oluğu kapatır.',
+            'Dişler arasındaki yüzeyler örtücüyle korunmaz; diş ipi kullanımı sürmelidir.',
+            'Örtücünün düştüğü fark edilirse kontrol randevusu beklenmeden bildirilmelidir.'
           ],
           sorular: [
             {
               soru: 'Fissür örtücü dişi keser mi?',
               cevap: 'Hayır. Diş dokusundan madde kaldırılmaz, yüzeye ek yapılır.'
+            },
+            {
+              soru: 'Hangi yaşta yaptırmak gerekir?',
+              cevap:
+                'Belirli bir yaş değil, dişin sürme durumu belirleyicidir. Kalıcı azı dişi ağızda tamamen ' +
+                'göründükten sonra uygulanabilir. Erken dönemde yapılması, çürük henüz başlamadan oluğun ' +
+                'kapatılması anlamına gelir.'
+            },
+            {
+              soru: 'Örtücünün altında çürük ilerler mi?',
+              cevap:
+                'Örtücü yalnız çürüksüz dişe uygulanır, bu yüzden altında ilerleyecek bir çürük olmaz. ' +
+                'Kenarından ayrılma olursa oradan sızıntı başlayabilir; kontrollerde bakılan şey de budur.'
+            },
+            {
+              soru: 'Ne kadar dayanır?',
+              cevap:
+                'Kişiden kişiye ve dişten dişe değişir. Çiğneme kuvvetinin yüksek olduğu dişlerde daha ' +
+                'hızlı aşınır. Kesin bir süre verilemez; altı aylık kontrollerde durumuna bakılır.'
+            },
+            {
+              soru: 'Süt dişine de yapılır mı?',
+              cevap:
+                'Yapılabilir. Süt azısının çiğneme yüzeyi de derin oluklu olabilir ve o diş birkaç yıl ' +
+                'daha ağızda kalacaksa korunması anlamlıdır.'
             }
           ]
         },
@@ -1464,6 +1671,7 @@ export const tedaviMenusu: {
         {
           ad: 'Zirkonyum Kaplama',
           slug: 'zirkonyum-kaplama',
+          guncelleme: '2026-08-29',
           dal: 'restoratif',
           ozet: 'Metal desteksiz, ışığı doğal dişe yakın geçiren dayanıklı bir kaplama seçeneği.',
           metaAciklama:
@@ -1489,16 +1697,100 @@ export const tedaviMenusu: {
                 'Süreç çoğunlukla iki ile dört seans arasında tamamlanır.'
             },
             {
+              baslik: 'Prova aşaması neden önemli',
+              metin:
+                'Kaplama yapıştırılmadan önce ağızda denenir. Bu aşamada renk, biçim, dişlerin ' +
+                'birbirine oranı ve ısırma ilişkisi değerlendirilir. Yapıştırma işlemi geri dönüşü ' +
+                'zor bir adımdır: kaplama söküldüğünde çoğunlukla yenilenmesi gerekir. Bu yüzden ' +
+                'beklentiler prova sırasında, ayna karşısında ve gün ışığında konuşulmalıdır — ' +
+                '"sonra alışırım" diye bırakılan bir ayrıntı sonradan düzeltilemez.'
+            },
+            {
               baslik: 'Bakımı',
               metin:
                 'Kaplama çürümez ama altındaki diş ve çevresindeki diş eti çürüyebilir, iltihaplanabilir. ' +
-                'Fırçalama, arayüz fırçası ve düzenli kontrol kaplamanın ömrünü doğrudan belirler.'
+                'Fırçalama, arayüz fırçası ve düzenli kontrol kaplamanın ömrünü doğrudan belirler. ' +
+                'Kaplamanın en kırılgan noktası diş etiyle buluştuğu sınırdır: orada biriken plak ' +
+                'hem diş etini iltihaplandırır hem altındaki dişte çürük başlatır. Çürük başladığında ' +
+                'kaplamanın altında olduğu için geç fark edilir.'
+            },
+            {
+              baslik: 'Ne zaman uygun değildir',
+              metin:
+                'Madde kaybı sınırlıysa kaplama gereksiz kesim demektir; bu durumda dolgu, inley/onley ' +
+                'ya da lamina gibi daha az doku eksilten seçenekler değerlendirilir. Diş eti hastalığı ' +
+                'tedavi edilmeden kaplama yapılmaz, çünkü diş eti sınırı iyileşme sırasında yer ' +
+                'değiştirir ve kaplamanın kenarı açıkta kalır. Gece diş sıkma varsa kaplama ' +
+                'planlanabilir ama koruyucu plak da planın parçası olur.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve planlama',
+              sure: 'Tek seans',
+              aciklama:
+                'Dişin durumu ve diş eti sağlığı değerlendirilir; kaplamanın uygun seçenek olup olmadığı konuşulur.'
+            },
+            {
+              asama: 'Hazırlık ve ölçü',
+              sure: 'Tek seans',
+              aciklama:
+                'Diş kaplama kalınlığı kadar inceltilir, ölçü alınır ve geçici kaplama takılır.'
+            },
+            {
+              asama: 'Laboratuvar ve prova',
+              sure: '1-2 randevu',
+              aciklama:
+                'Kaplama hazırlanır ve ağızda denenir; renk, biçim ve ısırma ilişkisi bu aşamada değerlendirilir.'
+            },
+            {
+              asama: 'Yapıştırma',
+              sure: 'Tek seans',
+              aciklama:
+                'Uygun bulunan kaplama yapıştırılır ve son ısırma ayarı yapılır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Zirkonyum ile cam seramik (E-max)',
+            sutunlar: ['Zirkonyum', 'Cam seramik (E-max)'],
+            satirlar: [
+              {
+                olcut: 'Dayanıklılık',
+                olcutAciklama: 'Arka dişlerde belirleyici ölçüt',
+                a: 'Yüksek; çiğneme yükünün fazla olduğu bölgelerde tercih edilir.',
+                b: 'İyi, ancak yüksek yük altında zirkonyumun gerisinde kalır.'
+              },
+              {
+                olcut: 'Işık geçirgenliği',
+                olcutAciklama: 'Ön dişlerde belirleyici ölçüt',
+                a: 'İyi; metal desteklinin aksine koyu sınır bırakmaz.',
+                b: 'Daha yüksek; doğal mineye en yakın görüntüyü verir.'
+              },
+              {
+                olcut: 'Tipik kullanım yeri',
+                a: 'Arka dişler, uzun köprüler, implant üstü.',
+                b: 'Ön dişler, tek diş restorasyonları, lamina.'
+              },
+              {
+                olcut: 'Gereken kesim',
+                a: 'Kaplama kalınlığı kadar.',
+                b: 'Benzer; lamina biçiminde daha az.'
+              },
+              {
+                olcut: 'Köprüde kullanım',
+                a: 'Uzun açıklıklarda kullanılabilir.',
+                b: 'Uzun açıklıklarda tercih edilmez.'
+              }
+            ],
+            dipnot:
+              'Seçim malzemenin "daha iyi" olmasına değil dişin konumuna bağlıdır: gülüşte görünen tek dişte ışık geçirgenliği, arka azıda dayanıklılık öne çıkar.'
+          },
           notlar: [
             'Geçici kaplama takılıyken çok sert ve yapışkan yiyeceklerden kaçınılmalıdır.',
-            'Prova aşaması renk ve biçmin konuşulacağı aşamadır; beklentiler orada söylenmelidir.',
-            'Gece diş sıkma varsa koruyucu plak önerilebilir.'
+            'Prova aşaması renk ve biçimin konuşulacağı aşamadır; beklentiler orada söylenmelidir.',
+            'Gece diş sıkma varsa koruyucu plak önerilebilir.',
+            'Geçici kaplama düşerse bekletilmeden takılmalıdır; diş hassaslaşır ve komşu dişler kayabilir.',
+            'Kaplamanın diş etiyle birleştiği sınır günlük temizlikte atlanmamalıdır.'
           ],
           sorular: [
             {
@@ -1512,6 +1804,27 @@ export const tedaviMenusu: {
               cevap:
                 'Zirkonyumun kendi rengi kahve ve çay gibi içeceklerden doğal diş kadar etkilenmez. ' +
                 'Çevresindeki doğal dişlerin rengi zamanla değişebilir.'
+            },
+            {
+              soru: 'Kaplamanın altındaki diş çürür mü?',
+              cevap:
+                'Kaplama çürümez ama altındaki diş çürüyebilir. Çürük çoğunlukla kaplamanın diş etiyle ' +
+                'birleştiği sınırdan başlar. Kaplamanın altında kaldığı için gözle görülmez; ' +
+                'kontrollerde ve gerektiğinde röntgenle takip edilir.'
+            },
+            {
+              soru: 'Kaç seansta biter?',
+              cevap:
+                'Çoğunlukla iki ile dört seans arasında tamamlanır. Süreyi belirleyen şey laboratuvar ' +
+                'aşaması ve prova sayısıdır; renk uyumunun kritik olduğu ön diş çalışmalarında ' +
+                'ek prova randevusu gerekebilir.'
+            },
+            {
+              soru: 'Kaplama düşerse ne yapmalıyım?',
+              cevap:
+                'Düşen kaplamayı saklayın ve bekletmeden randevu alın. Altındaki diş açıkta ' +
+                'kaldığında hassaslaşır ve kısa sürede komşu dişler hafifçe kayarak kaplamanın ' +
+                'yeniden oturmasını zorlaştırabilir.'
             }
           ]
         },
@@ -2178,6 +2491,7 @@ export const tedaviMenusu: {
         {
           ad: 'Diş Çekimi',
           slug: 'dis-cekimi',
+          guncelleme: '2026-08-29',
           ozet: 'Kurtarılamayan dişin uyuşturma altında alınması ve iyileşme sürecinin yönetilmesi.',
           metaAciklama:
             'Diş çekimi nasıl yapılır, sonrasında nelere dikkat edilir, iyileşme ne kadar sürer?',
@@ -2186,28 +2500,96 @@ export const tedaviMenusu: {
             'muayene sonrasında verilir; çekimden önce dişin kurtarılabileceği seçenekler konuşulur.',
           bolumler: [
             {
+              baslik: 'Karar nasıl verilir',
+              metin:
+                'Çekim ilk seçenek değil son adımdır. Kanal tedavisi, kanal yenileme, kök ucu cerrahisi ' +
+                've protetik onarım gibi dişi yerinde tutan yollar önce değerlendirilir. Kökte ' +
+                'onarılamayacak bir kırık varsa, diş eti hastalığı dişi tutan kemiği büyük ölçüde ' +
+                'eritmişse ya da geride kurtarılabilir yeterli diş dokusu kalmamışsa çekim gündeme ' +
+                'gelir. Karar röntgen ve muayeneyle birlikte verilir.'
+            },
+            {
               baslik: 'İşlem sırası',
               metin:
                 'Bölge uyuşturulur ve dişin bağ dokusundan ayrılması sağlanır. İşlem sırasında ağrı değil ' +
-                'basınç hissedilir. Çekim sonrası bölgeye tampon konur ve gerekirse dikiş atılır.'
+                'basınç hissedilir. Çekim sonrası bölgeye tampon konur ve gerekirse dikiş atılır. ' +
+                'Kökün biçimine ve konumuna göre diş bölünerek parça parça alınabilir; bu, işlemin ' +
+                'zorlaştığı anlamına gelmez, çevredeki kemiği korumak için tercih edilen bir yoldur.'
+            },
+            {
+              baslik: 'Basit çekim ile cerrahi çekim',
+              metin:
+                'Ağızda görünen ve tutamak verecek kadar sağlam bir diş, sarsma hareketleriyle alınabilir; ' +
+                'buna basit çekim denir. Diş kırıksa, diş eti altında kalmışsa ya da kökleri ayrık ve ' +
+                'eğriyse diş etine küçük bir kesi yapılıp diş görünür hâle getirilir. İkisi arasındaki ' +
+                'fark ağrı değil, erişim yöntemidir — her ikisinde de bölge uyuşturulur.'
             },
             {
               baslik: 'İlk yirmi dört saat',
               metin:
                 'Pıhtının yerinde kalması iyileşmenin tamamıdır. Bu yüzden ilk gün ağız çalkalanmaz, ' +
-                'tükürülmez, pipet kullanılmaz ve sigara içilmez. Soğuk uygulama şişliği azaltır.'
+                'tükürülmez, pipet kullanılmaz ve sigara içilmez. Soğuk uygulama şişliği azaltır. ' +
+                'Bu kuralların hepsi tek bir amaca hizmet eder: boşlukta oluşan pıhtı, altındaki kemiği ' +
+                've siniri örten geçici bir örtüdür. Emme hareketi ya da çalkalama onu yerinden ' +
+                'çıkarabilir.'
+            },
+            {
+              baslik: 'İyileşme nasıl ilerler',
+              metin:
+                'İlk günlerde şişlik ve hafif rahatsızlık beklenir, genellikle ikinci günden sonra ' +
+                'azalmaya başlar. Diş eti boşluğun üzerini birkaç hafta içinde kapatır; altındaki ' +
+                'kemiğin dolması ise aylar sürer. Bu yüzden implant ya da köprü planı, diş etinin ' +
+                'kapanmasına değil kemiğin durumuna göre zamanlanır.'
             },
             {
               baslik: 'Boşluğun geleceği',
               metin:
                 'Çekilen dişin boşluğu uzun süre boş bırakılırsa komşu dişler eğilir, karşı diş uzar. ' +
-                'İmplant ya da köprü planı iyileşme tamamlandıktan sonra konuşulur.'
+                'İmplant ya da köprü planı iyileşme tamamlandıktan sonra konuşulur. Bu hareketler ' +
+                'yavaş ama geri dönüşsüzdür: dişler kaydıktan sonra boşluğa protez yapmak için ' +
+                'önce ortodontik düzeltme gerekebilir. Planın çekim anında konuşulmasının sebebi budur.'
             }
           ],
+          karsilastirma: {
+            baslik: 'Basit çekim ile cerrahi çekim',
+            sutunlar: ['Basit çekim', 'Cerrahi çekim'],
+            satirlar: [
+              {
+                olcut: 'Hangi durumda',
+                olcutAciklama: 'Yöntemi belirleyen ölçüt',
+                a: 'Diş ağızda görünür ve tutunacak kadar sağlam.',
+                b: 'Diş kırık, gömülü ya da kökleri ayrık ve eğri.'
+              },
+              {
+                olcut: 'Erişim',
+                a: 'Diş eti kesilmeden, doğrudan.',
+                b: 'Diş etine küçük bir kesi yapılarak.'
+              },
+              {
+                olcut: 'Dikiş',
+                a: 'Çoğunlukla gerekmez.',
+                b: 'Genellikle atılır ve kontrolde alınır.'
+              },
+              {
+                olcut: 'Uyuşturma',
+                a: 'Bölgesel uyuşturma.',
+                b: 'Bölgesel uyuşturma; kapsam daha geniş tutulabilir.'
+              },
+              {
+                olcut: 'İyileşme',
+                a: 'Şişlik sınırlı, birkaç günde geriler.',
+                b: 'Şişlik ve rahatsızlık daha belirgin olabilir.'
+              }
+            ],
+            dipnot:
+              'Hangi yöntemin gerekeceği çoğunlukla röntgende görülür, ancak işlem sırasında da değişebilir; ikisi arasındaki fark hastanın hissettiği ağrı değil hekimin kullandığı erişim yoludur.'
+          },
           notlar: [
             'Verilen ilaçlar tarif edildiği şekilde kullanılmalıdır.',
             'İkinci günden sonra ılık tuzlu suyla yumuşak gargara yapılabilir.',
-            'Şiddetli ağrı, durmayan kanama ya da artan şişlikte klinik aranmalıdır.'
+            'Şiddetli ağrı, durmayan kanama ya da artan şişlikte klinik aranmalıdır.',
+            'Çekim sonrası ilk gün sigara içilmemelidir; pıhtının yerinden çıkması riskini artırır.',
+            'Dikiş atıldıysa kontrol randevusu atlanmamalıdır.'
           ],
           sorular: [
             {
@@ -2221,12 +2603,34 @@ export const tedaviMenusu: {
               cevap:
                 'Çoğu durumda yapılabilir, ancak ilaç düzeni hekiminizle birlikte planlanmalıdır. ' +
                 'Kullandığınız bütün ilaçları randevudan önce bildirin.'
+            },
+            {
+              soru: 'Kaç gün ağrır?',
+              cevap:
+                'Rahatsızlık genellikle ilk iki gün en belirgindir ve sonrasında azalır. Ağrının ' +
+                'azalmak yerine üçüncü günden sonra artması beklenen bir seyir değildir; bu durumda ' +
+                'klinik aranmalıdır.'
+            },
+            {
+              soru: 'Çekim yerine dolgu yapılamaz mıydı?',
+              cevap:
+                'Dolgu, geride sağlam diş dokusu kaldığında ve kök bütünlüğü korunduğunda yapılabilir. ' +
+                'Kök kırıksa ya da dişi tutan kemik büyük ölçüde erimişse dolgu dişi ayakta tutamaz. ' +
+                'Bu ayrım röntgen ve muayeneyle netleşir.'
+            },
+            {
+              soru: 'Boşluğu ne zaman tamamlatmalıyım?',
+              cevap:
+                'Diş etinin kapanması birkaç hafta, kemiğin dolması aylar sürer. Plan bu iyileşmeye ' +
+                'göre zamanlanır. Beklemek gerekse bile planın çekim anında konuşulması önemlidir, ' +
+                'çünkü komşu dişlerin hareketi bekleme süresine bağlıdır.'
             }
           ]
         },
         {
           ad: 'Gömülü 20 Yaş Dişi',
           slug: 'gomulu-20-yas-disi',
+          guncelleme: '2026-08-29',
           ozet: 'Sürmeyen ya da yan yatmış yirmi yaş dişinin cerrahi olarak çıkarılması.',
           metaAciklama:
             'Gömülü 20 yaş dişi ne zaman çekilir, işlem nasıl yapılır, iyileşme süreci nasıl geçer?',
@@ -2250,16 +2654,106 @@ export const tedaviMenusu: {
                 'zarar verdiği için tercih edilen yoldur. İşlem dikişle tamamlanır.'
             },
             {
+              baslik: 'Görüntüleme neden gerekir',
+              metin:
+                'Alt çenede yirmi yaş dişinin kökleri, dudağı ve çeneyi besleyen sinir kanalına yakın ' +
+                'geçebilir. Panoramik röntgende bu iki yapı üst üste düştüğü için aradaki gerçek ' +
+                'mesafe görülemez. Yakınlık şüphesi varsa üç boyutlu tomografi istenir; kökün sinire ' +
+                'göre konumu buradan ölçülür ve cerrahi plan ona göre kurulur. Görüntüleme, işlemin ' +
+                'nasıl yapılacağını belirleyen adımdır.'
+            },
+            {
               baslik: 'İyileşme',
               metin:
                 'İlk iki üç gün şişlik ve ağız açmada kısıtlılık beklenen bulgulardır; üçüncü günden sonra ' +
-                'azalmaya başlar. Dikişler genellikle bir hafta sonra alınır.'
+                'azalmaya başlar. Dikişler genellikle bir hafta sonra alınır. Bu dönemde ağzın tam ' +
+                'açılamaması çiğneme kaslarının işleme verdiği geçici tepkidir, kalıcı değildir. ' +
+                'Boşluğun kemikle dolması aylar sürer ama günlük hayatı etkilemez.'
+            },
+            {
+              baslik: 'Beklenmeyen bulgular',
+              metin:
+                'Ağrının üçüncü günden sonra azalmak yerine artması, ağızda kötü tat ve boşluğun ' +
+                'boşalmış görünmesi pıhtının yerinden çıktığına işaret edebilir; bu durum ' +
+                'değerlendirilmesi gereken bir gelişmedir. Dudakta ya da dilde uyuşukluğun ' +
+                'uyuşturmanın etkisi geçtikten sonra sürmesi de bildirilmelidir. İkisi de ' +
+                'beklenmedik durumlardır ve randevu beklenmeden aranmalıdır.'
+            },
+            {
+              baslik: 'Çekmemek de bir karar',
+              metin:
+                'Her gömülü diş çekilmez. Şikâyet vermeyen, komşu dişe zarar vermeyen ve çevresinde ' +
+                'kist bulgusu olmayan bir diş takibe alınabilir. Takip, "bir şey yapmamak" değildir: ' +
+                'düzenli kontrolde röntgenle komşu dişin kök yüzeyi ve çevredeki kemik izlenir. ' +
+                'Durum değiştiğinde çekim yeniden gündeme gelir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve görüntüleme',
+              sure: 'Tek seans',
+              aciklama:
+                'Dişin konumu ve sinire yakınlığı değerlendirilir; gerekirse üç boyutlu tomografi istenir.'
+            },
+            {
+              asama: 'Cerrahi çekim',
+              sure: 'Tek seans',
+              aciklama:
+                'Bölge uyuşturulur, diş gerekirse parçalara ayrılarak çıkarılır ve dikişle tamamlanır.'
+            },
+            {
+              asama: 'İlk iyileşme',
+              sure: 'Birkaç gün',
+              aciklama:
+                'Şişlik ve ağız açmada kısıtlılık beklenir; üçüncü günden sonra azalmaya başlar.'
+            },
+            {
+              asama: 'Dikiş alımı ve kontrol',
+              sure: '1 randevu',
+              aciklama:
+                'Dikişler alınır, bölgenin iyileşmesi değerlendirilir.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Çekim ile takip',
+            sutunlar: ['Çekim', 'Takip'],
+            satirlar: [
+              {
+                olcut: 'Hangi durumda',
+                olcutAciklama: 'Kararı belirleyen ana ölçüt',
+                a: 'Tekrarlayan iltihap, komşu dişte çürük veya kök erimesi, kist bulgusu.',
+                b: 'Şikâyet yok, komşu dişe zarar yok, kist bulgusu yok.'
+              },
+              {
+                olcut: 'Ne yapılır',
+                a: 'Cerrahi olarak çıkarılır.',
+                b: 'Düzenli kontrolde röntgenle izlenir.'
+              },
+              {
+                olcut: 'Riski',
+                a: 'Cerrahi işleme bağlı şişlik ve iyileşme dönemi.',
+                b: 'Durum sessizce değişebilir; kontrol aksarsa geç fark edilir.'
+              },
+              {
+                olcut: 'Zamanlama',
+                a: 'Genç yaşta kökler tam gelişmemişken iyileşme daha rahat seyreder.',
+                b: 'Şikâyet ortaya çıktığında çekim yeniden gündeme gelir.'
+              },
+              {
+                olcut: 'Kalıcılık',
+                a: 'Sorun tekrarlamaz.',
+                b: 'Karar ertelenmiştir, ortadan kalkmamıştır.'
+              }
+            ],
+            dipnot:
+              'Takip, çekimden kaçınmak değil kontrollü bekleme kararıdır; kontroller aksadığında bu karar geçerliliğini yitirir.'
+          },
           notlar: [
             'İşlemden sonraki gün için yoğun bir program yapmamak rahat eder.',
             'İlk gün soğuk uygulama, sonraki günlerde ılık uygulama önerilir.',
-            'Sigara iyileşmeyi belirgin biçimde geciktirir.'
+            'Sigara iyileşmeyi belirgin biçimde geciktirir.',
+            'Ağrının üçüncü günden sonra artması beklenen seyir değildir, klinik aranmalıdır.',
+            'Uyuşturmanın etkisi geçtikten sonra süren uyuşukluk bildirilmelidir.'
           ],
           sorular: [
             {
@@ -2273,6 +2767,27 @@ export const tedaviMenusu: {
               cevap:
                 'Aynı taraftaki alt ve üst diş çoğunlukla birlikte alınır. İki tarafın aynı seansta ' +
                 'çekilmesi beslenmeyi zorlaştırdığı için genellikle ayrı randevulara bölünür.'
+            },
+            {
+              soru: 'Şikâyetim yok, yine de çektirmeli miyim?',
+              cevap:
+                'Zorunlu değil. Komşu dişe zarar vermeyen ve kist bulgusu olmayan bir diş takibe ' +
+                'alınabilir. Ancak takip düzenli kontrol demektir; kontrol aksadığında komşu azı ' +
+                'dişindeki çürük ya da kök erimesi fark edilmeden ilerleyebilir.'
+            },
+            {
+              soru: 'Yirmi yaş dişi çekilince diğer dişler bozulur mu?',
+              cevap:
+                'Yirmi yaş dişinin ön dişlerdeki çapraşıklığa yol açtığı yönündeki yaygın inanış ' +
+                'kesinleşmiş değildir; çekim de ön dişleri düzeltmez. Çekim kararı, bu dişin ' +
+                'kendisinin ya da komşusunun durumuna bakılarak verilir.'
+            },
+            {
+              soru: 'Ne kadar süre işten uzak kalmalıyım?',
+              cevap:
+                'Çoğu kişi ertesi gün günlük hayatına döner. Şişlik ve ağız açmadaki kısıtlılık ' +
+                'ilk iki üç günde en belirgindir, bu yüzden işlem sonrası güne yoğun bir program ' +
+                'koymamak rahatlatır. Ağır fiziksel aktivite ilk günlerde ertelenir.'
             }
           ]
         },
@@ -2830,6 +3345,7 @@ export const tedaviMenusu: {
         {
           ad: 'All-On-Six',
           slug: 'all-on-six',
+          guncelleme: '2026-08-29',
           dal: 'implantoloji',
           ozet:
             'Dişsiz çeneye altı implant yerleştirilerek çiğneme yükünün daha geniş alana dağıtıldığı sabit protez.',
@@ -2860,13 +3376,84 @@ export const tedaviMenusu: {
               metin:
                 'Tomografiyle planlama yapılır, implantlar dengeli biçimde yerleştirilir ve geçici ' +
                 'protezle kapatılır. Kaynaşma süresi genellikle birkaç aydır; ardından kalıcı protez ' +
-                'hazırlanır.'
+                'hazırlanır. Geçici protez sadece görüntü için değildir: diş eti bu dönemde ' +
+                'protezin biçimine göre şekillenir ve kalıcı protezin oturacağı yatak hazırlanır.'
+            },
+            {
+              baslik: 'Neden altı implant',
+              metin:
+                'Sabit bir protezin çiğneme yükünü taşıyabilmesi için destek noktalarının çeneye ' +
+                'dengeli dağılması gerekir. Destek sayısı arttıkça her bir implanta düşen yük azalır ' +
+                've protezin arkaya doğru desteksiz uzayan kısmı kısalır. Bu, protezin daha geniş ' +
+                'bir tabana oturması demektir. Ancak fazladan implant her zaman daha iyi değildir: ' +
+                'implantın kemik içinde yeterli hacme oturması, yan yana gelen implantlar arasında ' +
+                'yeterli mesafenin kalması gerekir.'
+            },
+            {
+              baslik: 'Kemik yeterli değilse',
+              metin:
+                'Arka bölgede kemik yüksekliği yetersizse iki yol vardır: önce kemik hacmini ' +
+                'artıran işlemler yapılır (greft ya da sinüs lifting) ve ardından altı implant ' +
+                'yerleştirilir; ya da mevcut kemiğe uygun, açılı yerleştirmeye dayanan dört ' +
+                'implantlı düzen tercih edilir. Hangisinin seçileceği tomografideki ölçüme, ' +
+                'hastanın ek cerrahi istekliliğine ve genel sağlık durumuna göre birlikte konuşulur.'
+            },
+            {
+              baslik: 'Uzun dönemde bakım',
+              metin:
+                'Sabit protezin altı, doğal dişlerin arası gibi temizlenmesi gereken bir bölgedir. ' +
+                'Protez ile diş eti arasındaki boşluğa ara yüz fırçası ve ağız duşu ile ulaşılır; ' +
+                'bu temizlik yapılmadığında implant çevresinde iltihap başlar ve kemik kaybı ' +
+                'sessizce ilerler. Düzenli kontrollerde protez gerektiğinde sökülüp altı ' +
+                'temizlenebilir.'
+            },
+            {
+              baslik: 'Geçici protez dönemi',
+              metin:
+                'Kaynaşma beklenirken kullanılan geçici protez, kalıcı protezin küçültülmüş bir ' +
+                'provası gibidir: konuşma, çiğneme ve dudak desteği bu dönemde değerlendirilir. ' +
+                'Rahatsız eden noktalar not edilir ve kalıcı protez tasarlanırken dikkate alınır. ' +
+                'Bu dönemde yumuşak gıda önerisine uyulması yalnız konfor meselesi değildir; ' +
+                'sert gıdaların ürettiği yük henüz kaynaşmamış implantları zorlayabilir.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Planlama',
+              sure: '1-2 randevu',
+              aciklama:
+                'Tomografiyle kemik ölçülür, implant sayısı ve konumları planlanır.'
+            },
+            {
+              asama: 'İmplantların yerleştirilmesi',
+              sure: 'Tek seans',
+              aciklama:
+                'Gereken çekimler yapılır, altı implant çeneye dengeli biçimde yerleştirilir.'
+            },
+            {
+              asama: 'Geçici protez',
+              sure: 'Tek seans',
+              aciklama:
+                'Tutuculuk uygunsa sabit geçici protez takılır; diş eti bu dönemde şekillenir.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'İmplantların kemikle bütünleşmesi beklenir. Bu dönemde yumuşak gıda önerilir.'
+            },
+            {
+              asama: 'Kalıcı protez',
+              sure: '2-3 randevu',
+              aciklama: 'Ölçü alınır, kalıcı üst yapı hazırlanıp takılır.'
             }
           ],
           notlar: [
             'Kaynaşma döneminde sert gıdalardan kaçınılmalıdır.',
             'İmplant çevresi temizliği düzenli olmalı, kontroller aksatılmamalıdır.',
-            'Şeker hastalığı gibi iyileşmeyi etkileyen durumlar önceden bildirilmelidir.'
+            'Şeker hastalığı gibi iyileşmeyi etkileyen durumlar önceden bildirilmelidir.',
+            'Sigara implant kaynaşmasını olumsuz etkiler.',
+            'Gece diş sıkma varsa bildirilmelidir; protez tasarımı buna göre planlanır.'
           ],
           sorular: [
             {
@@ -2880,44 +3467,145 @@ export const tedaviMenusu: {
               cevap:
                 'Kemikle kaynaşmanın tamamlanması beklenir; bu genellikle birkaç aylık bir süredir ve ' +
                 'kontrollerle izlenir.'
+            },
+            {
+              soru: 'Bir implantta sorun çıkarsa protezin tamamı gider mi?',
+              cevap:
+                'Hayır. Destek sayısı fazla olduğu için kalan implantlar yükü taşımayı sürdürebilir. ' +
+                'Sorunlu implant değerlendirilir; gerekirse çıkarılıp iyileşme sonrası yenisi ' +
+                'planlanır. Protezin tamamen yenilenmesi her durumda gerekmez.'
+            },
+            {
+              soru: 'Protezi kendim çıkarabilir miyim?',
+              cevap:
+                'Hayır, sabit protez hasta tarafından çıkarılmaz. Kontrollerde hekim tarafından ' +
+                'sökülüp altı temizlenebilir ve yerine takılır. Bu yüzden günlük temizlikte ' +
+                'protezin altına ulaşan araçların kullanımı öğretilir.'
+            },
+            {
+              soru: 'İyileşme dönemi boyunca dişsiz mi kalacağım?',
+              cevap:
+                'Tutuculuk uygunsa implantlar yerleştirildiği seansta sabit geçici protez takılabilir. ' +
+                'Uygun değilse hareketli geçici bir çözüm planlanır. Kaynaşma dönemi boyunca ' +
+                'dişsiz kalınması amaçlanan bir durum değildir.'
+            },
+            {
+              soru: 'Alt ve üst çene aynı anda yapılabilir mi?',
+              cevap:
+                'Yapılabilir, ancak karar tek başına cerrahi imkâna değil iyileşme dönemine göre ' +
+                'verilir: iki çene aynı anda yapıldığında geçici protez dönemi boyunca beslenme ' +
+                'daha çok kısıtlanır. Bu yüzden bazı planlarda çeneler ayrı seanslara bölünür.'
             }
           ]
         },
         {
           ad: 'Tek İmplant Tedavisi',
           slug: 'tek-implant-tedavisi',
+          guncelleme: '2026-08-29',
           dal: 'implantoloji',
           ozet: 'Tek bir eksik dişin, komşu dişlere dokunmadan implantla tamamlanması.',
           metaAciklama:
             'Tek diş eksikliğinde implant tedavisi nasıl ilerler, kaç ay sürer, hangi durumlarda uygundur?',
           giris:
             'Tek diş eksikliğinde implant, komşu dişleri kesmeden boşluğu tamamlayan seçenektir. ' +
-            'Köprüden farkı budur: yandaki sağlam dişlere dokunulmaz.',
+            'Köprüden farkı budur: yandaki sağlam dişlere dokunulmaz. İmplant, kemiğe yerleştirilen ' +
+            'bir vida ile onun üzerine gelen kaplamadan oluşur; yani tek parça değil, iki aşamada ' +
+            'tamamlanan bir bütündür.',
           bolumler: [
+            {
+              baslik: 'Boşluk neden bırakılmaz',
+              metin:
+                'Eksik diş yalnız çiğneme sorunu değildir. Karşı çenedeki diş desteksiz kalınca boşluğa ' +
+                'doğru uzar, yandaki dişler zamanla boşluğa yatmaya başlar. Bu hareketler ısırma ' +
+                'düzenini bozar ve ileride yapılacak tedaviyi zorlaştırır. Ayrıca diş kökünün ' +
+                'uyardığı kemik, uyarı kalkınca erimeye başlar; boşluk ne kadar uzun beklerse ' +
+                'implant için gereken kemik hacmi o kadar azalır.'
+            },
             {
               baslik: 'Planlama',
               metin:
                 'Kemik yüksekliği ve kalınlığı üç boyutlu görüntüyle değerlendirilir. Kemik yetersizse ' +
                 'greft ya da sinüs işlemi aynı planın parçası olur. Genel sağlık durumu ve kullanılan ' +
-                'ilaçlar bu aşamada konuşulur.'
+                'ilaçlar bu aşamada konuşulur. Kan sulandırıcılar, kemik erimesi ilaçları ve kontrolsüz ' +
+                'şeker hastalığı planı doğrudan etkiler; bu yüzden ilaç listesinin eksiksiz ' +
+                'paylaşılması gerekir.'
             },
             {
               baslik: 'Cerrahi aşama',
               metin:
                 'İmplant, uyuşturma altında kemik içine yerleştirilir. İşlem tek diş için genellikle ' +
-                'yarım saatin altındadır. Üzerine geçici bir çözüm planlanabilir.'
+                'yarım saatin altındadır. Üzerine geçici bir çözüm planlanabilir. Bölge dikişle ' +
+                'kapatılır ve iyileşme başlar; ilk günlerde hafif şişlik ve rahatsızlık beklenen ' +
+                'bulgulardır.'
             },
             {
               baslik: 'Kaynama ve üst yapı',
               metin:
                 'İmplantın kemikle bütünleşmesi çoğunlukla iki ile dört ay arasında sürer. Bu süre sonunda ' +
-                'ölçü alınır ve üst yapı (kaplama) hazırlanıp yerleştirilir.'
+                'ölçü alınır ve üst yapı (kaplama) hazırlanıp yerleştirilir. Kaynaşma, vidanın kemiğe ' +
+                'yapışması değil kemik hücrelerinin yüzeyine büyümesidir; bu yüzden beklenmesi gereken ' +
+                'biyolojik bir süredir ve kısaltılamaz. Bekleme süresini kemiğin yoğunluğu ve ' +
+                'bölgenin konumu belirler.'
+            },
+            {
+              baslik: 'İmplant çevresinin bakımı',
+              metin:
+                'İmplant çürümez, ama çevresindeki diş eti ve kemik hastalanabilir. Doğal dişte kökü ' +
+                'saran bağ dokusu implantta yoktur; bu yüzden implant çevresindeki iltihap doğal dişe ' +
+                'göre daha hızlı ilerleyebilir. Günlük temizlikte arayüz fırçası ve diş ipi ' +
+                'kullanımı, düzenli kontrollerde de implant çevresinin ölçülmesi bu yüzden gerekir.'
+            },
+            {
+              baslik: 'Her durumda uygun mudur',
+              metin:
+                'Yaş tek başına engel değildir; belirleyici olan kemik gelişiminin tamamlanmış olması ' +
+                've genel sağlık durumudur. Kontrolsüz şeker hastalığı, ağır sigara kullanımı, bazı ' +
+                'kemik ilaçları ve tedavi edilmemiş diş eti hastalığı implantın kaynaşmasını olumsuz ' +
+                'etkiler. Bu durumların bir kısmı engel değil, önce çözülmesi gereken adımdır — ' +
+                'örneğin diş eti hastalığı tedavi edilmeden implant planlanmaz.'
+            },
+            {
+              baslik: 'Cerrahi sonrası ilk günler',
+              metin:
+                'İlk gün bölgeye soğuk uygulanır ve ağız çalkalanmaz. Şişliğin ikinci gün en ' +
+                'belirgin hâline ulaşıp sonra gerilemesi beklenir. Verilen ilaçlar tarif ' +
+                'edildiği gibi kullanılır; ağrının azalmak yerine artması, durmayan kanama ya ' +
+                'da yükselen ateş beklenen seyir değildir ve bildirilmelidir. Fırçalama ' +
+                'işlem bölgesi dışında sürdürülür — temizliğin tamamen bırakılması ' +
+                'iyileşmeyi kolaylaştırmaz, zorlaştırır.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve görüntüleme',
+              sure: 'Tek seans',
+              aciklama:
+                'Üç boyutlu görüntüyle kemik ölçülür, genel sağlık durumu ve ilaçlar değerlendirilir.'
+            },
+            {
+              asama: 'İmplantın yerleştirilmesi',
+              sure: 'Tek seans',
+              aciklama:
+                'Uyuşturma altında implant kemiğe yerleştirilir, bölge dikişle kapatılır.'
+            },
+            {
+              asama: 'Kaynaşma',
+              sure: 'Birkaç ay',
+              aciklama:
+                'Kemiğin implant yüzeyine büyümesi beklenir. Süre kemiğin yoğunluğuna ve bölgeye göre değişir.'
+            },
+            {
+              asama: 'Üst yapı',
+              sure: '2-3 randevu',
+              aciklama: 'Ölçü alınır, kaplama hazırlanır ve implantın üzerine yerleştirilir.'
             }
           ],
           notlar: [
             'Sigara implant çevresindeki iyileşmeyi ve uzun dönem başarısını olumsuz etkiler.',
             'İmplant çürümez ama çevresindeki diş eti hastalanabilir; düzenli kontrol şarttır.',
-            'Şeker hastalığı gibi durumlarda tedavi planı hekiminizle birlikte düzenlenir.'
+            'Şeker hastalığı gibi durumlarda tedavi planı hekiminizle birlikte düzenlenir.',
+            'Kullandığınız bütün ilaçları, özellikle kan sulandırıcı ve kemik ilaçlarını bildirin.',
+            'Gece diş sıkma varsa üst yapı planlanırken koruyucu plak da değerlendirilir.'
           ],
           sorular: [
             {
@@ -2931,6 +3619,27 @@ export const tedaviMenusu: {
               cevap:
                 'Kemik ve diş eti uygunsa aynı seansta yapılabilir. İltihabın yaygın olduğu durumlarda ' +
                 'iyileşme beklenir.'
+            },
+            {
+              soru: 'Kaynaşma süresi neden kısaltılamıyor?',
+              cevap:
+                'Kaynaşma bir yapıştırma işlemi değil, kemik hücrelerinin implant yüzeyine büyümesidir. ' +
+                'Bu biyolojik bir süreçtir ve kendi hızında ilerler. Süre dolmadan yük bindirilirse ' +
+                'implantın kemikle bütünleşmesi bozulabilir.'
+            },
+            {
+              soru: 'Boşluk kaldığı sürede ne değişir?',
+              cevap:
+                'Diş kökünün uyarısı kalktığı için o bölgedeki kemik zamanla erir; komşu ve karşı ' +
+                'dişler de boşluğa doğru hareket eder. İkisi de implantı zorlaştırır: kemik azalırsa ' +
+                'greft gerekebilir, dişler kaydıysa üst yapı için yeterli yer kalmayabilir.'
+            },
+            {
+              soru: 'Ne kadar dayanır?',
+              cevap:
+                'Kesin bir süre söylenemez. Ömrünü belirleyen şey implantın kendisinden çok çevresindeki ' +
+                'dokunun sağlığıdır: günlük temizlik, düzenli kontrol, sigara kullanımı ve diş sıkma ' +
+                'alışkanlığı doğrudan etkiler.'
             }
           ]
         },
@@ -3064,6 +3773,7 @@ export const tedaviMenusu: {
         {
           ad: 'Diş Eti Tedavisi',
           slug: 'dis-eti-tedavisi',
+          guncelleme: '2026-08-29',
           dal: 'periodontoloji',
           ozet: 'Kanayan ve çekilen diş etinde iltihabın kontrol altına alınması, kaybın durdurulması.',
           metaAciklama:
@@ -3074,28 +3784,122 @@ export const tedaviMenusu: {
             'kendiliğinden geri gelmez.',
           bolumler: [
             {
+              baslik: 'Neden ağrısız ilerler',
+              metin:
+                'Diş eti hastalığının en zor yanı, ilerlediği dönemde şikâyet üretmemesidir. Çürükte ' +
+                'olduğu gibi keskin bir ağrı yoktur; kanama ise çoğu kişi tarafından "fırçayı sert ' +
+                'kullandım" diye yorumlanır. Kemik kaybı sessizce ilerler ve fark edildiğinde ' +
+                'geri alınamaz. Bu yüzden tedavinin başlangıç noktası şikâyet değil, düzenli ' +
+                'muayenede yapılan ölçümdür.'
+            },
+            {
               baslik: 'Değerlendirme',
               metin:
                 'Diş eti cebinin derinliği ölçülür, röntgenle kemik seviyesi değerlendirilir. Bu ölçüm ' +
-                'hastalığın hangi aşamada olduğunu ve tedavinin kapsamını belirler.'
+                'hastalığın hangi aşamada olduğunu ve tedavinin kapsamını belirler. Ölçüm diş diş ve ' +
+                'her dişin çevresinde birkaç noktadan yapılır; tek bir bölgedeki derinlik bütün ağzı ' +
+                'temsil etmez. Kanama olan noktalar ayrıca kaydedilir, çünkü tedavi sonrası ' +
+                'karşılaştırma bu kayda göre yapılır.'
             },
             {
               baslik: 'Başlangıç tedavisi',
               metin:
                 'Diş taşı ve plak, diş eti üstünde ve altında temizlenir; kök yüzeyleri düzleştirilir. ' +
-                'Bölge bölge, birkaç seansta yapılır. Çoğu hastada asıl iyileşme bu aşamada sağlanır.'
+                'Bölge bölge, birkaç seansta yapılır. Çoğu hastada asıl iyileşme bu aşamada sağlanır. ' +
+                'Amaç iltihabı sürdüren pürüzlü yüzeyi ortadan kaldırmaktır: kök yüzeyi temizlendiğinde ' +
+                'diş eti yeniden dişe yapışabilir ve cep sığlaşır.'
+            },
+            {
+              baslik: 'Yeniden değerlendirme',
+              metin:
+                'Başlangıç tedavisinden birkaç hafta sonra ölçümler tekrarlanır. Bu ara kontrol ' +
+                'tedavinin en belirleyici adımıdır: cep derinlikleri azaldıysa ve kanama durduysa ' +
+                'idame dönemine geçilir. Bazı bölgelerde derinlik sürüyorsa, orada kök yüzeyine ' +
+                'kapalı yöntemle ulaşılamadığı anlaşılır ve bir sonraki adım konuşulur.'
             },
             {
               baslik: 'Cerrahi gerekirse',
               metin:
                 'Derin ceplerin kapanmadığı durumlarda küretaj ya da flep işlemi gündeme gelir. Karar, ' +
-                'başlangıç tedavisinden sonraki kontrol ölçümlerine göre verilir.'
+                'başlangıç tedavisinden sonraki kontrol ölçümlerine göre verilir. Cerrahi, tedavinin ' +
+                'başarısızlığı değil, ulaşılamayan bölgeye görerek ulaşma yöntemidir; kapsamı da ' +
+                'bütün ağız değil yalnız sorunlu bölgelerle sınırlı tutulur.'
+            },
+            {
+              baslik: 'İdame: tedavinin bitmeyen kısmı',
+              metin:
+                'Diş eti hastalığı bir kez geçirildikten sonra tekrarlamaya yatkındır. Bu yüzden ' +
+                'tedavi bittiğinde takip başlar: belirli aralıklarla ölçüm tekrarlanır ve birikim ' +
+                'temizlenir. Aralık herkes için aynı değildir, hastalığın şiddetine ve kişinin günlük ' +
+                'temizlik alışkanlığına göre belirlenir. İdame aksadığında kayıp kaldığı yerden devam eder.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve ölçüm',
+              sure: 'Tek seans',
+              aciklama:
+                'Cep derinlikleri ölçülür, röntgenle kemik seviyesi değerlendirilir, kanama noktaları kaydedilir.'
+            },
+            {
+              asama: 'Başlangıç tedavisi',
+              sure: 'Birkaç randevu',
+              aciklama:
+                'Diş eti üstü ve altındaki birikim bölge bölge temizlenir, kök yüzeyleri düzleştirilir.'
+            },
+            {
+              asama: 'Yeniden değerlendirme',
+              sure: 'Birkaç hafta sonra',
+              aciklama:
+                'Ölçümler tekrarlanır; cerrahi gerekip gerekmediği bu karşılaştırmayla belirlenir.'
+            },
+            {
+              asama: 'İdame',
+              sure: 'Düzenli aralıklarla',
+              aciklama:
+                'Takip randevularında ölçüm tekrarlanır ve birikim temizlenir. Aralık kişiye göre belirlenir.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Cerrahisiz tedavi ile cerrahi tedavi',
+            sutunlar: ['Cerrahisiz (başlangıç)', 'Cerrahi'],
+            satirlar: [
+              {
+                olcut: 'Nasıl ulaşılır',
+                a: 'Kök yüzeyine diş etinin altından, görmeden çalışılır.',
+                b: 'Diş eti kaldırılır, kök yüzeyi görülerek temizlenir.'
+              },
+              {
+                olcut: 'Hangi derinlikte yeterli',
+                olcutAciklama: 'Kararı belirleyen ana ölçüt',
+                a: 'Sığ ve orta derinlikteki ceplerde.',
+                b: 'Başlangıç tedavisine rağmen kapanmayan derin ceplerde.'
+              },
+              {
+                olcut: 'Kapsam',
+                a: 'Genellikle bütün ağız, bölge bölge.',
+                b: 'Yalnız sorunlu bölgelerle sınırlı.'
+              },
+              {
+                olcut: 'İyileşme',
+                a: 'Birkaç gün hassasiyet; günlük hayat aksamaz.',
+                b: 'Dikiş ve birkaç günlük ödem beklenir.'
+              },
+              {
+                olcut: 'Kararın verildiği an',
+                a: 'Tedavinin ilk adımıdır, herkeste yapılır.',
+                b: 'Yeniden değerlendirme ölçümlerinden sonra.'
+              }
+            ],
+            dipnot:
+              'Cerrahi, cerrahisiz tedavinin alternatifi değil devamıdır: başlangıç tedavisi yapılmadan cerrahiye geçilmez.'
+          },
           notlar: [
             'Tedaviden sonra diş etleri sıkılaştıkça geçici hassasiyet olabilir.',
             'Arayüz fırçası ya da diş ipi kullanılmadan sonucun korunması güçtür.',
-            'Sigara diş eti hastalığının seyrini belirgin biçimde kötüleştirir.'
+            'Sigara diş eti hastalığının seyrini belirgin biçimde kötüleştirir.',
+            'Şeker hastalığı ve bazı ilaçlar diş eti dokusunu etkiler; kullandığınız ilaçları bildirin.',
+            'Diş etleri iyileştikçe dişler arasında boşluk görünür olabilir; bu, şişliğin çekilmesidir.'
           ],
           sorular: [
             {
@@ -3109,40 +3913,111 @@ export const tedaviMenusu: {
               cevap:
                 'Kanama çoğunlukla iltihabın belirtisidir, fırçalamanın sert olmasının değil. Fırçalamayı ' +
                 'bırakmak iltihabı artırır.'
+            },
+            {
+              soru: 'Gargara kullanmak yeterli olur mu?',
+              cevap:
+                'Hayır. Gargara plağın yüzeyine etki eder, sertleşmiş taşı ve diş eti altındaki birikimi ' +
+                'kaldıramaz. Belirli dönemlerde destekleyici olarak önerilebilir ama tedavinin yerini ' +
+                'tutmaz ve sürekli kullanımı önerilmez.'
+            },
+            {
+              soru: 'Tedaviden sonra dişlerim sallanmaya devam eder mi?',
+              cevap:
+                'İltihap geçtikçe dokular sıkılaşır ve hafif sallanmalar azalabilir. Kemik kaybı ileriyse ' +
+                'sallanma sürebilir; bu durumda dişleri birbirine bağlayan uygulamalar ya da protetik ' +
+                'çözümler değerlendirilir.'
+            },
+            {
+              soru: 'Kaç seans sürer?',
+              cevap:
+                'Hastalığın yaygınlığına bağlıdır. Yalnız diş etiyle sınırlı iltihapta bir ya da iki ' +
+                'seans yeterli olabilir; kemik kaybı başlamışsa ağız bölgelere ayrılarak birkaç randevuda ' +
+                'çalışılır ve arada yeniden değerlendirme yapılır.'
             }
           ]
         },
         {
           ad: 'Diş Taşı Temizliği',
           slug: 'dis-tasi-temizligi',
+          guncelleme: '2026-08-29',
           dal: 'periodontoloji',
           ozet: 'Sertleşmiş plağın diş yüzeyinden ve diş eti sınırından temizlenmesi.',
+          metaAciklama:
+            'Diş taşı temizliği nasıl yapılır, dişi aşındırır mı, ne sıklıkla gerekir? İşlem sırası ' +
+            've sonrasında beklenenler.',
           giris:
             'Diş taşı, zamanla sertleşen ve fırçayla kaldırılamayan plaktır. Diş etinin kanamasına ve ' +
-            'ağız kokusuna yol açar; temizlenmediğinde alttaki kemiğin erimesine giden süreci başlatır.',
+            'ağız kokusuna yol açar; temizlenmediğinde alttaki kemiğin erimesine giden süreci başlatır. ' +
+            'Temizlik, diş eti tedavisinin ilk basamağıdır: taş kaldırılmadan diş etinin iyileşmesi ' +
+            'beklenemez, çünkü iltihabı sürdüren yüzey ortadan kalkmamış olur.',
           bolumler: [
+            {
+              baslik: 'Plak nasıl taşa dönüşür',
+              metin:
+                'Ağızdaki bakteriler diş yüzeyinde yumuşak, renksiz bir tabaka oluşturur. Bu tabaka ' +
+                'fırçalanmadığında tükürükteki mineralleri çekerek sertleşir ve diş taşına dönüşür. ' +
+                'Sertleştikten sonra fırça, ip veya gargarayla kaldırılamaz; yüzeyi pürüzlü olduğu için ' +
+                'üzerine yeni plak daha kolay tutunur. Süreç bu yüzden kendi kendini hızlandırır.'
+            },
+            {
+              baslik: 'Nerelerde birikir',
+              metin:
+                'Taş en çok tükürük bezlerinin ağıza açıldığı bölgelerde toplanır: alt ön dişlerin dil ' +
+                'tarafı ve üst azıların yanak tarafı. Diş eti sınırının altında, cepte biriken taş ' +
+                'gözle görünmez; varlığı sonda ile muayenede ya da röntgende anlaşılır. Görünen taşın ' +
+                'temizlenmiş olması, altta taş kalmadığı anlamına gelmez.'
+            },
             {
               baslik: 'İşlem sırası',
               metin:
                 'Taş, ultrasonik uçla titreşim yoluyla kırılarak kaldırılır; ardından yüzeyler parlatılır. ' +
-                'Diş kazınmaz, aşındırılmaz. İşlem çoğunlukla tek seansta biter.'
+                'Diş kazınmaz, aşındırılmaz. İşlem çoğunlukla tek seansta biter. Ucun ürettiği su ' +
+                'soğutma içindir ve işlem sırasında emiciyle alınır. Diş eti sınırının altına inen ' +
+                'birikim varsa el aletleriyle de çalışılır.'
             },
             {
               baslik: 'Sonrasında',
               metin:
                 'Taşın örttüğü kök yüzeyi açığa çıktığı için birkaç gün soğuk hassasiyeti olabilir. ' +
-                'Diş etleri iltihaplıysa temizlik sırasında kanama görülür, bu beklenen bir durumdur.'
+                'Diş etleri iltihaplıysa temizlik sırasında kanama görülür, bu beklenen bir durumdur. ' +
+                'Taşın doldurduğu aralıklar boşaldığı için dişler arasında boşluk hissi oluşabilir; ' +
+                'bu yeni açılmış bir boşluk değil, zaten var olan aralığın fark edilmesidir.'
             },
             {
-              baslik: 'Sıklık',
+              baslik: 'Sıklık ve sonrasının bakımı',
               metin:
                 'Genel öneri altı ayda bir kontroldür. Taş oluşum hızı kişiden kişiye değiştiği için ' +
-                'aralık muayenede belirlenir.'
+                'aralık muayenede belirlenir; tükürük yapısı, sigara ve diş dizilimi bu hızı etkiler. ' +
+                'Temizlik tek başına kalıcı sonuç vermez: aralar diş ipi veya arayüz fırçasıyla günlük ' +
+                'temizlenmezse plak birikimi kaldığı yerden devam eder.'
+            },
+            {
+              baslik: 'Diş eti tedavisinin neresinde durur',
+              metin:
+                'Temizlik, diş eti tedavisinin ilk basamağıdır ve çoğu durumda tek başına yeterlidir: ' +
+                'iltihap yalnız diş etiyle sınırlıysa taş kaldırıldığında doku birkaç hafta içinde ' +
+                'toparlanır. Kemik kaybı başlamış ve diş eti ile diş arasında cep oluşmuşsa, cebin ' +
+                'içindeki kök yüzeyine ulaşmak için küretaj gerekir. Hangisinin gerektiği temizlik ' +
+                'sonrası kontrolde belli olur; bu yüzden ilk seansın ardından bir değerlendirme ' +
+                'randevusu verilir.'
+            },
+            {
+              baslik: 'Temizlik sonrası günlük bakım',
+              metin:
+                'Fırça diş yüzeylerinin yaklaşık üçte ikisine ulaşır; kalan kısım dişlerin ' +
+                'birbirine bakan yüzleridir ve taş çoğunlukla orada başlar. Bu yüzden diş ipi ' +
+                'ya da arayüz fırçası günlük bakımın ayrılmaz parçasıdır. Aralıklar genişse ' +
+                'ip yerine arayüz fırçası daha etkilidir; hangisinin uygun olduğu ve ölçüsü ' +
+                'temizlik sonrası gösterilir. Yeni başlayanlarda ilk günlerde hafif kanama ' +
+                'olabilir, bu kullanımı bırakma sebebi değildir.'
             }
           ],
           notlar: [
             'İşlem dişleri beyazlatmaz; yalnız yüzeydeki renklenmeleri ve taşı kaldırır.',
-            'Hassasiyet birkaç gün içinde azalır.'
+            'Hassasiyet birkaç gün içinde azalır.',
+            'Kanama azalana kadar fırçalamayı bırakmak süreci uzatır; yumuşak fırçayla devam edilir.',
+            'Kan sulandırıcı kullanılıyorsa randevu öncesinde bildirilmelidir.'
           ],
           sorular: [
             {
@@ -3150,6 +4025,42 @@ export const tedaviMenusu: {
               cevap:
                 'Hayır. Uç, taşı kırarak kaldırır; diş yüzeyi kazınmaz. Aralarındaki boşluk hissi, taşın ' +
                 'kalktığı yerin fark edilmesinden kaynaklanır.'
+            },
+            {
+              soru: 'Dişlerim temizlikten sonra sallanıyor gibi, normal mi?',
+              cevap:
+                'İleri birikimde taş, sallanan dişleri geçici olarak birbirine bağlayan bir kabuk gibi ' +
+                'davranır. Kaldırıldığında dişin gerçek durumu ortaya çıkar. Bu, temizliğin dişi ' +
+                'gevşettiği anlamına gelmez; altta zaten var olan kemik kaybının fark edilmesidir ve ' +
+                'değerlendirilmesi gerekir.'
+            },
+            {
+              soru: 'Acır mı, uyuşturma gerekir mi?',
+              cevap:
+                'Diş eti sınırının üstündeki temizlik çoğunlukla uyuşturmasız yapılır. Birikim diş eti ' +
+                'altına iniyorsa ya da kök yüzeyi belirgin hassassa bölgesel uyuşturma tercih edilebilir.'
+            },
+            {
+              soru: 'Ne sıklıkla yaptırmalıyım?',
+              cevap:
+                'Herkes için tek bir aralık yoktur. Taşı hızlı oluşan kişilerde daha sık, yavaş oluşanlarda ' +
+                'daha seyrek gerekir. Aralık, ilk temizlikten sonraki kontrolde ağızdaki birikime bakılarak ' +
+                'belirlenir.'
+            },
+            {
+              soru: 'Ağız kokum geçer mi?',
+              cevap:
+                'Kokunun kaynağı diş taşı ve diş eti iltihabıysa temizlikten sonra belirgin biçimde ' +
+                'azalır. Kaynak başka bir yerdeyse — dil sırtı, sinüs, mide veya ilaç kullanımı — ' +
+                'temizlik tek başına yeterli olmaz ve nedenin araştırılması gerekir.'
+            },
+            {
+              soru: 'Temizlikten sonra dişlerim daha beyaz olur mu?',
+              cevap:
+                'Diş taşının ve yüzeydeki çay, kahve, sigara renklenmesinin kalkmasıyla dişler ' +
+                'kendi doğal tonuna döner; birçok kişi bunu beyazlama olarak algılar. Ama işlem ' +
+                'dişin kendi rengini açmaz. Doğal tondan daha açık bir sonuç isteniyorsa ' +
+                'beyazlatma ayrı bir uygulamadır ve temizlikten sonra planlanır.'
             }
           ]
         },
@@ -3354,6 +4265,7 @@ export const tedaviMenusu: {
         {
           ad: 'Şeffaf Plak',
           slug: 'seffaf-plak',
+          guncelleme: '2026-08-29',
           dal: 'ortodonti',
           ozet: 'Çıkarılabilen şeffaf plaklarla dişlerin adım adım hizalanması.',
           metaAciklama:
@@ -3361,31 +4273,135 @@ export const tedaviMenusu: {
           giris:
             'Şeffaf plak tedavisi, dijital planla hazırlanan bir dizi plağın sırayla kullanılmasıyla ' +
             'dişlerin hedeflenen konuma taşınmasıdır. Plaklar çıkarılabildiği için yeme ve fırçalama ' +
-            'alışkanlığı değişmez.',
+            'alışkanlığı değişmez. Buna karşılık tedaviyi yürüten şey plağın kendisi değil, günde kaç ' +
+            'saat ağızda kaldığıdır — çıkarılabilir olmak hem en büyük kolaylığı hem en büyük riski ' +
+            'aynı anda getirir.',
           bolumler: [
+            {
+              baslik: 'Nasıl çalışır',
+              metin:
+                'Her plak, dişlerin o anki konumundan bir sonraki adıma göre biraz farklı üretilir. ' +
+                'Takıldığında plak ile diş arasındaki bu küçük fark sürekli ve hafif bir kuvvet ' +
+                'oluşturur; diş bu kuvvet yönünde yavaşça hareket eder ve çevresindeki kemik yeniden ' +
+                'şekillenir. Hareketi sağlayan büyük kuvvet değil, kuvvetin kesintisiz olmasıdır. ' +
+                'Plak çıkarıldığında hareket durur, bu yüzden takılı kalma süresi doğrudan tedavi ' +
+                'süresine dönüşür.'
+            },
             {
               baslik: 'Planlama',
               metin:
                 'Ağız içi tarama ve röntgenlerle dijital model çıkarılır, hareket sırası planlanır. ' +
-                'Planlama sonunda tedavinin kaç plak süreceği ve hedef konum önceden görülebilir.'
+                'Planlama sonunda tedavinin kaç plak süreceği ve hedef konum önceden görülebilir. ' +
+                'Bazı hareketler için dişin yüzeyine küçük şeffaf tutucular (ataçman) yapıştırılır: ' +
+                'plağın dişi kavrayabilmesi için tutunacak bir yüzey gerekir. Bunlar tedavi sonunda ' +
+                'diş kesilmeden kaldırılır.'
             },
             {
               baslik: 'Günlük kullanım',
               metin:
                 'Plakların günde yaklaşık yirmi iki saat takılı kalması beklenir; yalnız yemek ve fırçalama ' +
-                'için çıkarılır. Her plak belirlenen süre kullanıldıktan sonra sıradaki plağa geçilir.'
+                'için çıkarılır. Her plak belirlenen süre kullanıldıktan sonra sıradaki plağa geçilir. ' +
+                'Yeni plağa geçilen ilk gün baskı hissi ve hafif hassasiyet olağandır, birkaç günde ' +
+                'azalır. Plak takılıyken su dışında bir şey içilmemesinin sebebi de budur: şekerli ya da ' +
+                'asitli içecek plağın altında kalır ve doğrudan mineye temas eder.'
+            },
+            {
+              baslik: 'Kontroller ve plan güncellemesi',
+              metin:
+                'Belirli aralıklarla yapılan kontrollerde dişlerin gerçek konumu planlanan konumla ' +
+                'karşılaştırılır. Dişler plandan geride kaldıysa — çoğunlukla kullanım süresi yetersiz ' +
+                'kaldığı için — plan yeniden kurgulanır ve ek plak seti üretilir. Bu, tedavinin ' +
+                'başarısız olduğu anlamına gelmez; süreç boyunca beklenen bir ayar adımıdır.'
             },
             {
               baslik: 'Pekiştirme',
               metin:
                 'Dişler yeni konumlarında kemik yeniden şekillenene kadar geri dönme eğilimindedir. ' +
-                'Bu yüzden tedavi sonunda pekiştirme (retansiyon) aşaması gelir ve ihmal edilirse sonuç korunmaz.'
+                'Bu yüzden tedavi sonunda pekiştirme (retansiyon) aşaması gelir ve ihmal edilirse sonuç korunmaz. ' +
+                'Pekiştirme, tedavinin isteğe bağlı bir devamı değil parçasıdır: geri dönme eğilimi ' +
+                'yıllar boyunca sürer, bu yüzden pekiştirme apareyinin kullanımı da uzun vadelidir.'
+            },
+            {
+              baslik: 'Temizlik',
+              metin:
+                'Plaklar her çıkarıldığında soğuk suyla durulanır ve içi yumuşak fırçayla temizlenir; ' +
+                'sıcak su plağı deforme eder. Yemekten sonra dişler fırçalanmadan plak takılırsa besin ' +
+                'artığı plağın altında kapalı kalır ve çürük riski artar. Dişleri fırçalayacak imkân ' +
+                'yoksa en azından ağzın suyla çalkalanması gerekir.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Kayıt ve planlama',
+              sure: '1-2 randevu',
+              aciklama:
+                'Ağız içi tarama, röntgen ve fotoğraflar alınır; dijital plan hazırlanır.'
+            },
+            {
+              asama: 'Plakların üretimi',
+              sure: 'Birkaç hafta',
+              aciklama: 'Plan onaylandıktan sonra plak seti üretilir ve teslim alınır.'
+            },
+            {
+              asama: 'Aktif tedavi',
+              sure: 'Aylar',
+              aciklama:
+                'Plaklar sırayla kullanılır, belirli aralıklarla kontrole gelinir. Süre vakanın ' +
+                'karmaşıklığına ve günlük kullanım süresine bağlıdır.'
+            },
+            {
+              asama: 'Pekiştirme',
+              sure: 'Uzun vadeli',
+              aciklama:
+                'Hedef konuma ulaşıldığında pekiştirme apareyine geçilir; kullanım süresi hekim ' +
+                'tarafından belirlenir.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Şeffaf plak ile sabit tel',
+            sutunlar: ['Şeffaf plak', 'Sabit tel (braket)'],
+            satirlar: [
+              {
+                olcut: 'Ağızda kalma',
+                olcutAciklama: 'Sonucu en çok belirleyen fark',
+                a: 'Hasta çıkarıp takar; süre hastanın kullanımına bağlıdır.',
+                b: 'Tedavi boyunca sabittir, kullanım süresi hastaya bağlı değildir.'
+              },
+              {
+                olcut: 'Görünüm',
+                a: 'Uzaktan belli olmaz.',
+                b: 'Braketler görünür; seramik braket daha az belirgindir.'
+              },
+              {
+                olcut: 'Yeme ve temizlik',
+                a: 'Çıkarılır; fırçalama ve diş ipi alışkanlığı değişmez.',
+                b: 'Takılıyken temizlik yapılır, arayüz fırçası gerekir.'
+              },
+              {
+                olcut: 'Hareket öngörülebilirliği',
+                a: 'Çoğu hareket planlanabilir; bazı kök hareketlerinde sınırlıdır.',
+                b: 'Karmaşık hareketlerde daha geniş kontrol sağlar.'
+              },
+              {
+                olcut: 'Kontrol sıklığı',
+                a: 'Daha seyrek; plak setleri önceden teslim edilir.',
+                b: 'Tel ayarı için daha düzenli randevu gerekir.'
+              },
+              {
+                olcut: 'Acil durum',
+                a: 'Plak kırılırsa bir öncekine dönülebilir.',
+                b: 'Braket düştüğünde randevu gerekir.'
+              }
+            ],
+            dipnot:
+              'Hangisinin uygun olduğu estetik tercihe değil, yapılması gereken diş hareketlerine bağlıdır; karar muayene ve kayıtlar sonrasında verilir.'
+          },
           notlar: [
             'Takılı kalma süresi tedavinin süresini doğrudan belirler.',
             'Plaklar takılıyken su dışında bir şey içilmemelidir.',
-            'Her kontrolde ilerleme planla karşılaştırılır; gerekirse plan güncellenir.'
+            'Her kontrolde ilerleme planla karşılaştırılır; gerekirse plan güncellenir.',
+            'Kaybedilen ya da kırılan plak bekletilmeden bildirilmelidir; dişler eski konumuna dönmeye başlar.',
+            'Plaklar sıcak suyla yıkanmaz, ısıyla şekli bozulur.'
           ],
           sorular: [
             {
@@ -3398,6 +4414,25 @@ export const tedaviMenusu: {
               soru: 'Konuşmayı etkiler mi?',
               cevap:
                 'İlk günlerde hafif bir alışma dönemi olur, çoğu kişide birkaç gün içinde geçer.'
+            },
+            {
+              soru: 'Bir plağı takmayı unutursam ne olur?',
+              cevap:
+                'Kısa süreli aksamalar telafi edilebilir; hekiminiz o plağın kullanım süresini uzatabilir. ' +
+                'Aksama tekrarlanırsa dişler plandan geri kalır ve set yenilenmek zorunda kalınır.'
+            },
+            {
+              soru: 'Tedavi ne kadar sürer?',
+              cevap:
+                'Kesin bir süre baştan verilemez. Süreyi vakanın karmaşıklığı ve plakların günde kaç ' +
+                'saat takılı kaldığı birlikte belirler. Planlama sonunda öngörülen plak sayısı ' +
+                'paylaşılır, ancak bu bir taahhüt değil tahmindir.'
+            },
+            {
+              soru: 'Plaklar dişleri sarartır mı?',
+              cevap:
+                'Plağın kendisi renklendirmez. Renklenme, plak takılıyken çay, kahve gibi içeceklerin ' +
+                'tüketilmesi ya da yetersiz temizlik sonucu plağın altında kalan artıklardan kaynaklanır.'
             }
           ]
         },
@@ -3521,6 +4556,7 @@ export const tedaviMenusu: {
         {
           ad: 'Seramik Diş Teli',
           slug: 'seramik-dis-teli',
+          guncelleme: '2026-08-29',
           dal: 'ortodonti',
           ozet:
             'Diş rengine yakın, yarı saydam seramik braketlerle yürütülen ve uzaktan daha az belli olan tedavi.',
@@ -3551,13 +4587,88 @@ export const tedaviMenusu: {
               metin:
                 'Seramik braket dişe sabitlenir, hasta çıkaramaz ve sürekli kuvvet uygular. Şeffaf plak ' +
                 'ise takılıp çıkarılabilir. İkisi farklı yöntemlerdir; hangisinin uygun olduğu vakaya ' +
-                'göre değişir.'
+                'göre değişir. Seramik braket "görünmeyen tel" değildir: uzaktan az fark edilir ama ' +
+                'yakından bakıldığında braketler ve tel görülür.'
+            },
+            {
+              baslik: 'Tedavi nasıl ilerler',
+              metin:
+                'Braketler dişlere yapıştırıldıktan sonra aralarından geçen tel, dişleri hedeflenen ' +
+                'konuma doğru zorlar. Tedavi boyunca teller kademeli olarak değiştirilir: ilk ' +
+                'aşamada ince ve esnek teller hizalamayı yapar, sonraki aşamalarda daha kalın teller ' +
+                'ince ayarları verir. Bu yüzden kontroller belirli aralıklarla ve düzenli olmalıdır; ' +
+                'randevu aksadığında tedavi o kadar uzar.'
+            },
+            {
+              baslik: 'İlk günler ve alışma',
+              metin:
+                'Braketler takıldıktan sonraki ilk günlerde dişlerde baskı hissi ve hafif hassasiyet ' +
+                'olağandır; genellikle birkaç günde azalır. Braketlerin dudak ve yanak içine sürtmesi ' +
+                'rahatsızlık verebilir, bunun için mum verilir. Aynı durum her tel değişiminden ' +
+                'sonra daha hafif biçimde tekrarlanabilir.'
+            },
+            {
+              baslik: 'Temizlik neden daha önemli',
+              metin:
+                'Braketler diş yüzeyinde plağın tutunabileceği yeni köşeler oluşturur. Yetersiz ' +
+                'temizlikte braketin çevresinde kalıcı beyaz lekeler — mine kaybının ilk aşaması — ' +
+                'oluşabilir ve bunlar braket söküldükten sonra da kalır. Bu yüzden ortodontik tedavide ' +
+                'arayüz fırçası, diş ipi geçirici ve düzenli kontrol tedavinin parçasıdır, ek bir ' +
+                'öneri değil.'
+            },
+            {
+              baslik: 'Tedavi bittiğinde ne olur',
+              metin:
+                'Braketler özel bir uçla, diş kesilmeden sökülür; yüzeyde kalan yapıştırıcı ' +
+                'temizlenip diş cilalanır. Aynı randevuda ölçü alınarak pekiştirme apareyi ' +
+                'hazırlanır. Sökümden sonra dişlerin yüzeyi ilk günlerde farklı hissedilebilir ' +
+                've diş etleri hafif hassas olabilir; ikisi de kısa sürede geçer. Braket ' +
+                'altındaki mine tedavi boyunca kapalı kaldığı için çevresine göre biraz daha ' +
+                'açık görünebilir, bu fark zamanla dengelenir.'
+            },
+            {
+              baslik: 'Pekiştirme neden bırakılamaz',
+              metin:
+                'Dişler yeni konumlarına taşındığında çevrelerindeki lif ve kemik hâlâ eski ' +
+                'konumun izini taşır. Bu dokuların yeniden şekillenmesi aylar sürer ve o süre ' +
+                'boyunca dişler geri dönme eğilimindedir. Pekiştirme apareyi bu eğilimi ' +
+                'karşılar. Kullanım süresi kısaltıldığında kaybedilen şey birkaç haftalık ' +
+                'rahatlık değil, aylarca süren tedavinin sonucudur.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Kayıt ve planlama',
+              sure: '1-2 randevu',
+              aciklama:
+                'Röntgen, fotoğraf ve ölçüler alınır; tedavi planı ve braket tipi birlikte kararlaştırılır.'
+            },
+            {
+              asama: 'Braketlerin yapıştırılması',
+              sure: 'Tek seans',
+              aciklama:
+                'Braketler dişlere yapıştırılır ve ilk tel takılır. Diş kesilmez, uyuşturma gerekmez.'
+            },
+            {
+              asama: 'Aktif tedavi',
+              sure: 'Aylar',
+              aciklama:
+                'Düzenli kontrollerde teller değiştirilir ve ilerleme değerlendirilir. Süre vakanın ' +
+                'karmaşıklığına göre değişir.'
+            },
+            {
+              asama: 'Pekiştirme',
+              sure: 'Uzun vadeli',
+              aciklama:
+                'Braketler söküldükten sonra sonucun korunması için pekiştirme apareyi kullanılır.'
             }
           ],
           notlar: [
             'Sert ve yapışkan gıdalardan metal braketteki gibi kaçınılmalıdır.',
             'Lastiklerin renklenmemesi için koyu içecekler sınırlandırılabilir.',
-            'Ara yüz fırçası ve diş ipi düzenli kullanılmalıdır.'
+            'Ara yüz fırçası ve diş ipi düzenli kullanılmalıdır.',
+            'Braket düştüğünde ya da tel battığında kontrol randevusu beklenmeden aranmalıdır.',
+            'Kontrollerin aksaması tedavi süresini doğrudan uzatır.'
           ],
           sorular: [
             {
@@ -3571,6 +4682,27 @@ export const tedaviMenusu: {
               cevap:
                 'Bazı vakalarda küçük bir süre farkı olabilir. Bu fark tedavinin genel uzunluğu yanında ' +
                 'sınırlıdır ve planlamada dikkate alınır.'
+            },
+            {
+              soru: 'Seramik braket kırılırsa ne olur?',
+              cevap:
+                'Kırılan ya da düşen braket kontrol randevusunda yenilenir. Bu, tedavinin baştan ' +
+                'başlaması anlamına gelmez ama o dişin hareketi braket takılana kadar durur; bu ' +
+                'yüzden bekletilmeden bildirilmesi gerekir.'
+            },
+            {
+              soru: 'Braket söküldüğünde dişte iz kalır mı?',
+              cevap:
+                'Braket doğru sökülüp yüzey cilalandığında iz kalmaz, çünkü diş kesilmemiştir. ' +
+                'Kalıcı iz, tedavi boyunca yetersiz temizlik nedeniyle braket çevresinde oluşan ' +
+                'beyaz mine lekeleridir; bunlar sökümle geçmez.'
+            },
+            {
+              soru: 'Her vakada seramik braket kullanılabilir mi?',
+              cevap:
+                'Çoğu vakada kullanılabilir. Çok yüksek kuvvet gerektiren hareketlerde ya da ' +
+                'braketin kırılma riskinin arttığı durumlarda hekim metal braket önerebilir; ' +
+                'karar kayıtlar incelendikten sonra verilir.'
             }
           ]
         },
@@ -3665,6 +4797,7 @@ export const tedaviMenusu: {
         {
           ad: 'Gülüş Tasarımı',
           slug: 'gulus-tasarimi',
+          guncelleme: '2026-08-29',
           ozet:
             'Diş, diş eti ve dudak ilişkisinin bir bütün olarak planlandığı estetik tedavi yaklaşımı.',
           metaAciklama:
@@ -3695,12 +4828,89 @@ export const tedaviMenusu: {
                 'Tek bir dişi ayrı ele almak, komşularıyla uyumsuz bir sonuç doğurabilir. Bu yüzden ' +
                 'renk, biçim ve diş eti seviyesi baştan birlikte kararlaştırılır; örneğin beyazlatma ' +
                 'yapılacaksa kaplama rengi ondan sonra seçilir.'
+            },
+            {
+              baslik: 'Sıra neden önemli',
+              metin:
+                'Gülüş tasarımında işlemlerin sırası sonucu doğrudan etkiler ve geri alınamayan ' +
+                'adımlar en sona bırakılır. Önce diş eti sağlığı ve çürükler ele alınır. Dişlerin ' +
+                'konumu düzeltilecekse ortodonti kaplamadan önce gelir — dişler yerine oturmadan ' +
+                'yapılan kaplama, konum bozukluğunu malzemeyle kapatmaya çalışmak olur ve gereksiz ' +
+                'kesim demektir. Beyazlatma kaplamadan önce yapılır, çünkü kaplama beyazlamaz ve ' +
+                'rengi son tona göre seçilmelidir.'
+            },
+            {
+              baslik: 'Neyin değişebileceğinin sınırı',
+              metin:
+                'Tasarımın sınırlarını dişler değil yüz belirler: dudak hattı, gülerken görünen diş eti ' +
+                'miktarı, orta hat ve çenenin kapanış ilişkisi. Bu yapıların bir kısmı diş hekimliğiyle ' +
+                'değiştirilebilir, bir kısmı değiştirilemez. Planlamanın ilk işi neyin mümkün ' +
+                'olduğunu değil, neyin mümkün olmadığını da açıkça ortaya koymaktır.'
+            },
+            {
+              baslik: 'Önizleme aşaması',
+              metin:
+                'Planlanan biçim, dişlere dokunulmadan önce geçici bir malzemeyle ağızda denenebilir. ' +
+                'Bu deneme aynanın karşısında konuşma ve gülme sırasında değerlendirilir; fotoğraf ' +
+                'üzerindeki plan ile ağızdaki his farklı olabilir. Önizleme, tedavinin başlamadan ' +
+                'önce değiştirilebildiği son aşamadır.'
+            },
+            {
+              baslik: 'Sonucun korunması',
+              metin:
+                'Estetik tedavi bittiğinde bakım başlar. Diş eti sağlığının sürdürülmesi, gece diş ' +
+                'sıkma varsa koruyucu plak kullanımı ve düzenli kontroller sonucun ne kadar ' +
+                'korunacağını belirler. Beyazlatma yapıldıysa rengin zamanla geri dönmesi beklenir ' +
+                've tazeleme planlanır.'
+            },
+            {
+              baslik: 'Beklentinin konuşulması',
+              metin:
+                'Estetik tedavide sonucu belirleyen şeylerden biri, hastanın ne beklediğinin ' +
+                'baştan açıkça konuşulmuş olmasıdır. Beklenti çoğu zaman genel bir cümleyle ' +
+                'başlar; planlamanın işi onu ölçülebilir hâle getirmektir — hangi diş, hangi ' +
+                'yönde, ne kadar. Fotoğraf ve önizleme bu konuşmanın aracıdır. ' +
+                'Uygulanamayacak bir beklenti varsa bunun uygulama başlamadan söylenmesi gerekir.'
+            }
+          ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve kayıt',
+              sure: '1-2 randevu',
+              aciklama:
+                'Ağız içi ve yüz fotoğrafları, röntgen ve ölçüler alınır; diş eti sağlığı değerlendirilir.'
+            },
+            {
+              asama: 'Hazırlık tedavileri',
+              sure: 'Değişken',
+              aciklama:
+                'Çürükler, diş eti tedavisi ve gerekiyorsa ortodonti önce tamamlanır.'
+            },
+            {
+              asama: 'Planlama ve önizleme',
+              sure: '1-2 randevu',
+              aciklama:
+                'Hedeflenen biçim hazırlanır ve ağızda denenerek birlikte değerlendirilir.'
+            },
+            {
+              asama: 'Uygulama',
+              sure: 'Değişken',
+              aciklama:
+                'Onaylanan plana göre beyazlatma, kompozit düzenleme ya da kaplama sırayla uygulanır.'
+            },
+            {
+              asama: 'Kontrol ve bakım',
+              sure: 'Düzenli aralıklarla',
+              aciklama:
+                'Sonucun korunması için kontroller sürdürülür; gerekirse tazeleme planlanır.'
             }
           ],
           notlar: [
             'Diş eti sağlığı ve çürükler estetik tedaviden önce ele alınır.',
             'Diş sıkma alışkanlığı sonucun kalıcılığını etkiler, baştan bildirilmelidir.',
-            'Tedavi sonrası bakım düzeni sonucun korunmasının parçasıdır.'
+            'Tedavi sonrası bakım düzeni sonucun korunmasının parçasıdır.',
+            'Beyazlatma planlanıyorsa kaplama ve dolgu renkleri ondan sonra seçilir.',
+            'Ortodontik düzeltme gerekiyorsa kaplamadan önce yapılır; sıra değişirse gereksiz diş kesimi olur.'
           ],
           sorular: [
             {
@@ -3714,12 +4924,34 @@ export const tedaviMenusu: {
               cevap:
                 'Dijital gülüş tasarımı ile tarama ve prova şablonu üzerinden önizleme yapılabilir; ' +
                 'böylece dişlere dokunulmadan önce sonuç ağızda denenir.'
+            },
+            {
+              soru: 'Ne kadar sürer?',
+              cevap:
+                'Kapsamına bağlıdır. Yalnız beyazlatma ve birkaç kompozit düzenleme birkaç randevuda ' +
+                'tamamlanabilirken, ortodonti gereken bir planda süre aylara yayılır. Süre planlama ' +
+                'aşamasında, hangi tedavilerin gerektiği belirlendikten sonra konuşulur.'
+            },
+            {
+              soru: 'Gülerken diş etim çok görünüyor, bu düzelir mi?',
+              cevap:
+                'Nedenine bağlı. Diş eti seviyesi dişin üzerinde fazla kalıyorsa diş eti düzenlemesiyle ' +
+                'ele alınabilir. Kaynağı dudak hareketi ya da çene yapısıysa çözüm diş hekimliğinin ' +
+                'sınırlarını aşabilir. Ayrım muayenede yapılır.'
+            },
+            {
+              soru: 'Tedaviye başladıktan sonra vazgeçebilir miyim?',
+              cevap:
+                'Beyazlatma ve önizleme aşamaları geri dönüşlüdür. Diş kesimi gerektiren adımlar ' +
+                'ise geri alınamaz; bu yüzden plan onaylanmadan ve önizleme değerlendirilmeden ' +
+                'kesim aşamasına geçilmez.'
             }
           ]
         },
         {
           ad: 'Diş Beyazlatma',
           slug: 'dis-beyazlatma',
+          guncelleme: '2026-08-29',
           dal: 'restoratif',
           ozet: 'Diş renginin, dokuya zarar vermeyen jellerle birkaç ton açılması.',
           metaAciklama:
@@ -3730,29 +4962,124 @@ export const tedaviMenusu: {
             'planlanabilir.',
           bolumler: [
             {
+              baslik: 'Renklenme nereden gelir',
+              metin:
+                'Renklenme iki katmanda olur. Yüzeydeki dış renklenme çay, kahve, sigara ve renkli ' +
+                'yiyeceklerin mine üzerinde bıraktığı tabakadır; bunun bir kısmı temizlikle kalkar. ' +
+                'İç renklenme ise dişin kendi dokusundadır: yaşla birlikte dentinin koyulaşması, ' +
+                'geçirilmiş travma ya da kanal tedavisi sonrası renk değişimi bu gruba girer. ' +
+                'Beyazlatma jeli asıl olarak ikinci gruba etki eder, çünkü mineden geçerek dokunun ' +
+                'içindeki renk moleküllerini parçalar.'
+            },
+            {
               baslik: 'Öncesinde yapılması gerekenler',
               metin:
                 'Çürük, kırık dolgu ve diş eti iltihabı beyazlatmadan önce tedavi edilir. Yüzeydeki taş ve ' +
-                'renklenme temizlenmeden yapılan beyazlatma dengesiz sonuç verir.'
+                'renklenme temizlenmeden yapılan beyazlatma dengesiz sonuç verir. Çürük ya da açık ' +
+                'kenarlı dolgu varsa jel doğrudan iç dokuya sızabilir ve şiddetli hassasiyete yol ' +
+                'açar; bu yüzden ön muayene isteğe bağlı bir adım değildir.'
             },
             {
               baslik: 'Uygulama',
               metin:
                 'Diş etleri koruyucu bariyerle örtülür ve jel dişlere uygulanır. Klinik uygulaması ' +
                 'genellikle bir seansta biter; ev tipi uygulamada plaklar birkaç gün boyunca belirlenen ' +
-                'süre takılır.'
+                'süre takılır. Ev tipinde kullanılan jelin yoğunluğu daha düşüktür, bu yüzden etkisi ' +
+                'daha uzun sürede ortaya çıkar. İki yöntem birlikte de planlanabilir: klinikte ' +
+                'başlanıp evde sürdürülür.'
+            },
+            {
+              baslik: 'Hassasiyet neden olur',
+              metin:
+                'Jel mineden geçerken dentindeki mikroskobik kanalları geçici olarak açar; soğuk uyaran ' +
+                'bu kanallar üzerinden sinire daha kolay ulaşır. Hassasiyet bu yüzden beklenen bir ' +
+                'yan etkidir, dişin zarar gördüğü anlamına gelmez ve genellikle birkaç gün içinde ' +
+                'kendiliğinden geçer. Uygulama aralıkları açılarak ya da hassasiyet giderici diş ' +
+                'macunuyla azaltılabilir.'
+            },
+            {
+              baslik: 'Kimlerde uygun değildir',
+              metin:
+                'Hamilelik ve emzirme döneminde, gelişimini tamamlamamış dişlerde ve tedavi edilmemiş ' +
+                'çürük ya da diş eti hastalığı varlığında ertelenir. Aşırı hassas dişlerde ve belirgin ' +
+                'mine aşınması olan kişilerde önce bu sorun ele alınır. Dişlerin ön yüzünde kaplama ' +
+                'ya da geniş dolgu varsa beklenen sonucun sınırlı olacağı baştan konuşulur.'
             },
             {
               baslik: 'Kalıcılığı',
               metin:
                 'Sonuç kalıcı değildir; kahve, çay, sigara ve kırmızı şarap rengin geri dönmesini hızlandırır. ' +
-                'Aralıklı tazeleme uygulamalarıyla korunur.'
+                'Aralıklı tazeleme uygulamalarıyla korunur. Ne kadar süreyle korunacağı kişinin ' +
+                'beslenme ve sigara alışkanlığına bağlıdır, bu yüzden baştan bir süre verilemez. ' +
+                'Tazeleme çoğunlukla ilk uygulamadan daha kısa sürer.'
             }
           ],
+          zamanCizelgesi: [
+            {
+              asama: 'Muayene ve hazırlık',
+              sure: 'Tek seans',
+              aciklama:
+                'Çürük, dolgu ve diş eti durumu değerlendirilir; gereken tedaviler önce tamamlanır.'
+            },
+            {
+              asama: 'Temizlik',
+              sure: 'Tek seans',
+              aciklama:
+                'Yüzeydeki taş ve dış renklenme kaldırılır; beyazlatma temiz yüzeyde eşit sonuç verir.'
+            },
+            {
+              asama: 'Beyazlatma',
+              sure: 'Klinikte tek seans ya da evde birkaç gün',
+              aciklama:
+                'Seçilen yönteme göre klinikte uygulanır ya da kişiye özel plaklarla evde sürdürülür.'
+            },
+            {
+              asama: 'Değerlendirme ve tazeleme',
+              sure: 'Aralıklı',
+              aciklama:
+                'Sonuç kontrolde değerlendirilir; renk zamanla geri döndüğünde tazeleme planlanır.'
+            }
+          ],
+          karsilastirma: {
+            baslik: 'Klinik uygulaması ile ev tipi uygulama',
+            sutunlar: ['Klinikte', 'Evde'],
+            satirlar: [
+              {
+                olcut: 'Jel yoğunluğu',
+                olcutAciklama: 'İki yöntemi ayıran temel fark',
+                a: 'Yüksek; hekim denetiminde uygulanır.',
+                b: 'Düşük; uzun sürede etki eder.'
+              },
+              {
+                olcut: 'Süre',
+                a: 'Tek seansta tamamlanır.',
+                b: 'Birkaç gün boyunca, belirlenen sürelerle.'
+              },
+              {
+                olcut: 'Diş eti koruması',
+                a: 'Bariyerle örtülür.',
+                b: 'Kişiye özel plak jeli diş etinden uzak tutar.'
+              },
+              {
+                olcut: 'Hassasiyet',
+                a: 'Daha yoğun ama kısa süreli olabilir.',
+                b: 'Daha hafif; ara verilerek yönetilebilir.'
+              },
+              {
+                olcut: 'Kontrol',
+                a: 'Süreç boyunca hekim gözlemi altında.',
+                b: 'Kullanım hastanın tarifine uymasına bağlı.'
+              }
+            ],
+            dipnot:
+              'İkisi rakip yöntem değildir; sıkça birlikte planlanır — klinikte başlanır, evde sürdürülür. Hangisinin seçileceği renklenmenin nedenine ve dişlerin hassasiyetine göre belirlenir.'
+          },
           notlar: [
             'Uygulamadan sonraki iki gün renk veren yiyecek ve içecekler sınırlandırılmalıdır.',
             'Geçici soğuk hassasiyeti sık görülür ve kendiliğinden geçer.',
-            'Dolgu ve kaplamalar beyazlamaz; renk farkı oluşursa yenilenmeleri gerekebilir.'
+            'Dolgu ve kaplamalar beyazlamaz; renk farkı oluşursa yenilenmeleri gerekebilir.',
+            'İnternetten alınan hazır plak ve şeritler diş etine zarar verebilir, denetimsiz kullanılmamalıdır.',
+            'Hamilelik ve emzirme döneminde uygulama ertelenir.'
           ],
           sorular: [
             {
@@ -3766,12 +5093,34 @@ export const tedaviMenusu: {
               cevap:
                 'Sonuç dişin başlangıç rengine ve renklenmenin nedenine bağlıdır; bu yüzden önceden kesin ' +
                 'bir ton sayısı söylenmez.'
+            },
+            {
+              soru: 'Dolgularım ve kaplamalarım da beyazlar mı?',
+              cevap:
+                'Hayır. Jel yalnız doğal diş dokusuna etki eder. Ön dişlerde görünen dolgu ya da ' +
+                'kaplama varsa beyazlatmadan sonra renk farkı belirginleşebilir; bu durumda ' +
+                'onların yenilenmesi gündeme gelir. Bu yüzden beyazlatma, planlanan dolgu ' +
+                'yenilemelerinden önce yapılır.'
+            },
+            {
+              soru: 'Kanal tedavisi görmüş koyu dişimde işe yarar mı?',
+              cevap:
+                'Tek dişin iç renklenmesinde farklı bir yöntem kullanılır: jel dişin içine, kanal ' +
+                'boşluğuna yerleştirilir ve dışarıdan değil içeriden etki eder. Uygunluğu dişin ' +
+                'kanal tedavisinin durumuna bakılarak değerlendirilir.'
+            },
+            {
+              soru: 'Ne sıklıkla tekrarlanabilir?',
+              cevap:
+                'Sık tekrar hassasiyeti artırır. Tazeleme aralığı rengin geri dönme hızına göre ' +
+                'kişiye özel belirlenir; kendi başına, tarif edilenden sık uygulama önerilmez.'
             }
           ]
         },
         {
           ad: 'Bonding',
           slug: 'bonding',
+          guncelleme: '2026-08-29',
           dal: 'restoratif',
           ozet:
             'Dişe kompozit malzemenin katman katman işlenmesiyle biçim ve aralık düzeltmesi.',
@@ -3803,13 +5152,58 @@ export const tedaviMenusu: {
                 'Lamina laboratuvarda üretilir ve dişe yapıştırılır; bonding ağızda, o seansta ' +
                 'şekillendirilir. Bonding geri dönüşü daha kolay bir yöntemdir çünkü diş dokusundan ' +
                 'genellikle bir şey eksiltilmez. Buna karşılık yüzey renklenmesine daha açıktır.'
+            },
+            {
+              baslik: 'Malzeme neden katman katman konur',
+              metin:
+                'Kompozit ışıkla sertleşirken hafifçe büzülür. Malzeme tek seferde kalın bir kütle ' +
+                'olarak konursa bu büzülme dişle kompozit arasındaki bağda gerilim yaratır ve kenarda ' +
+                'mikroskobik aralık oluşabilir. İnce katmanlar hâlinde uygulanıp her katman ayrı ' +
+                'sertleştirildiğinde gerilim dağılır. Aynı yöntem, doğal dişin farklı derinlikteki ' +
+                'renk geçişlerinin taklit edilmesine de imkân verir.'
+            },
+            {
+              baslik: 'Sonrasında ne beklenir',
+              metin:
+                'Uyuşturma yapılmadıysa işlemden hemen sonra normal hayata dönülür. İlk günlerde ' +
+                'yeni yüzeyin dile farklı gelmesi olağandır. Isırma sırasında yükseklik hissediliyorsa ' +
+                'bu ayarlanması gereken bir durumdur ve alışmayı beklemek yerine bildirilmelidir; ' +
+                'yüksek kalan bir yüzey hem kırılır hem karşı dişi zorlar.'
+            },
+            {
+              baslik: 'Bakımı ve tazelenmesi',
+              metin:
+                'Kompozit yüzeyi doğal mineye göre daha gözeneklidir; zamanla parlaklığını kaybedebilir ' +
+                've kenarlarında renklenme görülebilir. Bunların çoğu kontrol randevusunda cilalama ' +
+                'ile giderilir. Kenardan küçük bir kırık olursa genellikle tamamı sökülmeden aynı ' +
+                'malzemeyle onarılır — yöntemin en pratik yanlarından biri budur.'
+            },
+            {
+              baslik: 'Renk nasıl seçilir',
+              metin:
+                'Doğal diş tek bir renk değildir: kesici kenara doğru saydamlaşır, diş etine doğru ' +
+                'koyulaşır. Bu geçişi taklit etmek için farklı saydamlıkta kompozitler bir arada ' +
+                'kullanılır. Renk seçimi dişler kurumadan, gün ışığına yakın aydınlatmada yapılır; ' +
+                'uzun süre açık kalan diş geçici olarak matlaşıp açılır ve o an seçilen ton ' +
+                'sonradan koyu kalır. Beyazlatma planlanıyorsa renk seçimi ona göre ertelenir.'
+            },
+            {
+              baslik: 'Hangi durumlarda yetmez',
+              metin:
+                'Bonding, kalan diş dokusuna tutunarak çalışır. Madde kaybı büyükse ya da kesici ' +
+                'kenarın tamamı yenilenecekse malzemenin kendisi çiğneme ve ısırma yükünü taşımak ' +
+                'zorunda kalır; bu durumda kırılma riski artar. Yaygın iç renklenmede de sınırlıdır: ' +
+                'kompozit yarı saydam olduğu için altındaki koyu renk bir ölçüde vurur. Bu ' +
+                'durumlarda lamina ya da kaplama değerlendirilir.'
             }
           ],
           notlar: [
             'İlk günlerde çay, kahve ve kırmızı şarap gibi renklendiriciler sınırlandırılmalıdır.',
             'Sert gıdalar ön dişlerle kırılmamalıdır.',
             'Tırnak yeme ve kalem ısırma bonding kenarlarını kırar.',
-            'Yüzey zamanla matlaşırsa cilayla tazelenebilir.'
+            'Yüzey zamanla matlaşırsa cilayla tazelenebilir.',
+            'Gece diş sıkma varsa bildirilmelidir; koruyucu plak kenar kırıklarını azaltır.',
+            'Isırmada yükseklik hissi geçmesi beklenmez, ayarlanması gerekir.'
           ],
           sorular: [
             {
@@ -3823,6 +5217,42 @@ export const tedaviMenusu: {
               cevap:
                 'Kullanım alışkanlıklarına ve bakıma göre değişir. Kenar kırığı ya da renklenme ' +
                 'olduğunda çoğu zaman tamamı yenilenmeden onarılabilir.'
+            },
+            {
+              soru: 'Tek seansta biter mi?',
+              cevap:
+                'Çoğu durumda evet. Laboratuvar aşaması olmadığı için ölçü alınıp beklenmez; ' +
+                'işlem aynı randevuda tamamlanır. Aynı seansta çok sayıda diş yapılacaksa ' +
+                'randevu bölünebilir.'
+            },
+            {
+              soru: 'Beyazlatma yaptırırsam bonding de beyazlar mı?',
+              cevap:
+                'Hayır. Beyazlatma yalnız doğal diş dokusuna etki eder. Bu yüzden ikisi birlikte ' +
+                'planlanıyorsa önce beyazlatma yapılır, bonding malzemesinin rengi de yeni ton ' +
+                'esas alınarak seçilir.'
+            },
+            {
+              soru: 'Renklenirse ne yapılır?',
+              cevap:
+                'Yüzeysel renklenme çoğunlukla cilalama ile giderilir. Renklenme malzemenin ' +
+                'içine işlemişse ilgili katman yenilenir; bu da genellikle tek seansta yapılan ' +
+                'bir onarımdır.'
+            },
+            {
+              soru: 'Dişlerimin arasındaki boşluk bondingle kapatılabilir mi?',
+              cevap:
+                'Küçük ve orta boşluklar kapatılabilir. Sınırı belirleyen şey, boşluk kapatıldığında ' +
+                'dişlerin oranının doğal görünüp görünmeyeceğidir: geniş bir aralığı yalnız malzeme ' +
+                'ekleyerek kapatmak dişleri gereğinden geniş gösterir. Aralık büyükse önce ' +
+                'ortodontik yaklaştırma değerlendirilir, bonding son rötuş olarak kullanılır.'
+            },
+            {
+              soru: 'Bonding sonrası özel bir bakım gerekir mi?',
+              cevap:
+                'Ayrı bir ürün gerekmez; günlük fırçalama ve diş ipi yeterlidir. Tek fark, ' +
+                'yüzeyin renklenmeye doğal mineden daha açık olmasıdır. Kontrollerde yapılan ' +
+                'cilalama parlaklığı geri getirir ve yüzeyin yeniden renklenmesini yavaşlatır.'
             }
           ]
         },
@@ -4096,42 +5526,148 @@ export const tedaviMenusu: {
         {
           ad: '3D Tomografi',
           slug: '3d-tomografi',
+          guncelleme: '2026-08-29',
           ozet: 'Çene ve dişlerin üç boyutlu görüntülenmesi; implant ve cerrahi planlamanın temeli.',
           metaAciklama:
             'Diş hekimliğinde 3D tomografi ne işe yarar, hangi durumlarda çekilir, ne kadar sürer?',
           giris:
             'Üç boyutlu tomografi (konik ışınlı bilgisayarlı tomografi), çene kemiğini ve dişleri ' +
             'katman katman gösteren bir görüntüleme yöntemidir. İki boyutlu röntgende üst üste binen ' +
-            'yapılar burada ayrı ayrı değerlendirilebilir.',
+            'yapılar burada ayrı ayrı değerlendirilebilir. Tedavi değil, tedavi kararını veren bir ' +
+            'inceleme adımıdır: kemiğin kalınlığı, sinirin yeri ve komşu yapıların ilişkisi ancak ' +
+            'burada ölçülebilir.',
           bolumler: [
+            {
+              baslik: 'İki boyutlu röntgenden farkı',
+              metin:
+                'Panoramik röntgende çene tek bir düzleme yansıtılır; önde ve arkada duran yapılar üst ' +
+                'üste biner. Bu görüntüde kemiğin yüksekliği görülür ama kalınlığı görülemez. Tomografi ' +
+                'ise bölgeyi kesitler hâlinde verir, yani hem yükseklik hem kalınlık ölçülebilir. ' +
+                'İmplant planlamasında belirleyici olan ölçü çoğunlukla kalınlıktır.'
+            },
             {
               baslik: 'Hangi durumlarda çekilir',
               metin:
                 'İmplant planlaması, gömülü diş ve kist değerlendirmesi, sinüs ilişkisi, kanal tedavisinde ' +
-                'karmaşık kök yapısı ve ortodontik planlama başlıca gerekçelerdir.'
+                'karmaşık kök yapısı ve ortodontik planlama başlıca gerekçelerdir. Gömülü yirmi yaş ' +
+                'dişinin köküyle alt çene siniri arasındaki ilişki de bu görüntüyle değerlendirilir; ' +
+                'cerrahi planı doğrudan etkilediği için sık istenen gerekçelerden biridir.'
             },
             {
               baslik: 'Nasıl çekilir',
               metin:
                 'Hasta cihazın içinde hareketsiz durur ve kaynak baş çevresinde bir tur atar. Görüntüleme ' +
-                'genellikle bir dakikanın altında sürer, hazırlık dâhil birkaç dakikada tamamlanır.'
+                'genellikle bir dakikanın altında sürer, hazırlık dâhil birkaç dakikada tamamlanır. ' +
+                'Kapalı bir tüpe girilmez, hasta ayakta veya oturur konumdadır. Hareket görüntüyü ' +
+                'bulanıklaştırdığı için tek istenen şey o kısa süre boyunca sabit durmaktır.'
             },
             {
               baslik: 'Işın miktarı',
               metin:
                 'Doz, tıbbi tomografiye göre belirgin biçimde düşüktür ve alan yalnızca gereken bölgeyle ' +
-                'sınırlandırılır. Yine de her görüntüleme gibi ancak tıbbi gerekçe varsa çekilir.'
+                'sınırlandırılır. Yine de her görüntüleme gibi ancak tıbbi gerekçe varsa çekilir. ' +
+                'Görüntülenecek alanın küçük tutulması dozu doğrudan düşürür; bu yüzden tek bir diş ' +
+                'için bütün çene taranmaz.'
+            },
+            {
+              baslik: 'Görüntü size aittir',
+              metin:
+                'Çekilen veri hastanın kendi sağlık kaydıdır. Dijital dosya olarak verilebilir ve başka ' +
+                'bir hekim tarafından da değerlendirilebilir. Yakın tarihli bir tomografi varsa yeni ' +
+                'çekim yapılmadan önce o görüntünün yeterli olup olmadığına bakılır — gereksiz tekrar ' +
+                'çekim, gereksiz ışın demektir.'
+            },
+            {
+              baslik: 'Görüntü nasıl değerlendirilir',
+              metin:
+                'Tomografi tek bir resim değil, bölgenin yüzlerce kesitten oluşan hacimsel kaydıdır. ' +
+                'Hekim bu kaydı yazılım üzerinde istediği düzlemde keserek inceler: implant düşünülen ' +
+                'noktada kemiğin yüksekliği ve kalınlığı milimetre olarak ölçülür, alt çene siniri ' +
+                'işaretlenir, sinüs tabanının yeri belirlenir. Planlama bu ölçülerden çıkar; işlemin ' +
+                'yapılabilir olup olmadığı da çoğu zaman burada anlaşılır.'
+            },
+            {
+              baslik: 'Görüntülemenin sınırı',
+              metin:
+                'Tomografi sert dokuyu, yani kemiği ve dişi çok iyi gösterir; yumuşak dokuyu ' +
+                'aynı ayrıntıda göstermez. Diş eti hastalığının derecesi, çürüğün yüzeydeki ' +
+                'yayılımı ve dişin canlılığı gibi bilgiler görüntüden değil muayeneden ' +
+                'gelir. Ayrıca metal dolgu ve kaplamalar görüntüde parlama oluşturarak ' +
+                'çevrelerini okunmaz hâle getirebilir. Bu yüzden tomografi tek başına ' +
+                'tanı koymaz, muayeneyle birlikte değerlendirilir.'
             }
           ],
+          karsilastirma: {
+            baslik: 'Panoramik röntgen ile üç boyutlu tomografi',
+            sutunlar: ['Panoramik röntgen', 'Üç boyutlu tomografi'],
+            satirlar: [
+              {
+                olcut: 'Ne gösterir',
+                a: 'Bütün çeneyi tek düzlemde, genel bir bakış olarak.',
+                b: 'Bölgeyi kesit kesit, üç boyutlu olarak.'
+              },
+              {
+                olcut: 'Kemik kalınlığı',
+                olcutAciklama: 'İmplant kararını belirleyen ölçü',
+                a: 'Ölçülemez.',
+                b: 'Ölçülebilir.'
+              },
+              {
+                olcut: 'Sinir ve sinüs ilişkisi',
+                a: 'Yaklaşık olarak değerlendirilir.',
+                b: 'Konumu ve uzaklığı ölçülerek değerlendirilir.'
+              },
+              {
+                olcut: 'Işın dozu',
+                a: 'Daha düşük.',
+                b: 'Daha yüksek; alan daraltılarak azaltılır.'
+              },
+              {
+                olcut: 'Ne zaman yeterli',
+                a: 'Genel tarama, çürük ve kemik seviyesinin gözden geçirilmesi.',
+                b: 'Cerrahi ve implant planlaması, gömülü diş, kist değerlendirmesi.'
+              }
+            ],
+            dipnot:
+              'Tomografi panoramiğin gelişmiş hâli değil, farklı bir soruya cevap veren ayrı bir incelemedir; genel kontrolde panoramik yeterliyken cerrahi planlamada kesit görüntü gerekir.'
+          },
           notlar: [
             'Çekim öncesinde takı, gözlük ve hareketli protezler çıkarılır.',
-            'Hamilelik durumu randevudan önce mutlaka bildirilmelidir.'
+            'Hamilelik durumu randevudan önce mutlaka bildirilmelidir.',
+            'Elinizde varsa daha önce çekilmiş görüntüleri getirin; tekrar çekim gerekmeyebilir.',
+            'Görüntüleme tanı koymaz, tanıya yardımcı olur; değerlendirme muayeneyle birlikte yapılır.'
           ],
           sorular: [
             {
               soru: 'Görüntüyü başka hekime götürebilir miyim?',
               cevap:
                 'Evet. Görüntü dijital olarak verilebilir ve başka bir hekim tarafından da değerlendirilebilir.'
+            },
+            {
+              soru: 'Kapalı bir cihaza giriyor muyum?',
+              cevap:
+                'Hayır. Tıbbi tomografideki gibi bir tünel yoktur. Cihaz açıktır, hasta ayakta ya da ' +
+                'oturur konumda durur ve kaynak baş çevresinde tek tur atar.'
+            },
+            {
+              soru: 'Panoramik röntgenim var, yine de tomografi gerekir mi?',
+              cevap:
+                'Yapılacak işleme bağlı. Genel kontrol ve çürük değerlendirmesi için panoramik çoğu ' +
+                'zaman yeterlidir. İmplant, gömülü diş cerrahisi veya kist değerlendirmesi söz konusuysa ' +
+                'kemik kalınlığı ve komşu yapıların konumu gerekir; bunlar panoramikte ölçülemez.'
+            },
+            {
+              soru: 'Çocuğuma çekilebilir mi?',
+              cevap:
+                'Tıbbi gerekçe varsa çekilebilir; gömülü diş ve ortodontik planlama başlıca ' +
+                'gerekçelerdir. Çocukta alan olabildiğince dar tutulur ve gerekçe daha sıkı ' +
+                'değerlendirilir.'
+            },
+            {
+              soru: 'Sonuç ne zaman çıkar?',
+              cevap:
+                'Görüntü çekimden hemen sonra hazır olur ve aynı randevuda birlikte incelenebilir. ' +
+                'Ayrı bir bekleme süresi yoktur.'
             }
           ]
         }

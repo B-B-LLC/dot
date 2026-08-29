@@ -25,6 +25,8 @@ npm run build          # kontrol + üretim derlemesi (tip denetimi de burada)
 npm start
 npm run kontrol        # yalnız yayın öncesi kontrol (bkz. Yayın öncesi kontrol)
 KONTROL=yayin npm run kontrol   # demo iken "yayına ne kaldı" listesi
+node tools/icerik-olc.mjs        # işlem sayfalarının içerik derinliği tablosu
+node tools/icerik-olc.mjs eksik  # yalnız hedefin altında kalanlar
 npx tsc --noEmit       # yalnız tip denetimi
 npm run gen:ds         # ds/ klasörünü _ds/ paketinden yeniden üretir
 node tools/serve.js 4173   # depodaki eski statik sürümü açar (index.html)
@@ -207,6 +209,12 @@ sayfaya konur: açık/kapalı sinüs lifting tablosu üç teknik sayfasında
 tekrarlanmaz, karar sayfası olan genel `sinus-lifting`tedir. Tablo aynı
 zamanda birbirine yakın başlıkların tekrara düşmesini engeller — sayfa
 komşusundan farklı olduğunu iddia etmek yerine ölçütle gösterir.
+
+İçerik derinliği `node tools/icerik-olc.mjs` ile ölçülür: sayfada gerçekten
+görünen metni (giriş, bölümler, şerit, tablo, notlar, sorular) sayar ve en
+inceden başlayarak sıralar. Hedefler sayfa başına 600+ kelime ve 4-5 sorudur.
+Bir sayfanın metni elden geçirildiğinde o kaleme `guncelleme` tarihi yazılır;
+site haritası bunu okur (bkz. *Demo modu ve SEO*).
 
 Görünüm `globals.css`teki `.islem-cizelge` ve `.islem-tablo` kurallarındadır.
 Tablo dar ekranda sütunlara bölünmez, kendi kutusunda yatay kaydırılır
