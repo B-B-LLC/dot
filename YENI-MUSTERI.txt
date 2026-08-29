@@ -330,7 +330,7 @@ Kliniğe göre tamamen değişir, şablon metni değildir.
   mekanlar.cocuk  Klinik bölümündeki üç kart.
 
 Her biri { yol, alt } ister.
-  yol  public/ altındaki yol, başında eğik çizgiyle: '/gorseller/hero.jpg'
+  yol  public/ altındaki yol, başında eğik çizgiyle: '/gorseller/hero.webp'
        Boş bırakılırsa çizim yer tutucusu kalır — site bozulmaz.
   alt  Görmeyen ziyaretçiye kareyi anlatan kısa cümle. Boş bırakma.
 
@@ -338,12 +338,13 @@ Dosya kuralları:
   - JPEG veya WebP, uzun kenar ~1600 piksel, 300 KB altı
   - Dosya adında BOŞLUK VE TÜRKÇE KARAKTER OLMASIN
     kotu:  'Klinik Bekleme Alanı.jpg'
-    iyi:   'klinik-bekleme-alani.jpg'
+    iyi:   'klinik-bekleme-alani.webp'
     Sebebi: bazı sunucularda URL kodlaması sorun çıkarır.
   - Çocuk bölümü kartı yoksa mekanlar.cocuk yolunu boş bırak
 
-Mevcut demoda fotoğraflar 2,5-3 MB'lık ham dosyalar. Yeni müşteride küçültülmüş
-hâli konur.
+Demodaki fotoğraflar bu kurala göre üretildi: 1600 px WebP, 76-151 KB.
+Ham dosyadan dönüştürme komutu README'de değil, tek satırlık bir sharp
+çağrısı: resize({ width: 1600 }).webp({ quality: 82 }).
 
 
 ================================================================================

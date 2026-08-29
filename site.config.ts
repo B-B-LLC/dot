@@ -144,7 +144,7 @@ export type Hekim = {
   mezuniyet: string;
   /** Uzmanlık/doktora yoksa '—' yazılır. */
   akademik: string;
-  /** Portre görselinin yolu (ör. '/gorseller/hekim-selin.jpg'). Boş
+  /** Portre görselinin yolu (ör. '/gorseller/hekim-selin.webp'). Boş
       bırakılırsa kartta çizim yer tutucusu kalır. */
   gorsel?: string;
 };
@@ -152,7 +152,7 @@ export type Hekim = {
 /** Bir fotoğraf alanı. `yol` boş bırakıldığında o alanda çizim yer tutucusu
     görünmeye devam eder; görsellerin hepsi hazır olmadan da site bozulmaz. */
 export type Gorsel = {
-  /** `public/` altındaki yol, başında eğik çizgiyle: '/gorseller/ad.jpg' */
+  /** `public/` altındaki yol, başında eğik çizgiyle: '/gorseller/ad.webp' */
   yol: string;
   /** Görmeyen ziyaretçiye ve arama motoruna karenin içeriğini anlatır.
       Kısa ve düz olsun: 'Bekleme alanı, pencere tarafındaki koltuklar'. */
@@ -308,7 +308,7 @@ export const gorseller = {
       alt kenarın bir bölümü saat kartıyla örtüldüğü için önemli ayrıntıyı
       üstte bırakın. */
   hero: {
-    yol: '/gorseller/Hero.jpg',
+    yol: '/gorseller/hero.webp',
     alt: 'Kliniğin girişi: karşılama bankosu ve bekleme koltukları'
   } as Gorsel,
 
@@ -316,15 +316,15 @@ export const gorseller = {
       MEKANLAR listesi belirler; buradaki anahtarlar onlarla eşleşir. */
   mekanlar: {
     bekleme: {
-      yol: '/gorseller/Klinik Bekleme Alanı.jpg',
+      yol: '/gorseller/klinik-bekleme-alani.webp',
       alt: 'Bekleme alanı: pencere tarafında koltuklar ve karşılama bankosu'
     } as Gorsel,
     muayene: {
-      yol: '/gorseller/Klinik Muayene Odası.jpg',
+      yol: '/gorseller/klinik-muayene-odasi.webp',
       alt: 'Muayene odası: diş üniti, tepe lambası ve görüntüleme ekranı'
     } as Gorsel,
     cocuk: {
-      yol: '/gorseller/Klinik Çocuk Alanı.jpg',
+      yol: '/gorseller/klinik-cocuk-alani.webp',
       alt: 'Çocuk bölümü: oyun alanı ve refakatçiler için ayrı oturma'
     } as Gorsel
   }
@@ -342,28 +342,28 @@ export const hekimler: Hekim[] = [
     unvan: 'Protetik diş tedavisi uzmanı',
     mezuniyet: 'İstanbul Üniv. Diş Hek. Fak., 1988',
     akademik: 'Protetik diş tedavisi doktorası, 1994',
-    gorsel: '/gorseller/Doktor1.jpg'
+    gorsel: '/gorseller/hekim-1.webp'
   },
   {
     ad: 'Uzm. Dt. Ayşe Yılmaz',
     unvan: 'Ortodonti uzmanı',
     mezuniyet: 'Ege Üniv. Diş Hek. Fak., 2011',
     akademik: 'Ortodonti uzmanlığı, 2017',
-    gorsel: '/gorseller/Doktor2.jpg'
+    gorsel: '/gorseller/hekim-2.webp'
   },
   {
     ad: 'Uzm. Dt. Can Demir',
     unvan: 'Ağız, diş ve çene cerrahisi uzmanı',
     mezuniyet: 'Ankara Üniv. Diş Hek. Fak., 2012',
     akademik: 'Ağız, diş ve çene cerrahisi uzmanlığı, 2018',
-    gorsel: '/gorseller/Doktor3.jpg'
+    gorsel: '/gorseller/hekim-3.webp'
   },
   {
     ad: 'Uzm. Dt. Elif Yıldız',
     unvan: 'Restoratif diş tedavisi uzmanı',
     mezuniyet: 'Hacettepe Üniv. Diş Hek. Fak., 2013',
     akademik: 'Restoratif diş tedavisi doktorası, 2019',
-    gorsel: '/gorseller/Doktor4.jpg'
+    gorsel: '/gorseller/hekim-4.webp'
   }
 ];
 
