@@ -74,6 +74,39 @@ export const olcum: Olcum = {
   googleDogrulama: ''
 };
 
+/* ---------- Sitenin dayandığı hizmetler ----------
+
+   Randevu talebi kliniğin e-posta kutusuna giderken iki hizmetin
+   sunucularından geçer: sitenin barındırıldığı yer ve gönderimi yapan
+   e-posta hizmeti. İkisi de yurt dışındadır ve bu, aydınlatma metninde
+   gizlenemez — `yasal.config.ts` "Aktarım" başlığını buradaki alanlardan
+   kurar. Şablonun eski hâli "yurt dışına aktarılmaz" diyordu; cümle yanlıştı
+   ve yanlış olduğu ancak bir denetimde ortaya çıkacaktı.
+
+   Klinik başka bir yerde barındırılıyorsa iki alan da güncellenir; metin
+   kendiliğinden düzelir.
+
+   `yurtDisiDayanak` bilerek boş: bu aktarımın KVKK m.9 dayanağını şablon
+   seçemez, kliniğin hukukçusu yazar. Boşken yayın derlemesi durur (bkz.
+   tools/kontrol.mjs) — dayanağı belirlenmemiş bir site yayına çıkamaz.
+   Pratikte üç yol var: (a) sağlayıcılarla Kurul'a bildirilen standart
+   sözleşmenin imzalanması, (b) barındırma ve e-postanın yurt içine taşınıp
+   aktarımın tamamen kaldırılması, (c) Kanun'un öngördüğü diğer
+   güvencelerden birinin kurulması. */
+export const altyapi = {
+  /** Sitenin barındırıldığı hizmet ve ülkesi. */
+  barindirma: 'Vercel Inc. (ABD)',
+
+  /** Form gönderimini yapan e-posta hizmeti ve ülkesi. */
+  epostaHizmeti: 'Resend, Inc. (ABD)',
+
+  /** Yurt dışı aktarımın hukuki dayanağı — hukukçu yazar, cümlenin ortasına
+      oturacak biçimde. Örnek: 'Kurul’a bildirilen standart sözleşme
+      hükümleri kapsamında'. Aktarım tamamen kaldırıldıysa yukarıdaki iki
+      alan yurt içi hizmetlerle değiştirilir ve metin de öyle kurulur. */
+  yurtDisiDayanak: ''
+};
+
 /* ---------- Tipler ---------- */
 
 export type Klinik = {

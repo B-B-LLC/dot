@@ -7,12 +7,13 @@
    - Randevu taleplerinin nerede saklandığı ve ne kadar süreyle tutulduğu
    - Hasta dosyalarının tutulduğu sistem ve saklama süresi
    - Kullanılan üçüncü taraf hizmetler (e-posta, harita, analiz)
+   - Yurt dışı aktarımın hukuki dayanağı (bkz. aşağıdaki `altyapi`)
 
    Metinler klinik künyesinden beslenir; klinik adı ve iletişim bilgisi
    site.config.ts değiştiğinde burada da güncellenir.
    ==================================================================== */
 
-import { klinik, olcum } from './site.config';
+import { altyapi, klinik, olcum } from './site.config';
 
 /* Ölçüm site.config.ts'ten açılıp kapatılır. Kapalıyken (`saglayici: 'yok'`)
    aşağıdaki ölçüm maddeleri metinlerden tamamen düşer; böylece yasal metin
@@ -25,6 +26,12 @@ const OLCUM_ADI =
 /** Ölçüm açıkken verilen maddeleri döndürür, kapalıyken hiçbirini. */
 function olcumluysa<T>(...ogeler: T[]): T[] {
   return olcumVar ? ogeler : [];
+}
+
+/** Aktarım cümleleri: dayanak yazılana kadar iddia edilen bir dayanak
+    olmasın diye, o cümle yalnız alan doluyken metne girer. */
+function dayanakVarsa<T>(...ogeler: T[]): T[] {
+  return altyapi.yurtDisiDayanak.trim() ? ogeler : [];
 }
 
 export type YasalBolum = { baslik: string; paragraflar: string[] };
@@ -92,13 +99,18 @@ export const kvkkMetni: YasalMetin = {
       baslik: 'Aktarım',
       paragraflar: [
         'Kişisel verileriniz, yalnızca yasal yükümlülüklerin yerine getirilmesi amacıyla yetkili ' +
-          'kamu kurum ve kuruluşlarıyla paylaşılabilir.',
-        'Bunun dışında üçüncü kişilere, reklam ortaklarına veya yurt dışına aktarılmaz.',
+          'kamu kurum ve kuruluşlarıyla paylaşılabilir. Bunun dışında üçüncü kişilere veya ' +
+          'reklam ortaklarına aktarılmaz, satılmaz.',
+        `Randevu talebiniz kliniğin e-posta adresine iletilirken sitenin barındırıldığı ` +
+          `${altyapi.barindirma} ve gönderimi yapan ${altyapi.epostaHizmeti} hizmetlerinin ` +
+          'sunucularından geçer. Bu hizmetler verilerinizi kendi amaçları için kullanmaz, ' +
+          'yalnızca talebinizin kliniğe ulaşmasını sağlar. Sunucuları yurt dışında ' +
+          'bulunduğundan, Kanun’un 9. maddesi anlamında yurt dışına aktarım söz konusudur.',
+        ...dayanakVarsa(`Bu aktarım ${altyapi.yurtDisiDayanak} gerçekleştirilir.`),
         ...olcumluysa(
           `Yukarıda anlatılan anonim ziyaret sayımı ${OLCUM_ADI} hizmeti üzerinden ` +
             'yapılır ve verileri yurt dışındaki sunucularında işlenir. Bu sayım kişisel ' +
-            'veri içermediğinden kişisel verilerinizin yurt dışına aktarımı söz konusu ' +
-            'değildir.'
+            'veri içermediği için buradaki aktarım kişisel verilerinize ilişkin değildir.'
         )
       ]
     },
@@ -162,10 +174,12 @@ export const gizlilikMetni: YasalMetin = {
     {
       baslik: 'Paylaşım',
       paragraflar: [
-        'Bilgileriniz üçüncü kişilerle paylaşılmaz. Tek istisna, yasal yükümlülük gereği ' +
-          'yetkili kamu kurumlarından gelen taleplerdir.',
-        'Formun iletilmesi için bir e-posta gönderim hizmeti kullanılır; bu hizmet verileri ' +
-          'yalnızca iletim amacıyla işler.'
+        'Bilgileriniz pazarlama amacıyla üçüncü kişilerle paylaşılmaz ve satılmaz. Yasal ' +
+          'yükümlülük gereği yetkili kamu kurumlarından gelen talepler bunun dışındadır.',
+        `Talebinizin kliniğe ulaşması için iki hizmet devrede: site ${altyapi.barindirma} ` +
+          `üzerinde barındırılır, form gönderimi ${altyapi.epostaHizmeti} ile yapılır. Her ` +
+          'ikisi de verileri yalnızca iletim amacıyla işler; sunucuları yurt dışındadır. ' +
+          'Ayrıntısı KVKK Aydınlatma Metni’nin “Aktarım” başlığındadır.'
       ]
     },
     {

@@ -458,15 +458,82 @@ masaüstünde tıklanamaz hâle gelir. Yakalamayı `pointerup`ta geri vermek
 kurtarmaz, hedef o noktada belirlenmiştir. Dokunmada görülmez, çünkü orada
 yakalama kendiliğinden basılan öğeye — kartın kendisine — kurulur.
 
+### Güvenlik başlıkları ve CSP (`next.config.mjs`)
+
+Başlıklar `headers()` içinde tek yerde durur ve her yanıta konur: `nosniff`,
+`Referrer-Policy`, `X-Frame-Options: DENY`, kullanılmayan cihaz izinlerini
+kapatan `Permissions-Policy`, `Cross-Origin-Opener-Policy` ve CSP.
+`poweredByHeader` kapalıdır. HSTS yalnız üretim derlemesine eklenir —
+localhost'a verilirse makinedeki bütün http projeleri kırılır; `preload`
+bilerek yazılmadı, listeye girmek kolay çıkmak aylar sürüyor.
+
+Üç nokta kolay bozulur:
+
+- **CSP başta Report-Only.** `CSP_ZORLA` sabiti `false` iken tarayıcı
+  ihlalleri yalnız konsola yazar. Gerçek ziyaret altında konsol temiz
+  kaldıktan sonra `true` yapılır. Bakılacak yerler: gömülü harita
+  (`frame-src`), ölçüm betiği ve klinikten sonradan eklenen üçüncü taraf kod.
+- **`unsafe-inline` iki yerde kasıtlı.** Nonce vermek her isteğin sunucuda
+  çizilmesini gerektirir, yani sayfaların önceden üretilmesi biter; ve bütün
+  görünüm satır içi `style` nesneleriyle yazılıyor. Asıl korumayı
+  `object-src 'none'`, `base-uri 'self'` ve `form-action 'self'` veriyor.
+- **Ölçüm kaynağı config'ten okunur.** `next.config.mjs`, `site.config.ts`i
+  içe aktarır: sağlayıcı Plausible'a çevrildiğinde `script-src` ile
+  `connect-src` kendiliğinden açılır. İçe aktarma dinamiktir ve öncesinde
+  `MODULE_TYPELESS_PACKAGE_JSON` uyarısı susturulur (kontrol.mjs'teki çözümün
+  aynısı); statik import dinleyiciden önce çalışırdı.
+
 ### Randevu ucu
 
 `app/api/randevu/route.ts` gelen talebi doğrular, Resend ile e-posta olarak
 gönderir ve **hiçbir yere kaydetmez** — veri tabanı yok, günlüğe kişisel veri
-yazılmaz. Bot tuzağı, IP başına dakikada 5 istek sınırı (bellekte), alan uzunluk
-sınırları ve e-posta başlığı enjeksiyon koruması vardır.
+yazılmaz.
+
+Kötüye kullanıma karşı dört katman var ve hiçbiri ziyaretçiye iş çıkarmaz.
+Sıra önemlidir: kaynak denetimi en başta durur, çünkü yabancı bir çağrıya
+"gönderim ayarlı değil" demek sormadığı bir şeyi söylemektir.
+
+1. **Kaynak denetimi** — `Origin` başlığı isteğin sunucu adına ya da
+   `site.adres`e uymalı (önizleme dağıtımları için ikisi de kabul edilir) ve
+   gövde `application/json` olmalı. Tarayıcı `Origin`i sayfaya yazdırmaz, bu
+   yüzden formu kendi sitesine gömen bir saldırgan kesilir. `curl` bunu aşar;
+   onu aşağıdaki katmanlar karşılar.
+2. **Bot tuzakları** — ekran dışına taşınmış iki gizli alan (`kapan`,
+   `eposta`) ve doldurma süresi. Süreyi tarayıcı ölçer ve **geçen süre**
+   olarak gönderir (`sure`), mutlak saat değil: ziyaretçinin cihaz saati
+   yanlışsa da doğru çalışır. Alan dolu geldiğinde ya da `sure` hiç
+   gelmediğinde sunucu gönderim yapmaz ama **başarılı yanıt döner** — botun
+   denemesini düzeltmemesi için. Tek görünür dal `sure` üç saniyenin
+   altındaysa çalışır; oraya bir insan da düşebilir, ikinci denemede geçer.
+3. **Hız sınırı** — IP başına dakikada 5. IP okunurken önce Vercel'in kendi
+   başlıklarına bakılır: `x-forwarded-for`u ziyaretçi de yazabilir ve her
+   istekte değiştirerek sınırı boşa çıkarabilir.
+4. **Alan sınırları** — uzunluk, telefon biçimi, gövde tavanı ve e-posta
+   başlığı enjeksiyon koruması.
+
+**Captcha bilerek yok.** Turnstile/reCAPTCHA her gönderimde ziyaretçinin
+IP'sini ve tarayıcı izini yurt dışındaki sağlayıcıya gönderir; bu KVKK m.9
+anlamında rutin bir aktarımdır, sağlayıcılar Türkiye'nin standart sözleşmesini
+imzalamaz ve açık rıza hizmetin şartına bağlanamaz. Engellediği spam kadar
+hukuki risk üretiyordu. Gerçek bir spam akını başlarsa karar yeniden bakılır.
 
 Bu davranış `yasal.config.ts` içindeki KVKK metninde anlatılır: uçun veri
 işleyişi değişirse o metin de güncellenmelidir.
+
+### Yurt dışı aktarım (`altyapi`, `site.config.ts`)
+
+Randevu talebi kliniğin kutusuna giderken iki hizmetin sunucularından geçiyor:
+barındırma (Vercel) ve gönderim (Resend). İkisi de yurt dışında. Şablonun eski
+aydınlatma metni "yurt dışına aktarılmaz" diyordu; cümle yanlıştı ve yanlış
+olduğu ancak bir denetimde ortaya çıkacaktı.
+
+`altyapi` bu iki hizmeti ve aktarımın hukuki dayanağını tutar; `yasal.config.ts`
+hem KVKK "Aktarım" hem gizlilik "Paylaşım" başlığını oradan kurar. Klinik başka
+bir yerde barındırılıyorsa iki alan güncellenir, metin kendiliğinden düzelir.
+
+`yurtDisiDayanak` bilerek boştur: dayanağı şablon seçemez, kliniğin hukukçusu
+yazar. Boşken cümle hiç basılmaz (olmayan bir dayanak iddia edilmesin diye) ve
+yayın derlemesi durur — dayanağı belirlenmemiş bir site yayına çıkamaz.
 
 ### Sosyal medya düğmeleri (`app/_ortak/sosyal.js`)
 
@@ -622,8 +689,8 @@ olamaz, `https://` ile başlar, eğik çizgiyle bitmez; config'te adı geçen he
 `/gorseller/...` dosyası `public/` altında gerçekten durmalıdır (yolu yanlış
 görsel hata vermez, sessizce çizim yer tutucusuna düşer). **Yayına özel**
 olanlar `YER_TUTUCULAR` listesindeki izlerdir (`.example`, `mesepoliklinik`,
-`0000/000`, örnek telefon, demo alan adı) ve boş kalan `haritaKoordinat` ile
-`googleDogrulama`.
+`0000/000`, örnek telefon, demo alan adı) ve boş kalan `haritaKoordinat`,
+`googleDogrulama` ile `altyapi.yurtDisiDayanak` (bkz. *Yurt dışı aktarım*).
 
 İki nokta kolay bozulur:
 

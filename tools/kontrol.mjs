@@ -99,7 +99,7 @@ try {
   process.exit(1);
 }
 
-const { site, klinik, olcum } = cfg;
+const { site, klinik, olcum, altyapi } = cfg;
 
 /* --- Kip ------------------------------------------------------------------ */
 
@@ -276,6 +276,25 @@ if (!(olcum.googleDogrulama || '').trim()) {
       'dönük veri üretilemediği için yayın günü kurulmalıdır.'
     ],
     { yayina: true, iz: 'googleDogrulama:' }
+  );
+}
+
+/* Randevu talebi yurt dışındaki sunuculardan geçiyor ve aydınlatma metni bunu
+   söylüyor; hangi dayanakla geçtiğini söylemiyor. Dayanağı şablon seçemez,
+   klinik seçer — ama seçilmeden yayına çıkılamaz: eksik olan şey metnin
+   kendisidir, bir tercih değil. */
+if (!(altyapi.yurtDisiDayanak || '').trim()) {
+  ekle(
+    'hata',
+    'altyapi.yurtDisiDayanak',
+    'Yurt dışı aktarımın dayanağı yazılmamış',
+    [
+      `Site ${altyapi.barindirma} üzerinde duruyor ve form ${altyapi.epostaHizmeti} ile`,
+      'gönderiliyor; randevu talebi bu sunuculardan geçiyor. Aydınlatma metni',
+      'aktarımı bildiriyor, dayanağını bildirmiyor — KVKK m.9 dayanağı hukukçu',
+      'tarafından yazılmalı ya da barındırma yurt içine taşınmalıdır.'
+    ],
+    { yayina: true, iz: 'yurtDisiDayanak:' }
   );
 }
 

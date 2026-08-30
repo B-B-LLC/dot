@@ -1068,8 +1068,12 @@ var useCallback = React.useCallback;
     );
   }
 
+  /* Formun boş hâli. `kapan` ve `eposta` bot tuzağıdır: ekranda görünmezler ve
+     dolu geldiklerinde sunucu gönderim yapmaz (bkz. api/randevu/route.ts). */
+  var BOS_FORM = { ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '', eposta: '' };
+
   function RandevuFormu() {
-    var f = useState({ ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '' });
+    var f = useState(BOS_FORM);
     var form = f[0], setForm = f[1];
     var e = useState({});
     var hatalar = e[0], setHatalar = e[1];
@@ -1079,6 +1083,12 @@ var useCallback = React.useCallback;
     var gonderiliyor = i[0], setGonderiliyor = i[1];
     var s = useState('');
     var sunucuHatasi = s[0], setSunucuHatasi = s[1];
+
+    /* Formun ne zaman açıldığı. Sunucuya mutlak saat değil geçen süre
+       gönderilir: ziyaretçinin cihaz saati yanlış ayarlıysa bile fark doğru
+       çıkar. Sayfa çizilirken değil, tarayıcıda kurulduktan sonra yazılır. */
+    var acilis = useRef(0);
+    useEffect(function () { acilis.current = Date.now(); }, []);
 
     var alan = useCallback(function (anahtar) {
       return function (ev) {
@@ -1104,7 +1114,9 @@ var useCallback = React.useCallback;
       fetch('/api/randevu', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(
+          Object.assign({}, form, { sure: Date.now() - acilis.current })
+        )
       })
         .then(function (yanit) {
           return yanit.json().then(function (veri) {
@@ -1133,10 +1145,13 @@ var useCallback = React.useCallback;
     }
 
     function yeniTalep() {
-      setForm({ ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '' });
+      setForm(BOS_FORM);
       setHatalar({});
       setSunucuHatasi('');
       setGonderildi(false);
+      /* İkinci talep de baştan sayılır; yoksa ilk formun açıldığı andan beri
+         geçen süre devralınır ve süre tuzağı ikinci gönderimde hiç işlemez. */
+      acilis.current = Date.now();
     }
 
     if (gonderildi) {
@@ -1228,13 +1243,25 @@ var useCallback = React.useCallback;
           })
         ),
 
-        /* Bot tuzağı: ekran okuyucudan ve gözden gizli, otomatik doldurma kapalı.
-           Dolu geldiğinde sunucu gönderim yapmaz. */
+        /* Bot tuzakları: ekran okuyucudan ve gözden gizli, otomatik doldurma
+           kapalı. Biri dolu geldiğinde sunucu gönderim yapmaz.
+
+           `display: none` yerine ekran dışına taşınıyorlar, çünkü basit
+           botların bir kısmı gizlenmiş alanı atlar; taşınmış alan onlara
+           görünür durur. İkinci alanın adı `eposta`: formda e-posta
+           sorulmadığı için burayı yalnız alan adına bakıp dolduran bir betik
+           doldurabilir. */
         h('div', { 'aria-hidden': 'true', style: { position: 'absolute', left: -9999, width: 1, height: 1, overflow: 'hidden' } },
           h('label', null, 'Bu alanı boş bırakın',
             h('input', {
               type: 'text', name: 'kapan', tabIndex: -1, autoComplete: 'off',
               value: form.kapan, onChange: alan('kapan')
+            })
+          ),
+          h('label', null, 'Bu alanı da boş bırakın',
+            h('input', {
+              type: 'text', name: 'eposta', tabIndex: -1, autoComplete: 'off',
+              value: form.eposta, onChange: alan('eposta')
             })
           )
         ),
