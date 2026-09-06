@@ -54,7 +54,10 @@ function Dallar() {
 function Kategori(props) {
   var k = props.kategori;
   return h(Card, { tone: 'plain', padding: 'md' },
-    h('h3', {
+    /* h3 değil h2: dokuz kategori "Ana tedavi alanları" başlığının altında
+       değil, onun yanında duran ikinci katmandır (bkz. CLAUDE.md, iki katman).
+       h3 yazılınca başlık ağacı onları dalların alt bölümü gibi gösteriyordu. */
+    h('h2', {
       style: {
         fontSize: 12, letterSpacing: '.13em', fontWeight: 700,
         textTransform: 'uppercase', color: 'var(--emerald-700)',

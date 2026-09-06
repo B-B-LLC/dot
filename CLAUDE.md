@@ -100,6 +100,9 @@ geniş düzenle çizilir.
 - `app/_ortak/olcum.js` — ziyaretçi ölçümü: sağlayıcı betiği ve `olay()`
 - `app/_ortak/sosyal.js` — altbilgideki sosyal medya düğmeleri
 - `app/_ortak/ustveri.ts` — sayfa `metadata`sı (bkz. *Sayfa üstverisi*)
+- `app/_ortak/og-bilgi.ts` — paylaşım görselinin ölçüsü, türü, alt metni ve
+  kök rotası. Çizimden (`og-duzen.tsx`) ayrıdır: üstveri de bu değerleri okur
+  ve `next/og` sayfa modüllerine çekilmemeli.
 - `app/klinik-app.js` — ana sayfa bölümleri; `HekimlerBolumu` ve `UlasimBolumu`
   dışa aktarılır ve `/hekimler` ile `/iletisim` sayfaları bunları yeniden kullanır
 
@@ -121,6 +124,14 @@ yazıldığında üç şey sessizce kaçıyordu, üçü de burada bir kez çöz�
   birleştirir, yani bir sayfa `openGraph` yazdığı anda kökteki bloğun tamamı
   düşer — `siteName` böyle kayboluyordu. `ustveri()` bloğu her seferinde
   bütün olarak kurar.
+- **`og:image` de o blokla düşer.** Kök görsel (`app/opengraph-image.tsx`)
+  kök düzenin `openGraph`ına yazıldığı için yukarıdaki ezilmenin içindeydi:
+  `/hekimler`, `/iletisim`, `/tedaviler` ve yasal sayfalar paylaşıldığında
+  kart görselsiz çıkıyor, Twitter kartı da `summary_large_image` yerine
+  `summary`ye düşüyordu. `ustveri()` görseli `og-bilgi.ts`teki kök rotayla
+  geri koyar. Kendi `opengraph-image` dosyası olan segment `kendiGorseli:
+  true` geçmelidir — açık `images` dosya kuralını ezer ve o sayfa kendi
+  görselini kaybeder. Bugün yalnız `tedaviler/[id]` öyledir.
 
 Kendi adresi olmayan ekranlar (`not-found.tsx`) bu yardımcıyı kullanmaz:
 canonical ve `og:url` verilmemesi gerekir.
@@ -135,6 +146,15 @@ geçilir. Paylaşılan bölümlerde seçim çağıran tarafındadır: `HekimlerB
 `/hekimler` ile `/iletisim` sayfalarında `h1` olur. Stil iki durumda da
 `S.h2`'dir: değişen yalnız etikettir. Yeni bir sayfa açarken `h1`'ini
 vermeyi unutmayın.
+
+**Bölüm başlığı yükselince altındakiler de yükselir.** Bir bölüm `h1` olduğunda
+içindeki kart başlıkları `h3` kalırsa başlık sırası `h1`den `h3`e atlar ve
+ekran okuyucunun çıkardığı içindekiler tablosu bozulur. `HekimlerBolumu` ile
+`UlasimBolumu` bu yüzden `seviye`den bir `kartSeviyesi` türetir ve kartlara
+geçirir; `AdresKarti` ile `RandevuFormu` etiketi dışarıdan alır. Aynı kural
+`tedaviler/[id]` aşama başlıklarında da geçerlidir: onlar sayfanın `h1`inin
+hemen altındaki ilk bölümdür, yani `h2`dir. `/tedaviler` dizinindeki dokuz
+kategori de `h2`dir — dalların altında değil, yanında duran ikinci katmandır.
 
 ### Tedaviler açılır menüsü (`app/_ortak/tedavi-menusu.js`)
 
@@ -297,7 +317,9 @@ uygulanır. Uzun kenar 40/48 oranında kareye ortalanır.
 `app/opengraph-image.tsx` ile `app/tedaviler/[id]/opengraph-image.tsx`, ortak
 düzeni `app/_ortak/og-duzen.tsx`ten alıp derleme sırasında 1200×630 PNG üretir.
 Bu dosyaların varlığı yeter: Next hem `og:image` hem `twitter:image`
-etiketlerini kendisi basar, alt sayfalar kökteki görseli devralır.
+etiketlerini kendisi basar. Devralma ise kendiliğinden olmaz — kendi görsel
+dosyası olmayan sayfalar kök görseli `ustveri()` üzerinden ister
+(bkz. *Sayfa üstverisi*).
 
 Görselin ana öğesi yazı değil, krem daire içinde zümrüt bir diş: `Madalyon`.
 Madalyon ve `DIS_YOLU` `app/_ortak/amblem.tsx` içindedir, çünkü aynı diş sekme

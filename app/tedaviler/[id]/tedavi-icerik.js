@@ -27,7 +27,9 @@ function Asamalar(props) {
               }
             }, iki(i + 1)),
             h('div', null,
-              h('h3', { style: S.h3 }, a.baslik),
+              /* Aşamalar sayfanın h1'inin hemen altındaki ilk bölümdür; h3
+                 yazılırsa sıra atlar. Aşağıdaki "Sık sorulanlar" da h2. */
+              h('h2', { style: S.h3 }, a.baslik),
               h('p', { style: S.kartMetin }, a.metin)
             )
           )

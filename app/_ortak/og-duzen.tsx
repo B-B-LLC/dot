@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 import { AMBLEM_ACIK, AMBLEM_KOYU, Madalyon } from './amblem';
+import { OG_OLCU, OG_TUR } from './og-bilgi';
 import { renk } from './token-renk';
 
 /* Paylaşım görselinin ortak düzeni: zümrüt zemin üzerinde krem madalyon.
@@ -11,9 +12,10 @@ import { renk } from './token-renk';
    Görselde yazı ya iridir ya da hiç yoktur. Sebebi OKUNUR_PUNTO notunda:
    önizleme küçük gösterildiğinde ince yazı okunmaz, leke bırakır. */
 
-/** Facebook, WhatsApp ve LinkedIn'in beklediği ölçü. */
-export const OG_OLCU = { width: 1200, height: 630 };
-export const OG_TUR = 'image/png';
+/* Ölçü ve tür `og-bilgi.ts`tedir: sayfa üstverisi de onları okur ve o dosya
+   `next/og`u içe aktarmamalı. Buradan yeniden dışa aktarılır ki görsel
+   dosyaları tek yerden beslensin. */
+export { OG_OLCU, OG_TUR };
 
 /* Kırpmaya dayanıklı olmak zorunda: WhatsApp dar kartta görseli geniş şerit
    olarak değil, ortasından kesilmiş kare küçük resim olarak gösterir. 1200

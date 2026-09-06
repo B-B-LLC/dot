@@ -797,6 +797,11 @@ var useCallback = React.useCallback;
   /* Ana sayfada bir bölüm, /hekimler adresinde ise sayfanın tamamı. Kendi
      sayfasındayken başlığı h1 olsun diye `seviye` dışarıdan verilir. */
   function Hekimler(props) {
+    /* Bölüm kendi sayfasında h1 olduğunda kart başlıkları da bir basamak
+       yukarı çıkar: ana sayfada doğru olan h2→h3 sırası /hekimler'de h1→h3'e
+       atlıyordu. Stil iki durumda da S.h3'tür, değişen yalnız etiket. */
+    var kartSeviyesi = (props && props.seviye) === 'h1' ? 'h2' : 'h3';
+
     return h('section', { id: 'hekimler', style: S.bolum },
       h(BolumBasligi, {
         seviye: props && props.seviye,
@@ -835,7 +840,7 @@ var useCallback = React.useCallback;
                   })
             ),
             h('div', { style: { padding: '20px 22px 24px' } },
-              h('h3', { style: Object.assign({}, S.h3, { fontSize: 18 }) }, hk.ad),
+              h(kartSeviyesi, { style: Object.assign({}, S.h3, { fontSize: 18 }) }, hk.ad),
               h('div', { style: { fontSize: 13.5, fontWeight: 600, color: 'var(--emerald-700)', marginTop: 5 } }, hk.unvan),
               h('div', { style: Object.assign({}, S.ayirici, { margin: '14px 0' }) }),
               h('div', { style: { fontFamily: 'var(--font-mono)', fontSize: 12, lineHeight: 1.6, color: 'var(--text-muted)' } }, hk.mezuniyet),
@@ -1048,9 +1053,9 @@ var useCallback = React.useCallback;
     );
   }
 
-  function AdresKarti() {
+  function AdresKarti(props) {
     return h(Card, { tone: 'cream', padding: 'md' },
-      h('h3', { style: S.h3 }, 'Adres ve ulaşım'),
+      h((props && props.seviye) || 'h3', { style: S.h3 }, 'Adres ve ulaşım'),
       h('p', { style: Object.assign({}, S.kartMetin, { margin: '10px 0 0' }) }, KLINIK.adresTam),
       h('div', { style: Object.assign({}, S.ayirici, { margin: '16px 0' }) }),
       h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14, color: 'var(--text-muted)' } },
@@ -1072,7 +1077,9 @@ var useCallback = React.useCallback;
      dolu geldiklerinde sunucu gönderim yapmaz (bkz. api/randevu/route.ts). */
   var BOS_FORM = { ad: '', tel: '', tarih: '', not: '', bulten: false, kapan: '', eposta: '' };
 
-  function RandevuFormu() {
+  function RandevuFormu(props) {
+    var seviye = (props && props.seviye) || 'h3';
+
     var f = useState(BOS_FORM);
     var form = f[0], setForm = f[1];
     var e = useState({});
@@ -1172,7 +1179,7 @@ var useCallback = React.useCallback;
               strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round'
             }, h('path', { d: 'M4.5 12.5 9.5 17.5 19.5 7' }))
           ),
-          h('h3', {
+          h(seviye, {
             style: { fontFamily: 'var(--font-display)', fontSize: 26, letterSpacing: '-.022em', color: 'var(--text-strong)', margin: '20px 0 0' }
           }, 'Randevu talebiniz alındı.'),
           h('p', { style: { fontSize: 15, lineHeight: 1.62, color: 'var(--text-muted)', margin: '10px 0 0', maxWidth: '40ch' } },
@@ -1192,7 +1199,7 @@ var useCallback = React.useCallback;
         noValidate: true,
         onSubmit: function (ev) { ev.preventDefault(); gonder(); }
       },
-        h('h3', {
+        h(seviye, {
           style: { fontFamily: 'var(--font-display)', fontSize: 26, lineHeight: 1.14, letterSpacing: '-.022em', color: 'var(--text-strong)', margin: 0 }
         }, 'Randevu talebi'),
         h('p', { style: Object.assign({}, S.kartMetin, { margin: '10px 0 0', maxWidth: '44ch' }) },
@@ -1289,6 +1296,10 @@ var useCallback = React.useCallback;
 
   /* Hekimler gibi: ana sayfada bölüm, /iletisim adresinde sayfanın tamamı. */
   function Ulasim(props) {
+    /* Hekimler bölümündekiyle aynı kural: /iletisim'de bölüm başlığı h1
+       olduğu için kartlar h3'te kalırsa sıra bir basamak atlıyor. */
+    var kartSeviyesi = (props && props.seviye) === 'h1' ? 'h2' : 'h3';
+
     return h('section', { id: 'ulasim', style: S.bolum },
       h(BolumBasligi, {
         seviye: props && props.seviye,
@@ -1299,9 +1310,9 @@ var useCallback = React.useCallback;
       h('div', { style: Object.assign({}, S.izgara(320), { marginTop: 32 }) },
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: 20 } },
           h(HaritaKarti),
-          h(AdresKarti)
+          h(AdresKarti, { seviye: kartSeviyesi })
         ),
-        h(RandevuFormu)
+        h(RandevuFormu, { seviye: kartSeviyesi })
       )
     );
   }

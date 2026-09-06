@@ -33,7 +33,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     yol: `/tedaviler/${id}`,
     ad: sayfa.ad,
     aciklama,
-    tur: 'article'
+    tur: 'article',
+    /* Bu segmentin kendi `opengraph-image.tsx`i var; üstveriye açık `images`
+       yazılırsa dosya kuralını ezer ve dalın adını taşıyan görsel kaybolur. */
+    kendiGorseli: true
   });
 }
 

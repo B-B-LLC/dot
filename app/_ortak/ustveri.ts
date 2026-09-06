@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { klinik, sayfaBasligi } from '@/site.config';
+import { OG_ALT, OG_OLCU, OG_TUR, OG_YOL } from './og-bilgi';
 
 /* ==========================================================================
    SAYFA ÜSTVERİSİ
@@ -21,6 +22,15 @@ import { klinik, sayfaBasligi } from '@/site.config';
       birleştirir: bir sayfa `openGraph` yazdığı anda kökteki bloğun tamamı
       düşer. Elle yazılan sayfalarda `siteName` böyle kayboluyordu; burada
       her seferinde yeniden kurulur.
+
+   4. **`og:image` de o blokla birlikte düşer.** `app/opengraph-image.tsx`in
+      ürettiği görsel kök düzenin `openGraph`ına yazılır, yani 3. maddedeki
+      ezilmenin içindedir: `/hekimler`, `/iletisim`, `/tedaviler` ve yasal
+      sayfalar paylaşıldığında kart görselsiz çıkıyordu. Blok burada kurulduğu
+      için görsel de burada, kök rotanın adresiyle geri konur. Kendi
+      `opengraph-image` dosyası olan segment `kendiGorseli` ile bunu kapatır —
+      açık `images` dosya kuralını ezer ve tedavi sayfaları kendi görselini
+      kaybederdi.
    ========================================================================== */
 
 type Secenek = {
@@ -36,6 +46,9 @@ type Secenek = {
   tur?: 'website' | 'article';
   /** Yasal sayfalar dizine girmez ama bağlantıları izlenir. */
   dizinDisi?: boolean;
+  /** Segmentin kendi `opengraph-image` dosyası varsa true: görseli Next
+      basar, buradan `images` yazılmaz. */
+  kendiGorseli?: boolean;
 };
 
 export function ustveri({
@@ -44,7 +57,8 @@ export function ustveri({
   baslik,
   aciklama,
   tur = 'website',
-  dizinDisi = false
+  dizinDisi = false,
+  kendiGorseli = false
 }: Secenek): Metadata {
   const tamBaslik = ad ? sayfaBasligi(ad) : baslik!;
   return {
@@ -58,7 +72,18 @@ export function ustveri({
       siteName: klinik.ad,
       url: yol,
       title: tamBaslik,
-      description: aciklama
+      description: aciklama,
+      ...(kendiGorseli
+        ? {}
+        : {
+            images: [{
+              url: OG_YOL,
+              width: OG_OLCU.width,
+              height: OG_OLCU.height,
+              type: OG_TUR,
+              alt: OG_ALT
+            }]
+          })
     }
   };
 }
